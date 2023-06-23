@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import { usebootcampstore } from '@/views/apps/bootcamp/usebootcampstore'
 
 // 👉 Store
-const coursestore = useCourseStore()
+const bootcampstore = usebootcampstore()
 const swal = inject('$swal')
 
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalcourses = ref(0)
-const courses = ref<any[]>({})
+const totalbootcamps = ref(0)
+const bootcamps = ref<any[]>({})
 
-const selectedLangs = ref(1)
+
 const isDialogVisible = ref(false)
 
 watch(isDialogVisible, value => {
@@ -25,7 +25,7 @@ watch(isDialogVisible, value => {
 
 const FetchData = () => {
   isDialogVisible.value = true
-  coursestore.fetchcourse(
+  bootcampstore.fetchbootcamp(
     {
       page_size: rowPerPage.value,
       page: currentPage.value,
@@ -33,10 +33,10 @@ const FetchData = () => {
     },
   ).then(response => {
     console.log(response.data)
-    courses.value = response.data.data
+    bootcamps.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page
-    totalcourses.value = response.data.total
+    totalbootcamps.value = response.data.total
   }).catch(error => {
     console.log(error)
   })
@@ -53,7 +53,7 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      coursestore.Deletecourse(id).then(response => {
+      bootcampstore.Deletebootcamp(id).then(response => {
         swal({
           title: ' Deleted ',
           icon: 'success',
@@ -81,7 +81,7 @@ const deleteLang = (id: number) => {
   )
 }
 
-// 👉 Fetch courses
+// 👉 Fetch bootcamps
 watchEffect(() => {
   FetchData()
 })
@@ -94,10 +94,10 @@ watchEffect(() => {
 
 // 👉 Computing pagination data
 const paginationData = computed(() => {
-  const firstIndex = courses.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
-  const lastIndex = courses.value.length + ((currentPage.value - 1) * rowPerPage.value)
+  const firstIndex = bootcamps.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
+  const lastIndex = bootcamps.value.length + ((currentPage.value - 1) * rowPerPage.value)
 
-  return `Showing ${firstIndex} to ${lastIndex} of ${totalcourses.value} entries`
+  return `Showing ${firstIndex} to ${lastIndex} of ${totalbootcamps.value} entries`
 })
 </script>
 
@@ -127,15 +127,15 @@ const paginationData = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            slug
+            title
           </th>
 
           <th scope="col">
-            Name
+            Start Date
           </th>
 
           <th scope="col">
-            price
+            End Date
           </th>
 
           <th scope="col">
@@ -147,13 +147,13 @@ const paginationData = computed(() => {
       <!-- 👉 Table Body -->
       <tbody>
         <tr
-          v-for="item in courses"
+          v-for="item in bootcamps"
           :key="item.id"
           style="height: 3.75rem;"
         >
           <!-- 👉 Id -->
           <td class="text-">
-            {{ item.slug }}
+            {{ item.title }}
           </td>
 
           <!-- 👉 Trending -->
@@ -162,12 +162,12 @@ const paginationData = computed(() => {
               color="primary"
               label
             >
-              {{ item.name }}
+              {{ item.start_date }}
             </VChip>
           </td>
 
           <td class="text-c">
-            {{ item.price }}
+            {{ item.end_date }}
           </td>
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
@@ -176,25 +176,14 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-course-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-bootcamp-edit-id', params: { id: item.id } }"
             >
               <VIcon
                 size="22"
                 icon="tabler-edit"
               />
             </VBtn>
-            <VBtn
-              icon
-              size="x-small"
-              color="info"
-              variant="text"
-              :to="{ name: 'apps-course-tagCourses-id', params: { id: item.id } }"
-            >
-              <VIcon
-                size="22"
-                icon="tabler-link"
-              />
-            </VBtn>
+
             <VBtn
               icon
               variant="text"
@@ -212,7 +201,7 @@ const paginationData = computed(() => {
       </tbody>
 
       <!-- 👉 table footer  -->
-      <tfoot v-show="!courses">
+      <tfoot v-show="!bootcamps">
         <tr>
           <td
             colspan="8"

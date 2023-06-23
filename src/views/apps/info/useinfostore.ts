@@ -1,23 +1,21 @@
 import { defineStore } from 'pinia'
-import type { courseData } from './types'
+import type { infoData } from './types'
 import axios from '@axios'
 
-export const useCourseStore = defineStore('useCourseStore', {
+export const useinfostore = defineStore('useinfostore', {
   actions: {
     // 👉 Fetch all Invoices
-    fetchcourse(params: any) {
-      return axios.get('course/all', { params })
+    fetchinfo(params: any) {
+      return axios.get('section/all', { params })
     },
-    fetchlevel(params: any) {
-      return axios.get('level/all', { params })
-    },
+
     // 👉 Fetch single invoice
-    fetchcourseById(id: number) {
-      return axios.get(`course/${id}`)
+    fetchinfoById(id: number) {
+      return axios.get(`info/update/${id}`)
     },
-    addcourse(course: courseData) {
+    addinfo(info: infoData) {
       return new Promise((resolve, reject) => {
-        axios.post('course/create', course).then(response =>
+        axios.post('info/create', info).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
@@ -48,27 +46,27 @@ export const useCourseStore = defineStore('useCourseStore', {
           .catch(error => reject(error))
       })
     },
-    login(course: any) {
+    login(info: any) {
       return new Promise((resolve, reject) => {
-        axios.post('auth/login', course).then(response =>
+        axios.post('auth/login', info).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
       })
     },
-    updatecourse(course: courseData) {
+    updateinfo(info: infoData) {
       return new Promise((resolve, reject) => {
-        axios.post(`course/update/${course.id}`, course).then(response =>
+        axios.post(`info/update/${info.id}`, info).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
       })
     },
 
-    // Deletecourse
-    Deletecourse(course: courseData) {
+    // Deleteinfo
+    Deleteinfo(info: infoData) {
       return new Promise((resolve, reject) => {
-        axios.delete(`course/delete/${course}`).then(response =>
+        axios.delete(`info/delete/${info}`).then(response =>
 
           resolve(response))
           .catch(error => reject(error))

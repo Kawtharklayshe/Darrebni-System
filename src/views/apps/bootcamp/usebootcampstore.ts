@@ -1,23 +1,21 @@
 import { defineStore } from 'pinia'
-import type { courseData } from './types'
+import type { bootcampData } from './types'
 import axios from '@axios'
 
-export const useCourseStore = defineStore('useCourseStore', {
+export const usebootcampstore = defineStore('usebootcampstore', {
   actions: {
     // 👉 Fetch all Invoices
-    fetchcourse(params: any) {
-      return axios.get('course/all', { params })
+    fetchbootcamp(params: any) {
+      return axios.get('bootcamp/all', { params })
     },
-    fetchlevel(params: any) {
-      return axios.get('level/all', { params })
-    },
+
     // 👉 Fetch single invoice
-    fetchcourseById(id: number) {
-      return axios.get(`course/${id}`)
+    fetchbootcampById(id: number) {
+      return axios.get(`bootcamp/${id}`)
     },
-    addcourse(course: courseData) {
+    addbootcamp(bootcamp: bootcampData) {
       return new Promise((resolve, reject) => {
-        axios.post('course/create', course).then(response =>
+        axios.post('bootcamp/create', bootcamp).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
@@ -48,27 +46,27 @@ export const useCourseStore = defineStore('useCourseStore', {
           .catch(error => reject(error))
       })
     },
-    login(course: any) {
+    login(bootcamp: any) {
       return new Promise((resolve, reject) => {
-        axios.post('auth/login', course).then(response =>
+        axios.post('auth/login', bootcamp).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
       })
     },
-    updatecourse(course: courseData) {
+    updatebootcamp(bootcamp: bootcampData) {
       return new Promise((resolve, reject) => {
-        axios.post(`course/update/${course.id}`, course).then(response =>
+        axios.post(`bootcamp/update/${bootcamp.id}`, bootcamp).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
       })
     },
 
-    // Deletecourse
-    Deletecourse(course: courseData) {
+    // Deletebootcamp
+    Deletebootcamp(bootcamp: bootcampData) {
       return new Promise((resolve, reject) => {
-        axios.delete(`course/delete/${course}`).then(response =>
+        axios.delete(`bootcamp/delete/${bootcamp}`).then(response =>
 
           resolve(response))
           .catch(error => reject(error))

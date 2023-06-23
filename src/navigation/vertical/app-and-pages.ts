@@ -118,7 +118,108 @@ export default [
 
     ],
   },
+  {
+    title: 'Level',
+    icon: { icon: 'tabler-calendar' },
 
+    children: [
+      { title: 'List', to: 'apps-level-list' },
+      { title: 'Add', to: 'apps-level-add' },
+    ],
+  },
+  {
+    title: 'Quiz',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-quiz-list' },
+      { title: 'Add', to: 'apps-quiz-add' },
+      {
+        title: 'Question',
+        icon: { icon: 'tabler-calendar' },
+
+        children: [
+          { title: 'List', to: 'apps-question-list' },
+          { title: 'Add', to: 'apps-question-add' },
+        ],
+      },
+      // {
+      //   title: 'Author',
+      //   icon: { icon: 'tabler-calendar' },
+
+      //   children: [
+      //     { title: 'List', to: 'apps-author-list' },
+      //     { title: 'Add', to: 'apps-author-add' },
+      //   ],
+      // },
+
+    ],
+  },
+  {
+    title: 'Tag',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-tag-list' },
+      { title: 'Add', to: 'apps-tag-add' },
+      {
+        title: 'Course',
+        icon: { icon: 'tabler-calendar' },
+
+        children: [
+          { title: 'List', to: 'apps-question-list' },
+          { title: 'Add', to: 'apps-question-add' },
+        ],
+      },
+      // {
+      //   title: 'Author',
+      //   icon: { icon: 'tabler-calendar' },
+
+      //   children: [
+      //     { title: 'List', to: 'apps-author-list' },
+      //     { title: 'Add', to: 'apps-author-add' },
+      //   ],
+      // },
+
+    ],
+  },
+  {
+    title: 'Info',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-info-list' },
+      // { title: 'Add', to: 'apps-tag-add' },
+      {
+        title: 'Section',
+        icon: { icon: 'tabler-calendar' },
+
+        children: [
+          { title: 'List', to: 'apps-section-list' },
+          { title: 'Add', to: 'apps-section-add' },
+        ],
+      },
+      {
+        title: 'Setting',
+        icon: { icon: 'tabler-calendar' },
+
+        children: [
+          { title: 'List', to: 'apps-setting-list' },
+          { title: 'Add', to: 'apps-setting-add' },
+        ],
+      },
+
+    ],
+  },
+  {
+    title: 'BootCamp',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-bootcamp-list' },
+      { title: 'Add', to: 'apps-bootcamp-add' },
+    ]
+    },
   // {
   //   title: 'Invoice',
   //   icon: { icon: 'tabler-file-dollar' },
@@ -130,6 +231,16 @@ export default [
   //     { title: 'Add', to: 'apps-invoice-add' },
   //   ],
   // },
+
+
+  {
+    title: 'KeyWord',
+    icon: { icon: 'tabler-settings' },
+    children: [
+      { title: 'Add', to: 'apps-keyword-add' },
+      { title: 'List', to: 'apps-keyword-list' },
+    ],
+  },
   {
     title: 'User',
     icon: { icon: 'tabler-users' },

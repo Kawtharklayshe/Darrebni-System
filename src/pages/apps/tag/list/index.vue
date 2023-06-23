@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import { usetagstore } from '@/views/apps/tag/usetagstore'
 
 // 👉 Store
-const coursestore = useCourseStore()
+const tagstore = usetagstore()
 const swal = inject('$swal')
 
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalcourses = ref(0)
-const courses = ref<any[]>({})
+const totaltags = ref(0)
+const tags = ref<any[]>({})
 
 const selectedLangs = ref(1)
 const isDialogVisible = ref(false)
@@ -25,7 +25,7 @@ watch(isDialogVisible, value => {
 
 const FetchData = () => {
   isDialogVisible.value = true
-  coursestore.fetchcourse(
+  tagstore.fetchtag(
     {
       page_size: rowPerPage.value,
       page: currentPage.value,
@@ -33,10 +33,10 @@ const FetchData = () => {
     },
   ).then(response => {
     console.log(response.data)
-    courses.value = response.data.data
+    tags.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page
-    totalcourses.value = response.data.total
+    totaltags.value = response.data.total
   }).catch(error => {
     console.log(error)
   })
@@ -53,7 +53,7 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      coursestore.Deletecourse(id).then(response => {
+      tagstore.Deletetag(id).then(response => {
         swal({
           title: ' Deleted ',
           icon: 'success',
@@ -81,7 +81,7 @@ const deleteLang = (id: number) => {
   )
 }
 
-// 👉 Fetch courses
+// 👉 Fetch tags
 watchEffect(() => {
   FetchData()
 })
@@ -94,10 +94,10 @@ watchEffect(() => {
 
 // 👉 Computing pagination data
 const paginationData = computed(() => {
-  const firstIndex = courses.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
-  const lastIndex = courses.value.length + ((currentPage.value - 1) * rowPerPage.value)
+  const firstIndex = tags.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
+  const lastIndex = tags.value.length + ((currentPage.value - 1) * rowPerPage.value)
 
-  return `Showing ${firstIndex} to ${lastIndex} of ${totalcourses.value} entries`
+  return `Showing ${firstIndex} to ${lastIndex} of ${totaltags.value} entries`
 })
 </script>
 
@@ -127,16 +127,13 @@ const paginationData = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            slug
+            Icon
           </th>
 
           <th scope="col">
             Name
           </th>
 
-          <th scope="col">
-            price
-          </th>
 
           <th scope="col">
             ACTIONS
@@ -147,13 +144,16 @@ const paginationData = computed(() => {
       <!-- 👉 Table Body -->
       <tbody>
         <tr
-          v-for="item in courses"
+          v-for="item in tags"
           :key="item.id"
           style="height: 3.75rem;"
         >
           <!-- 👉 Id -->
-          <td class="text-">
-            {{ item.slug }}
+          <td
+            class="text-center"
+            style="font-size:20px"
+          >
+            <span :class="item.icon" />
           </td>
 
           <!-- 👉 Trending -->
@@ -166,9 +166,7 @@ const paginationData = computed(() => {
             </VChip>
           </td>
 
-          <td class="text-c">
-            {{ item.price }}
-          </td>
+      
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
             <VBtn
@@ -176,7 +174,7 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-course-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-tag-edit-id', params: { id: item.id } }"
             >
               <VIcon
                 size="22"
@@ -188,7 +186,7 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-course-tagCourses-id', params: { id: item.id } }"
+              :to="{ name: 'apps-tag-course-tagCourses-id', params: { id: item.id } }"
             >
               <VIcon
                 size="22"
@@ -212,7 +210,7 @@ const paginationData = computed(() => {
       </tbody>
 
       <!-- 👉 table footer  -->
-      <tfoot v-show="!courses">
+      <tfoot v-show="!tags">
         <tr>
           <td
             colspan="8"

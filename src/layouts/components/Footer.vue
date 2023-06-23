@@ -7,19 +7,16 @@
       Made With
       <VIcon
         icon="tabler-heart"
-        color="error"
+        color="primary"
         size="1.25rem"
         class="mx-1"
       />
-      By <a
-        href="https://pixinvent.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-primary ms-1"
-      >Pixinvent</a>
+       
+      By  <a 
+      target="_blank" href="https://www.prokoders.com">ProKoders</a>
     </span>
     <!-- 👉 Footer: right content -->
-    <span class="d-md-flex gap-x-4 text-primary d-none">
+    <!-- <span class="d-md-flex gap-x-4 text-primary d-none">
       <a
         href="https://themeforest.net/licenses/standard"
         target="noopener noreferrer"
@@ -32,6 +29,6 @@
         href="https://demos.pixinvent.com/vuexy-vuejs-admin-template/documentation/"
         target="noopener noreferrer"
       >Documentation</a>
-    </span>
+    </span> -->
   </div>
 </template>

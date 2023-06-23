@@ -1,23 +1,21 @@
 import { defineStore } from 'pinia'
-import type { courseData } from './types'
+import type { sectionData } from './types'
 import axios from '@axios'
 
-export const useCourseStore = defineStore('useCourseStore', {
+export const usesectionstore = defineStore('usesectionstore', {
   actions: {
     // 👉 Fetch all Invoices
-    fetchcourse(params: any) {
-      return axios.get('course/all', { params })
+    fetchsection(params: any) {
+      return axios.get('section/all', { params })
     },
-    fetchlevel(params: any) {
-      return axios.get('level/all', { params })
-    },
+
     // 👉 Fetch single invoice
-    fetchcourseById(id: number) {
-      return axios.get(`course/${id}`)
+    fetchsectionById(id: number) {
+      return axios.get(`section/${id}`)
     },
-    addcourse(course: courseData) {
+    addsection(section: sectionData) {
       return new Promise((resolve, reject) => {
-        axios.post('course/create', course).then(response =>
+        axios.post('section/create', section).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
@@ -48,27 +46,27 @@ export const useCourseStore = defineStore('useCourseStore', {
           .catch(error => reject(error))
       })
     },
-    login(course: any) {
+    login(section: any) {
       return new Promise((resolve, reject) => {
-        axios.post('auth/login', course).then(response =>
+        axios.post('auth/login', section).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
       })
     },
-    updatecourse(course: courseData) {
+    updatesection(section: sectionData) {
       return new Promise((resolve, reject) => {
-        axios.post(`course/update/${course.id}`, course).then(response =>
+        axios.post(`section/update/${section.id}`, section).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
       })
     },
 
-    // Deletecourse
-    Deletecourse(course: courseData) {
+    // Deletesection
+    Deletesection(section: sectionData) {
       return new Promise((resolve, reject) => {
-        axios.delete(`course/delete/${course}`).then(response =>
+        axios.delete(`section/delete/${section}`).then(response =>
 
           resolve(response))
           .catch(error => reject(error))

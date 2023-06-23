@@ -1,23 +1,21 @@
 import { defineStore } from 'pinia'
-import type { courseData } from './types'
+import type { settingData } from './types'
 import axios from '@axios'
 
-export const useCourseStore = defineStore('useCourseStore', {
+export const usesettingstore = defineStore('usesettingstore', {
   actions: {
     // 👉 Fetch all Invoices
-    fetchcourse(params: any) {
-      return axios.get('course/all', { params })
+    fetchsetting(params: any) {
+      return axios.get('setting/all', { params })
     },
-    fetchlevel(params: any) {
-      return axios.get('level/all', { params })
-    },
+
     // 👉 Fetch single invoice
-    fetchcourseById(id: number) {
-      return axios.get(`course/${id}`)
+    fetchsettingById(id: number) {
+      return axios.get(`setting/${id}`)
     },
-    addcourse(course: courseData) {
+    addsetting(setting: settingData) {
       return new Promise((resolve, reject) => {
-        axios.post('course/create', course).then(response =>
+        axios.post('setting/create-or-update', setting).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
@@ -48,27 +46,27 @@ export const useCourseStore = defineStore('useCourseStore', {
           .catch(error => reject(error))
       })
     },
-    login(course: any) {
+    login(setting: any) {
       return new Promise((resolve, reject) => {
-        axios.post('auth/login', course).then(response =>
+        axios.post('auth/login', setting).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
       })
     },
-    updatecourse(course: courseData) {
+    updatesetting(setting: settingData) {
       return new Promise((resolve, reject) => {
-        axios.post(`course/update/${course.id}`, course).then(response =>
+        axios.post(`setting/create-or-update/${setting.id}`, setting).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
       })
     },
 
-    // Deletecourse
-    Deletecourse(course: courseData) {
+    // Deletesetting
+    Deletesetting(setting: settingData) {
       return new Promise((resolve, reject) => {
-        axios.delete(`course/delete/${course}`).then(response =>
+        axios.delete(`setting/delete/${setting}`).then(response =>
 
           resolve(response))
           .catch(error => reject(error))

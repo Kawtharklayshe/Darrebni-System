@@ -1,46 +1,53 @@
 <script setup lang="ts">
-import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import { useInvoiceStore } from '@/views/apps/langs/useInvoiceStore'
+
+import { usesocialMediastore } from '@/views/apps/socialMedia/usesocialMediastore'
 
 // 👉 Store
-const coursestore = useCourseStore()
+const socialMediastore = usesocialMediastore()
 const swal = inject('$swal')
-
+const searchQuery = ref('')
+const languagesName = ref('')
+const languagesIcon = ref('')
+const selectedStatus = ref()
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalcourses = ref(0)
-const courses = ref<any[]>({})
-
+const totalsocialMedias = ref(0)
+const socialMedias = ref<any[]>({})
+const selectedRows = ref<string[]>([])
+const langsId = ref<number>(0)
 const selectedLangs = ref(1)
+const invoiceListStore = useInvoiceStore()
+const LanguagesList = ref([])
+
+
+
 const isDialogVisible = ref(false)
-
-watch(isDialogVisible, value => {
-  if (!value)
-    return
-
-  setTimeout(() => {
-    isDialogVisible.value = false
-  }, 4000)
-})
+const isDialogVisibleDelete = ref(false)
 
 const FetchData = () => {
-  isDialogVisible.value = true
-  coursestore.fetchcourse(
+  socialMediastore.fetchsocialMedia(
     {
       page_size: rowPerPage.value,
       page: currentPage.value,
 
+      language_id: selectedLangs.value,
     },
   ).then(response => {
-    console.log(response.data)
-    courses.value = response.data.data
-    isDialogVisible.value = false
-    totalPage.value = response.data.last_page
-    totalcourses.value = response.data.total
+    console.log(response.data.data)
+    socialMedias.value = response.data.data.data
+
+    totalPage.value = response.data.data.last_page
+    totalsocialMedias.value = response.data.data.total
   }).catch(error => {
     console.log(error)
   })
 }
+
+
+
+
 
 const deleteLang = (id: number) => {
   swal({
@@ -53,7 +60,7 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      coursestore.Deletecourse(id).then(response => {
+      socialMediastore.DeletesocialMedia(selectedLangs.value, id).then(response => {
         swal({
           title: ' Deleted ',
           icon: 'success',
@@ -81,10 +88,12 @@ const deleteLang = (id: number) => {
   )
 }
 
-// 👉 Fetch courses
+// 👉 Fetch socialMedias
 watchEffect(() => {
   FetchData()
 })
+
+
 
 // 👉 watching current page
 watchEffect(() => {
@@ -94,32 +103,21 @@ watchEffect(() => {
 
 // 👉 Computing pagination data
 const paginationData = computed(() => {
-  const firstIndex = courses.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
-  const lastIndex = courses.value.length + ((currentPage.value - 1) * rowPerPage.value)
+  const firstIndex = socialMedias.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
+  const lastIndex = socialMedias.value.length + ((currentPage.value - 1) * rowPerPage.value)
 
-  return `Showing ${firstIndex} to ${lastIndex} of ${totalcourses.value} entries`
+  return `Showing ${firstIndex} to ${lastIndex} of ${totalsocialMedias.value} entries`
 })
 </script>
 
 <template>
-  <VCard id="invoice-list">
-    <VDialog
-      v-model="isDialogVisible"
-      width="300"
-    >
-      <VCard
-        color="primary"
-        width="300"
-      >
-        <VCardText class="pt-3">
-          Loading Data ....
-          <VProgressLinear
-            indeterminate
-            class="mb-0"
-          />
-        </VCardText>
-      </VCard>
-    </VDialog>
+  <VCard
+
+    id="invoice-list"
+  >
+    
+
+    <VDivider />
 
     <!-- SECTION Table -->
     <VTable class="text-no-wrap invoice-list-table">
@@ -127,15 +125,18 @@ const paginationData = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            slug
+            Icon
           </th>
 
           <th scope="col">
             Name
           </th>
 
-          <th scope="col">
-            price
+          <th
+            scope="col"
+          
+          >
+            url
           </th>
 
           <th scope="col">
@@ -147,17 +148,25 @@ const paginationData = computed(() => {
       <!-- 👉 Table Body -->
       <tbody>
         <tr
-          v-for="item in courses"
+          v-for="item in socialMedias"
           :key="item.id"
           style="height: 3.75rem;"
         >
           <!-- 👉 Id -->
-          <td class="text-">
-            {{ item.slug }}
+          <td
+            class="text-center"
+            style="font-size:20px"
+          >
+          <!-- <span class="fab fa-linkedin-in" > </span> -->
+            <span :class="item.icon" />
+        
           </td>
 
+
           <!-- 👉 Trending -->
-          <td class="text-c">
+          <td
+            class="text-c"
+          >
             <VChip
               color="primary"
               label
@@ -166,8 +175,10 @@ const paginationData = computed(() => {
             </VChip>
           </td>
 
-          <td class="text-c">
-            {{ item.price }}
+          <td
+            class="text-c"
+          >
+            {{ item.url }}
           </td>
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
@@ -176,25 +187,14 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-course-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-socialMedia-edit-id', params: { id: item.id } }"
             >
               <VIcon
                 size="22"
                 icon="tabler-edit"
               />
             </VBtn>
-            <VBtn
-              icon
-              size="x-small"
-              color="info"
-              variant="text"
-              :to="{ name: 'apps-course-tagCourses-id', params: { id: item.id } }"
-            >
-              <VIcon
-                size="22"
-                icon="tabler-link"
-              />
-            </VBtn>
+
             <VBtn
               icon
               variant="text"
@@ -212,7 +212,7 @@ const paginationData = computed(() => {
       </tbody>
 
       <!-- 👉 table footer  -->
-      <tfoot v-show="!courses">
+      <tfoot v-show="!socialMedias">
         <tr>
           <td
             colspan="8"

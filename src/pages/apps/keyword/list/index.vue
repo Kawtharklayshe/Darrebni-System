@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import { usekeywordstore } from '@/views/apps/keyword/usekeywordstore'
 
 // 👉 Store
-const coursestore = useCourseStore()
+const keywordstore = usekeywordstore()
 const swal = inject('$swal')
 
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalcourses = ref(0)
-const courses = ref<any[]>({})
+const totalkeywords = ref(0)
+const keywords = ref<any[]>({})
 
 const selectedLangs = ref(1)
 const isDialogVisible = ref(false)
@@ -25,7 +25,7 @@ watch(isDialogVisible, value => {
 
 const FetchData = () => {
   isDialogVisible.value = true
-  coursestore.fetchcourse(
+  keywordstore.fetchkeyword(
     {
       page_size: rowPerPage.value,
       page: currentPage.value,
@@ -33,10 +33,10 @@ const FetchData = () => {
     },
   ).then(response => {
     console.log(response.data)
-    courses.value = response.data.data
+    keywords.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page
-    totalcourses.value = response.data.total
+    totalkeywords.value = response.data.total
   }).catch(error => {
     console.log(error)
   })
@@ -53,7 +53,7 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      coursestore.Deletecourse(id).then(response => {
+      keywordstore.Deletekeyword(id).then(response => {
         swal({
           title: ' Deleted ',
           icon: 'success',
@@ -81,7 +81,7 @@ const deleteLang = (id: number) => {
   )
 }
 
-// 👉 Fetch courses
+// 👉 Fetch keywords
 watchEffect(() => {
   FetchData()
 })
@@ -94,10 +94,10 @@ watchEffect(() => {
 
 // 👉 Computing pagination data
 const paginationData = computed(() => {
-  const firstIndex = courses.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
-  const lastIndex = courses.value.length + ((currentPage.value - 1) * rowPerPage.value)
+  const firstIndex = keywords.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
+  const lastIndex = keywords.value.length + ((currentPage.value - 1) * rowPerPage.value)
 
-  return `Showing ${firstIndex} to ${lastIndex} of ${totalcourses.value} entries`
+  return `Showing ${firstIndex} to ${lastIndex} of ${totalkeywords.value} entries`
 })
 </script>
 
@@ -127,7 +127,7 @@ const paginationData = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            slug
+            Icon
           </th>
 
           <th scope="col">
@@ -135,7 +135,7 @@ const paginationData = computed(() => {
           </th>
 
           <th scope="col">
-            price
+            description
           </th>
 
           <th scope="col">
@@ -147,14 +147,12 @@ const paginationData = computed(() => {
       <!-- 👉 Table Body -->
       <tbody>
         <tr
-          v-for="item in courses"
+          v-for="item in keywords"
           :key="item.id"
           style="height: 3.75rem;"
         >
           <!-- 👉 Id -->
-          <td class="text-">
-            {{ item.slug }}
-          </td>
+         
 
           <!-- 👉 Trending -->
           <td class="text-c">
@@ -166,9 +164,6 @@ const paginationData = computed(() => {
             </VChip>
           </td>
 
-          <td class="text-c">
-            {{ item.price }}
-          </td>
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
             <VBtn
@@ -176,25 +171,14 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-course-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-keyword-edit-id', params: { id: item.id } }"
             >
               <VIcon
                 size="22"
                 icon="tabler-edit"
               />
             </VBtn>
-            <VBtn
-              icon
-              size="x-small"
-              color="info"
-              variant="text"
-              :to="{ name: 'apps-course-tagCourses-id', params: { id: item.id } }"
-            >
-              <VIcon
-                size="22"
-                icon="tabler-link"
-              />
-            </VBtn>
+
             <VBtn
               icon
               variant="text"
@@ -212,7 +196,7 @@ const paginationData = computed(() => {
       </tbody>
 
       <!-- 👉 table footer  -->
-      <tfoot v-show="!courses">
+      <tfoot v-show="!keywords">
         <tr>
           <td
             colspan="8"

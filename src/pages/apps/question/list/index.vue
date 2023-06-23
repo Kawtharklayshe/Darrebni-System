@@ -1,46 +1,69 @@
 <script setup lang="ts">
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import { useassignmentstore } from '@/views/apps/assignment/useassignmentstore'
 
 // 👉 Store
+const assignmentstore = useassignmentstore()
 const coursestore = useCourseStore()
 const swal = inject('$swal')
 
 const rowPerPage = ref(10)
+const course_id = ref('')
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalcourses = ref(0)
-const courses = ref<any[]>({})
+const totalassignments = ref(0)
+const assignments = ref<any[]>({})
 
-const selectedLangs = ref(1)
-const isDialogVisible = ref(false)
+const courseList = ref([])
 
-watch(isDialogVisible, value => {
-  if (!value)
-    return
+const photo = ref('@images/avatars/avatar-14.png')
 
-  setTimeout(() => {
-    isDialogVisible.value = false
-  }, 4000)
-})
-
-const FetchData = () => {
-  isDialogVisible.value = true
+const FetchCourse = () => {
   coursestore.fetchcourse(
     {
+      page_size: 10000,
+      page: 1,
+
+    },
+  ).then(response => {
+    console.log(response.data)
+    courseList.value = response.data.data
+  }).catch(error => {
+    console.log(error)
+  })
+}
+
+// 👉 Fetch categoriess
+watchEffect(() => {
+  FetchCourse()
+})
+
+const isDialogVisible = ref(false)
+
+const FetchData = id => {
+  console.log(id)
+  isDialogVisible.value = true
+  assignmentstore.fetchassignment(
+    {
+      id,
       page_size: rowPerPage.value,
       page: currentPage.value,
 
     },
   ).then(response => {
     console.log(response.data)
-    courses.value = response.data.data
+    assignments.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page
-    totalcourses.value = response.data.total
+    totalassignments.value = response.data.total
   }).catch(error => {
     console.log(error)
   })
 }
+
+watch(course_id, value => {
+  FetchData(course_id.value)
+})
 
 const deleteLang = (id: number) => {
   swal({
@@ -53,7 +76,7 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      coursestore.Deletecourse(id).then(response => {
+      assignmentstore.Deleteassignment(id).then(response => {
         swal({
           title: ' Deleted ',
           icon: 'success',
@@ -62,7 +85,7 @@ const deleteLang = (id: number) => {
           },
           buttonsStyling: false,
         })
-        FetchData()
+        FetchData(course_id.value)
       })
         .catch(error => {
           swal({
@@ -81,11 +104,6 @@ const deleteLang = (id: number) => {
   )
 }
 
-// 👉 Fetch courses
-watchEffect(() => {
-  FetchData()
-})
-
 // 👉 watching current page
 watchEffect(() => {
   if (currentPage.value > totalPage.value)
@@ -94,10 +112,10 @@ watchEffect(() => {
 
 // 👉 Computing pagination data
 const paginationData = computed(() => {
-  const firstIndex = courses.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
-  const lastIndex = courses.value.length + ((currentPage.value - 1) * rowPerPage.value)
+  const firstIndex = assignments.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
+  const lastIndex = assignments.value.length + ((currentPage.value - 1) * rowPerPage.value)
 
-  return `Showing ${firstIndex} to ${lastIndex} of ${totalcourses.value} entries`
+  return `Showing ${firstIndex} to ${lastIndex} of ${totalassignments.value} entries`
 })
 </script>
 
@@ -120,22 +138,28 @@ const paginationData = computed(() => {
         </VCardText>
       </VCard>
     </VDialog>
+    <div class="d-flex my-6  mx-5">
+      <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+        <VSelect
+          v-model="course_id"
+          :items="courseList"
 
+          item-title="name"
+          item-value="id"
+          label="Select Course"
+          style="width: 20.9rem;"
+        />
+      </h6>
+    </div>
     <!-- SECTION Table -->
     <VTable class="text-no-wrap invoice-list-table">
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-          <th scope="col">
-            slug
-          </th>
+        
 
           <th scope="col">
-            Name
-          </th>
-
-          <th scope="col">
-            price
+            title
           </th>
 
           <th scope="col">
@@ -147,14 +171,11 @@ const paginationData = computed(() => {
       <!-- 👉 Table Body -->
       <tbody>
         <tr
-          v-for="item in courses"
+          v-for="item in assignments"
           :key="item.id"
           style="height: 3.75rem;"
         >
-          <!-- 👉 Id -->
-          <td class="text-">
-            {{ item.slug }}
-          </td>
+          
 
           <!-- 👉 Trending -->
           <td class="text-c">
@@ -162,13 +183,15 @@ const paginationData = computed(() => {
               color="primary"
               label
             >
-              {{ item.name }}
+              {{ item.title }}
             </VChip>
           </td>
 
-          <td class="text-c">
+          <!--
+            <td class="text-c">
             {{ item.price }}
-          </td>
+            </td>
+          -->
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
             <VBtn
@@ -176,25 +199,14 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-course-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-assignment-edit-id', params: { id: item.id } }"
             >
               <VIcon
                 size="22"
                 icon="tabler-edit"
               />
             </VBtn>
-            <VBtn
-              icon
-              size="x-small"
-              color="info"
-              variant="text"
-              :to="{ name: 'apps-course-tagCourses-id', params: { id: item.id } }"
-            >
-              <VIcon
-                size="22"
-                icon="tabler-link"
-              />
-            </VBtn>
+
             <VBtn
               icon
               variant="text"
@@ -212,7 +224,7 @@ const paginationData = computed(() => {
       </tbody>
 
       <!-- 👉 table footer  -->
-      <tfoot v-show="!courses">
+      <tfoot v-show="!assignments">
         <tr>
           <td
             colspan="8"
