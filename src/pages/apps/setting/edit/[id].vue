@@ -20,6 +20,21 @@ const setting = ref<settingData>({
   type: '',
 })
 
+
+const uploadNewImage = (i: any) => {
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  authorStore.uploadImage(fd).then((response: any) => {
+    console.log('res', response?.data.path_file)
+    // author.value.image = response?.data.path_file
+  })
+}
+
+
 const swal = inject('$swal')
 const courseStore = useCourseStore()
 
@@ -31,8 +46,20 @@ const refForm = ref<VForm>()
 const route = useRoute()
 const settingstore = usesettingstore()
 
+const typeList = ref([])
 
+settingstore.fetchTypes(
+    {
+      page_size: 10000,
+      page: 1,
 
+    },
+  ).then(response => {
+    console.log(response.data)
+    typeList.value = response.data.data
+  }).catch(error => {
+    console.log(error)
+  })
 
 
 settingstore.fetchsettingById(Number(route.params.id)).then(response => {
@@ -110,13 +137,15 @@ const onSubmit = () => {
             <div class="d-flex mb-6  me-2 ">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
-                  <VTextField
-                    v-model="setting.type"
-                    :rules="[requiredValidator]"
-                    label="type "
-
-                    style="width: 20.9rem;"
-                  />
+                  <VSelect
+                  v-model="setting.type"
+                  :items="typeList"
+                  :rules="[requiredValidator]"
+                  item-title="name"
+                  item-value="id"
+                  label="Select Type"
+                  style="width: 20.9rem;"
+                />
                 </span>
               </h6>
             </div>
@@ -189,7 +218,6 @@ const onSubmit = () => {
                     <span>
                       <VTextField
                         v-model="setting.alt"
-                        :rules="[requiredValidator]"
                         label="Image alt text "
 
                         style="width: 20.9rem;"

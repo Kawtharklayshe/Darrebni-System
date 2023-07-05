@@ -1,16 +1,14 @@
 <script lang="ts" setup>
-import { VForm } from 'vuetify/components'
 import Editor from '@tinymce/tinymce-vue'
-import type { quizData } from '@/views/apps/quiz/types'
-import { requiredValidator } from '@validators'
-import { useQuizstore } from '@/views/apps/quiz/useQuizstore'
+import { VForm } from 'vuetify/components'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
-
+import type { quizData } from '@/views/apps/quiz/types'
+import { useQuizstore } from '@/views/apps/quiz/useQuizstore'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 
 const coursestore = useCourseStore()
-
 
 const quiz = ref<quizData>({
   name: '',
@@ -18,9 +16,7 @@ const quiz = ref<quizData>({
 
   start_date: '',
 
-
   duration: null,
-
 
   level_id: null,
   course_id: null,
@@ -43,7 +39,7 @@ const levelList = ref([])
 const photo = ref('@images/avatars/avatar-14.png')
 
 const FetchCourse = () => {
-  coursestore.fetchcourse(
+  coursestore.fetchcourselist(
     {
       page_size: 10000,
       page: 1,
@@ -60,7 +56,7 @@ const FetchCourse = () => {
 const fetchlevel = () => {
   coursestore.fetchlevel(
     {
-    
+
       page_size: 10000,
       page: 1,
 
@@ -78,7 +74,6 @@ watchEffect(() => {
   FetchCourse()
   fetchlevel()
 })
-
 
 const router = useRouter()
 const loading = ref(false)
@@ -179,7 +174,6 @@ const onSubmit = () => {
                   item-value="id"
                   label="Select Course"
                   style="width: 20.9rem;"
-                
                 />
               </h6>
             </div>
@@ -198,7 +192,7 @@ const onSubmit = () => {
               </h6>
             </div>
           </VCardText>
-         
+
           <VDivider />
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <!-- 👉 Left Content -->
@@ -222,7 +216,6 @@ const onSubmit = () => {
                 </span>
               </h6>
             </div>
-           
           </VCardText>
           <VCardText>
             <label> description</label>

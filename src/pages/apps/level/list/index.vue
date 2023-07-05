@@ -126,17 +126,13 @@ const paginationData = computed(() => {
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-          <th scope="col">
-            Icon
-          </th>
+        
 
           <th scope="col">
             Name
           </th>
 
-          <th scope="col">
-            description
-          </th>
+         
 
           <th scope="col">
             ACTIONS

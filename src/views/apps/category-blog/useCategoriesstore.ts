@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import type { categoriesData } from './types'
 import axios from '@axios'
 
-export const useCategoriesstore = defineStore('useCategoriesstore', {
+export const useCategorieBlogsstore = defineStore('useCategorieBlogsstore', {
   actions: {
     // 👉 Fetch all Invoices
     fetchcategories(params: any) {

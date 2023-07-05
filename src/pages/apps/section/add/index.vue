@@ -75,6 +75,20 @@ const uploadNewImage = (i: any) => {
 
 const router = useRouter()
 const loading = ref(false)
+const typeList = ref([])
+
+sectionStore.fetchTypes(
+    {
+      page_size: 10000,
+      page: 1,
+
+    },
+  ).then(response => {
+    console.log(response.data)
+    typeList.value = response.data.data
+  }).catch(error => {
+    console.log(error)
+  })
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -150,13 +164,16 @@ const onSubmit = () => {
             <div class="d-flex mb-6  me-2 ">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
-                  <VTextField
-                    v-model="section.type"
-                    :rules="[requiredValidator]"
-                    label="type "
-
-                    style="width: 20.9rem;"
-                  />
+                 
+                  <VSelect
+                  v-model="section.type"
+                  :items="typeList"
+                  :rules="[requiredValidator]"
+                  item-title="name"
+                  item-value="id"
+                  label="Select Type"
+                  style="width: 20.9rem;"
+                />
                 </span>
               </h6>
             </div>
@@ -229,7 +246,7 @@ const onSubmit = () => {
                     <span>
                       <VTextField
                         v-model="section.alt"
-                        :rules="[requiredValidator]"
+                        
                         label="Image alt text "
 
                         style="width: 20.9rem;"
@@ -244,6 +261,14 @@ const onSubmit = () => {
           <VDivider />
           <VCardText>
             <label> description</label>
+            <span>
+                      <VTextArea
+                        v-model="section.description"
+                        :rules="[requiredValidator]"
+                        label="description "
+
+                      />
+                    </span>
             <Editor
               v-model="section.description"
 

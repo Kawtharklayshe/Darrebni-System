@@ -8,7 +8,9 @@ export const usesettingstore = defineStore('usesettingstore', {
     fetchsetting(params: any) {
       return axios.get('setting/all', { params })
     },
-
+    fetchTypes(params: any) {
+      return axios.get('setting/types', { params })
+    },
     // 👉 Fetch single invoice
     fetchsettingById(id: number) {
       return axios.get(`setting/${id}`)

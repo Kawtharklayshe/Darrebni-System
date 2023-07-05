@@ -4,7 +4,7 @@
 import { VForm } from 'vuetify/components'
 import type { categoriesData } from '@/views/apps/category-ebook/types'
 import { requiredValidator } from '@validators'
-import { useCategoriesstore } from '@/views/apps/category-ebook/useCategoriesstore'
+import { useCategoriesEbookstore } from '@/views/apps/category-ebook/useCategoriesstore'
 import Editor from '@tinymce/tinymce-vue'
 
 // 👉 Default Blank Data
@@ -21,7 +21,7 @@ const categories = ref<categoriesData>({
 const route = useRoute()
 const swal = inject('$swal')
 
-const newsStore = useCategoriesstore()
+const newsStore = useCategoriesEbookstore()
 const isFormValid = ref(false)
 const router = useRouter()
 const refForm = ref<VForm>()

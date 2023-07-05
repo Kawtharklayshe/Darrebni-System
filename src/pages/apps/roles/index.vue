@@ -21,7 +21,7 @@ import UserList from '@/views/apps/roles/UserList.vue'
 
     <VCol cols="12">
       <!-- 👉 User List  -->
-      <UserList />
+      <!-- <UserList /> -->
     </VCol>
   </VRow>
 </template>

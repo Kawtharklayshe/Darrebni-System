@@ -10,7 +10,10 @@ import avatar7 from '@images/avatars/avatar-7.png'
 import avatar8 from '@images/avatars/avatar-8.png'
 import avatar9 from '@images/avatars/avatar-9.png'
 import girlUsingMobile from '@images/pages/girl-using-mobile.png'
+import { useCourseStore } from '@/views/apps/course/useCoursestore'
 
+
+const courseStore = useCourseStore()
 interface Permission {
   name: string
   read: boolean
@@ -21,6 +24,7 @@ interface Permission {
 interface RoleDetails {
   name: string
   permissions: Permission[]
+  description?: string
 }
 
 interface Roles {

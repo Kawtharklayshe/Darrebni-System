@@ -19,7 +19,7 @@ const courseList = ref([])
 const photo = ref('@images/avatars/avatar-14.png')
 
 const FetchCourse = () => {
-  coursestore.fetchcourse(
+  coursestore.fetchcourselist(
     {
       page_size: 10000,
       page: 1,

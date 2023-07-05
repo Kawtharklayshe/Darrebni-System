@@ -3,8 +3,9 @@
 import { VForm } from 'vuetify/components'
 import Editor from '@tinymce/tinymce-vue'
 import type { categoriesData } from '@/views/apps/categories/types'
-import { useCategoriesstore } from '@/views/apps/categories/useCategoriesstore'
+
 import { requiredValidator } from '@validators'
+import { useCategoriesstore } from '@/views/apps/categories/useCategoriesstore'
 
 // 👉 Default Blank Data
 const categories = ref<categoriesData>({
@@ -12,23 +13,39 @@ const categories = ref<categoriesData>({
   name: '',
 
   description: '',
-
+  slug: '',
   icon: '',
+  course_category_id: '',
 
 })
 
 const swal = inject('$swal')
-const categoriesStore = useCategoriesstore()
+
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
+  const categoryList = ref([])
+const categoriesstore = useCategoriesstore()
 
+categoriesstore.fetchcategories(
+    {
+      page_size: 10000,
+      page: 1,
+
+    },
+  ).then(response => {
+    console.log(response.data)
+    categoryList.value = response.data.data
+  }).catch(error => {
+    console.log(error)
+  })
 const loading = ref(false)
 const router = useRouter()
+
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
       loading.value = true
-      categoriesStore.addcategories(categories.value).then(res => {
+      categoriesstore.addcategories(categories.value).then(res => {
         swal({
           title: ' Added ',
           icon: 'success',
@@ -71,8 +88,8 @@ const onSubmit = () => {
     <VRow>
       <!-- 👉 InvoiceEditable -->
       <VCol
-        cols="9"
-        md="9"
+        cols="12"
+        md="12"
       >
         <VCard  title="Add Category">
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
@@ -93,7 +110,19 @@ const onSubmit = () => {
               </h6>
           
             
-            
+             
+              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+                  <VTextField
+                    v-model="categories.slug"
+                    :rules="[requiredValidator]"
+                    label="slug "
+
+                    style="width: 20.9rem;"
+                  />
+                </span>
+              </h6>
+        
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
                   <VTextField
@@ -104,6 +133,19 @@ const onSubmit = () => {
                     style="width: 15.9rem;"
                   />
                 </span>
+              </h6>
+            </div>
+            <div class="d-flex mb-6  me-2">
+              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <VSelect
+                  v-model="categories.course_category_id"
+                  :items="categoryList"
+                  
+                  item-title="name"
+                  item-value="id"
+                  label="Select Category"
+                  style="width: 20.9rem;"
+                />
               </h6>
             </div>
           </VCardText>

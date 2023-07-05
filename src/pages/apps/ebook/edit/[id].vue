@@ -6,7 +6,7 @@ import { VForm } from 'vuetify/components'
 import type { ebookData } from '@/views/apps/ebook/types'
 import { requiredValidator } from '@validators'
 import { useEbookstore } from '@/views/apps/ebook/useEbookstore'
-import { useCategoriesstore } from '@/views/apps/categories/useCategoriesstore'
+import { useCategoriesEbookstore } from '@/views/apps/category-ebook/useCategoriesstore'
 import { useAuthorstore } from '@/views/apps/author/useAuthorstore'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
 import Editor from '@tinymce/tinymce-vue'
@@ -52,7 +52,7 @@ const isFormValid = ref(false)
 
 const refForm = ref<VForm>()
 const route = useRoute()
-const categoriesstore = useCategoriesstore()
+const categoriesstore = useCategoriesEbookstore()
 
 const FetchCategory = () => {
   categoriesstore.fetchcategories(

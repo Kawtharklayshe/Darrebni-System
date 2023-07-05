@@ -91,14 +91,14 @@ const onSubmit = () => {
         cols="12"
         md="12"
       >
-        <VCard title="Add Courses to Tag">
+        <VCard title="Add   Tag  to Courses ">
           <!-- SECTION Header -->
 
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <div class="d-flex mb-6 ">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VSelect
-                  v-model="tagCourse.tagList"
+                  v-model="tagCourse.tag_ids"
                   :items="tagList"
                   :rules="[requiredValidator]"
                   item-title="name"

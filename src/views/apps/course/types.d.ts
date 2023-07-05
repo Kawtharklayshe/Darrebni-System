@@ -14,6 +14,7 @@ export interface courseData {
   objectives:string,
   audience:string,
   status:string,
+  languages:Array,
   first_image_alt:string,
   alt:string,
   version:number|null,
@@ -24,11 +25,15 @@ image: string,
 video:string,
 file: string,
 youtube_url:string,
-seo_title: string,
-seo_description: string,
-seo_author: string,
-seo_keyword: string,
-seo_og_image: string,
+seo:{
+  title: string,
+  author: string,
+  description: string,
+  keyword: string,
+  og_image: string,
+},
+
+
 course_company_id: number|null,
 
 course_category_id: number|null,

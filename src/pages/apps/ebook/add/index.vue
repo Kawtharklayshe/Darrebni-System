@@ -4,14 +4,14 @@ import Editor from '@tinymce/tinymce-vue'
 import type { ebookData } from '@/views/apps/ebook/types'
 import { requiredValidator } from '@validators'
 import { useEbookstore } from '@/views/apps/ebook/useEbookstore'
-import { useCategoriesstore } from '@/views/apps/category-ebook/useCategoriesstore'
+import { useCategoriesEbookstore } from '@/views/apps/category-ebook/useCategoriesstore'
 
 import { useAuthorstore } from '@/views/apps/author/useAuthorstore'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
 
 // 👉 Default Blank Data
 
-const categoriesstore = useCategoriesstore()
+const categoriesstore = useCategoriesEbookstore()
 const courseStore = useCourseStore()
 
 const ebook = ref<ebookData>({

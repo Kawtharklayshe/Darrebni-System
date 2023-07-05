@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCourseStore } from '@/views/apps/course/useCoursestore'
 import { useassignmentstore } from '@/views/apps/assignment/useassignmentstore'
+import { useCourseStore } from '@/views/apps/course/useCoursestore'
 
 // 👉 Store
 const assignmentstore = useassignmentstore()
@@ -19,7 +19,7 @@ const courseList = ref([])
 const photo = ref('@images/avatars/avatar-14.png')
 
 const FetchCourse = () => {
-  coursestore.fetchcourse(
+  coursestore.fetchcourselist(
     {
       page_size: 10000,
       page: 1,
@@ -156,8 +156,6 @@ const paginationData = computed(() => {
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-        
-
           <th scope="col">
             title
           </th>
@@ -175,8 +173,6 @@ const paginationData = computed(() => {
           :key="item.id"
           style="height: 3.75rem;"
         >
-          
-
           <!-- 👉 Trending -->
           <td class="text-c">
             <VChip

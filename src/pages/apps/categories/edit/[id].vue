@@ -1,11 +1,12 @@
 <script lang="ts" setup>
+
 // Type: Invoice data
 
 import { VForm } from 'vuetify/components'
+import Editor from '@tinymce/tinymce-vue'
 import type { categoriesData } from '@/views/apps/categories/types'
 import { requiredValidator } from '@validators'
 import { useCategoriesstore } from '@/views/apps/categories/useCategoriesstore'
-import Editor from '@tinymce/tinymce-vue'
 
 // 👉 Default Blank Data
 const categories = ref<categoriesData>({
@@ -13,8 +14,9 @@ const categories = ref<categoriesData>({
   name: '',
 
   description: '',
-
+  slug: '',
   icon: '',
+  course_category_id: '',
 
 })
 
@@ -25,12 +27,25 @@ const newsStore = useCategoriesstore()
 const isFormValid = ref(false)
 const router = useRouter()
 const refForm = ref<VForm>()
+  const categoryList = ref([])
+
+newsStore.fetchcategories(
+    {
+      page_size: 10000,
+      page: 1,
+
+    },
+  ).then(response => {
+    console.log(response.data)
+    categoryList.value = response.data.data
+  }).catch(error => {
+    console.log(error)
+  })
 
 newsStore.fetchcategoriesById(Number(route.params.id)).then(response => {
   console.log(response.data.data)
   categories.value = response.data.data
 })
-
 
 const loading = ref(false)
 
@@ -77,10 +92,10 @@ const onSubmit = () => {
     <VRow>
       <!-- 👉 InvoiceEditable -->
       <VCol
-        cols="9"
-        md="9"
+        cols="12"
+        md="12"
       >
-        <VCard  title="Update Category">
+        <VCard title="Update Category">
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <!-- 👉 Left Content -->
 
@@ -103,6 +118,18 @@ const onSubmit = () => {
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
                   <VTextField
+                    v-model="categories.slug"
+                    :rules="[requiredValidator]"
+                    label="slug "
+
+                    style="width: 20.9rem;"
+                  />
+                </span>
+              </h6>
+          
+              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+                  <VTextField
                     v-model="categories.icon"
                     
                     label="Icon "
@@ -112,28 +139,41 @@ const onSubmit = () => {
                 </span>
               </h6>
             </div>
+            <div class="d-flex mb-6  me-2">
+              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <VSelect
+                  v-model="categories.course_category_id"
+                  :items="categoryList"
+                 
+                  item-title="name"
+                  item-value="id"
+                  label="Select Category"
+                  style="width: 20.9rem;"
+                />
+              </h6>
+            </div>
           </VCardText>
-          <VCardText >
+          <VCardText>
             <!-- <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
-          <label> description</label>
-          <!-- </h6> -->
-                  <Editor
-                    v-model="categories.description"
-                   
-                    :init="{
-                      toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                      toolbar_sticky: true,
+            <label> description</label>
+            <!-- </h6> -->
+            <Editor
+              v-model="categories.description"
 
-                      autosave_ask_before_unload: true,
-                      autosave_interval: '30s',
-                      autosave_prefix: '{path}{query}-{idd}-',
-                      autosave_restore_when_empty: false,
-                      autosave_retention: '2m',
+              :init="{
+                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                toolbar_sticky: true,
 
-                      plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-                }"
-                  />
-</VCardText>
+                autosave_ask_before_unload: true,
+                autosave_interval: '30s',
+                autosave_prefix: '{path}{query}-{idd}-',
+                autosave_restore_when_empty: false,
+                autosave_retention: '2m',
+
+                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+              }"
+            />
+          </VCardText>
           <VCardText>
             <!-- 👉 Send Invoice -->
             <VBtn

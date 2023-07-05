@@ -4,11 +4,11 @@ import Editor from '@tinymce/tinymce-vue'
 import type { blogData } from '@/views/apps/blog/types'
 import { requiredValidator } from '@validators'
 import { useBlogstore } from '@/views/apps/blog/useBlogstore'
-import { useCategoriesstore } from '@/views/apps/category-blog/useCategoriesstore'
+import { useCategorieBlogsstore } from '@/views/apps/category-blog/useCategoriesstore'
 
 // 👉 Default Blank Data
 
-const categoriesstore = useCategoriesstore()
+const categoriesstore = useCategorieBlogsstore()
 
 const blog = ref<blogData>({
   title: '',
@@ -76,6 +76,23 @@ const uploadNewImage = (i: any) => {
   blogStore.uploadImage(fd).then((response: any) => {
     console.log('res', response?.data.path_file)
     blog.value.image = response?.data.path_file
+  })
+}
+
+const refInputE2 = ref<HTMLElement>()
+
+const uploadFirstImage = (i: any) => {
+  console.log('uploadFirstImage')
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  blogStore.uploadImage(fd).then((response: any) => {
+    console.log('res', response.data.path_file)
+    blog.value.cover = response.data.path_file
   })
 }
 
@@ -183,7 +200,7 @@ const onSubmit = () => {
           </VCardText>
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <VRow>
-              <VCol cols="3">
+              <VCol cols="6">
                 <VCard title=" image ">
                   <VCardText>
                     <!-- 👉 Upload Photo -->
@@ -216,6 +233,67 @@ const onSubmit = () => {
                     @input="uploadNewImage"
                   >
                 </div>
+                <p class="text-body-1 mb-0 mt-5">
+                  <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                  <span>
+                    <VTextField
+                      v-model="blog.alt"
+
+                      label="alt text "
+
+                      style="width: 20.9rem;"
+                    />
+                  </span>
+                  <!-- </h6> -->
+                </p>
+              </VCol>
+              <VCol cols="6">
+                <VCard title="Cover image ">
+                  <VCardText>
+                    <!-- 👉 Upload Photo -->
+                    <VAvatar
+                      rounded
+                      :size="200"
+                      class="me-6"
+                      :image="`https://b2b.prokoders.space/${blog.cover}`"
+                    />
+                  </VCardText>
+                </VCard>
+                <div class="d-flex flex-wrap gap-2 mt-10">
+                  <VBtn
+                    color="primary"
+                    @click="refInputE2?.click()"
+                  >
+                    <VIcon
+                      icon="tabler-cloud-upload"
+                      class="d-sm-none"
+                    />
+                    <span class="d-none d-sm-block">Upload Cover photo</span>
+                  </VBtn>
+
+                  <input
+                    ref="refInputE2"
+                    type="file"
+                    name="file"
+                    accept=".jpeg,.png,.jpg,GIF"
+                    hidden
+                    @input="uploadFirstImage"
+                  >
+                </div>
+
+                <p class="text-body-1 mb-0 mt-5">
+                  <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                  <span>
+                    <VTextField
+                      v-model="blog.alt_cover"
+
+                      label="Cover Image alt text "
+
+                      style="width: 20.9rem;"
+                    />
+                  </span>
+                  <!-- </h6> -->
+                </p>
               </VCol>
             </VRow>
           </VCardText>

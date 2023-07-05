@@ -2,13 +2,13 @@
 
 // Type: Invoice data
 
+import Editor from '@tinymce/tinymce-vue'
 import { VForm } from 'vuetify/components'
 import type { bootcampData } from '@/views/apps/bootcamp/types'
 
 import { usebootcampstore } from '@/views/apps/bootcamp/usebootcampstore'
-import { dateRangeValidator, requiredValidator } from '@validators'
-import Editor from '@tinymce/tinymce-vue'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import { dateRangeValidator, requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const bootcamp = ref<bootcampData>({
@@ -28,8 +28,7 @@ const bootcamp = ref<bootcampData>({
 const swal = inject('$swal')
 
 const refInputEl = ref<HTMLElement>()
-  const bootcampStore = usebootcampstore()
-
+const bootcampStore = usebootcampstore()
 
 const isFormValid = ref(false)
 
@@ -55,7 +54,7 @@ coursestore.fetchcourse(
   },
 ).then(response => {
   console.log(response.data)
-  courseList.value = response.data.data
+  courseList.value = response.data.data.data
 }).catch(error => {
   console.log(error)
 })
@@ -64,7 +63,6 @@ bootcampStore.fetchbootcampById(Number(route.params.id)).then(response => {
   console.log(response.data.data)
   bootcamp.value = response.data.data
 })
-
 
 const loading = ref(false)
 
@@ -103,7 +101,7 @@ const onSubmit = () => {
 </script>
 
 <template>
-   <VForm
+  <VForm
     ref="refForm"
     v-model="isFormValid"
     @submit.prevent="onSubmit"
@@ -146,7 +144,7 @@ const onSubmit = () => {
                 </span>
               </h6>
             </div>
-           
+
             <div class="d-flex mb-6 ">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VSelect
@@ -158,8 +156,7 @@ const onSubmit = () => {
                   label="Select Course"
                   style="width: 20.9rem;"
                   chips
-    multiple
-             
+                  multiple
                 />
               </h6>
             </div>
@@ -268,7 +265,6 @@ const onSubmit = () => {
               </h6>
             </div>
           </VCardText>
-      
 
           <VDivider />
           <VCardText>

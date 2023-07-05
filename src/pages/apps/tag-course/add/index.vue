@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 import { VForm } from 'vuetify/components'
-import type { tagData } from '@/views/apps/tag-course/types'
-import { requiredValidator } from '@validators'
-import { usetagCoursestore } from '@/views/apps/tag-course/usetagstore'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import type { tagData } from '@/views/apps/tag-course/types'
+import { usetagCoursestore } from '@/views/apps/tag-course/usetagstore'
 import { usetagstore } from '@/views/apps/tag/usetagstore'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 
 const coursestore = useCourseStore()
 const lessonstore = usetagstore()
 const tagCoursestore = usetagCoursestore()
-const tag = ref<tagData>({
 
+const tag = ref<tagData>({
 
   tag_id: null,
   course_id: null,
@@ -29,10 +29,8 @@ const courseList = ref([])
 const tagList = ref([])
 const levelList = ref([])
 
-
-
 const FetchCourse = () => {
-  coursestore.fetchcourse(
+  coursestore.fetchcourselist(
     {
       page_size: 10000,
       page: 1,
@@ -44,13 +42,12 @@ const FetchCourse = () => {
   }).catch(error => {
     console.log(error)
   })
-
 }
 
 const fetchTag = () => {
   tagStore.fetchtag(
     {
-    
+
       page_size: 10000,
       page: 1,
 
@@ -68,8 +65,6 @@ watchEffect(() => {
   FetchCourse()
   fetchTag()
 })
-
-
 
 const router = useRouter()
 const loading = ref(false)
@@ -131,8 +126,6 @@ const onSubmit = () => {
           <!-- SECTION Header -->
 
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
-         
-
             <div class="d-flex mb-6  me-2">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VSelect
@@ -143,7 +136,6 @@ const onSubmit = () => {
                   item-value="id"
                   label="Select Course"
                   style="width: 20.9rem;"
-               
                 />
               </h6>
             </div>
@@ -161,7 +153,6 @@ const onSubmit = () => {
                 />
               </h6>
             </div>
-      
           </VCardText>
 
           <VDivider />

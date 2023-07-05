@@ -1,30 +1,19 @@
 <script setup lang="ts">
-import { useInvoiceStore } from '@/views/apps/langs/useInvoiceStore'
+
 
 import { usesocialMediastore } from '@/views/apps/socialMedia/usesocialMediastore'
 
 // 👉 Store
 const socialMediastore = usesocialMediastore()
 const swal = inject('$swal')
-const searchQuery = ref('')
-const languagesName = ref('')
-const languagesIcon = ref('')
-const selectedStatus = ref()
+
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
 const totalsocialMedias = ref(0)
 const socialMedias = ref<any[]>({})
-const selectedRows = ref<string[]>([])
-const langsId = ref<number>(0)
-const selectedLangs = ref(1)
-const invoiceListStore = useInvoiceStore()
-const LanguagesList = ref([])
 
 
-
-const isDialogVisible = ref(false)
-const isDialogVisibleDelete = ref(false)
 
 const FetchData = () => {
   socialMediastore.fetchsocialMedia(
@@ -32,7 +21,7 @@ const FetchData = () => {
       page_size: rowPerPage.value,
       page: currentPage.value,
 
-      language_id: selectedLangs.value,
+  
     },
   ).then(response => {
     console.log(response.data.data)
@@ -60,7 +49,7 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      socialMediastore.DeletesocialMedia(selectedLangs.value, id).then(response => {
+      socialMediastore.DeletesocialMedia( id).then(response => {
         swal({
           title: ' Deleted ',
           icon: 'success',

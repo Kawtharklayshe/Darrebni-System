@@ -2,18 +2,18 @@
 
 // Type: Invoice data
 
-import { VForm } from 'vuetify/components'
-import type { lessonData } from '@/views/apps/lesson/types'
-import { requiredValidator } from '@validators'
-import { useLessonstore } from '@/views/apps/lesson/useLessonstore'
-import { useCourseStore } from '@/views/apps/course/useCoursestore'
 import Editor from '@tinymce/tinymce-vue'
+import { VForm } from 'vuetify/components'
+import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import type { lessonData } from '@/views/apps/lesson/types'
+import { useLessonstore } from '@/views/apps/lesson/useLessonstore'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const lesson = ref<lessonData>({
   name: '',
   description: '',
- 
+
   slug: '',
   summary: '',
 
@@ -22,7 +22,6 @@ const lesson = ref<lessonData>({
   image: 'img/deflate.jpg',
   video: '',
   file: '',
- 
 
   course_id: null,
 })
@@ -32,7 +31,7 @@ const route = useRoute()
 const coursestore = useCourseStore()
 
 const FetchCategory = () => {
-  coursestore.fetchcourse(
+  coursestore.fetchcourselist(
     {
       page_size: 10000,
       page: 1,
@@ -45,8 +44,6 @@ const FetchCategory = () => {
     console.log(error)
   })
 }
-
-
 
 const uploadNewImage = (i: any) => {
   const file = i.target.files[0]
@@ -61,8 +58,6 @@ const uploadNewImage = (i: any) => {
   })
 }
 
-
-
 const uploadVideo = (i: any) => {
   const file = i.target.files[0]
 
@@ -76,10 +71,7 @@ const uploadVideo = (i: any) => {
   })
 }
 
-const uploadFile = (i: any) => 
-{
-
-
+const uploadFile = (i: any) => {
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -114,7 +106,6 @@ lessonStore.fetchlessonById(Number(route.params.id)).then(response => {
 
 watchEffect(() => {
   FetchCategory()
-
 })
 
 const loading = ref(false)
@@ -159,7 +150,7 @@ const onSubmit = () => {
     v-model="isFormValid"
     @submit.prevent="onSubmit"
   >
-  <VRow>
+    <VRow>
       <!-- 👉 InvoiceEditable -->
       <VCol
         cols="12"
@@ -182,7 +173,7 @@ const onSubmit = () => {
                 </span>
               </h6>
             </div>
-          
+
             <div class="d-flex mb-6  me-2 ">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
@@ -196,9 +187,7 @@ const onSubmit = () => {
                 </span>
               </h6>
             </div>
-            
-           
-           
+
             <div class="d-flex mb-6  me-2">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VSelect
@@ -212,11 +201,9 @@ const onSubmit = () => {
                 />
               </h6>
             </div>
-           
 
             <div class="ma-sm-4">
               <VRow>
-              
                 <VCol cols="6">
                   <VCard title=" image ">
                     <VCardText>
@@ -249,7 +236,6 @@ const onSubmit = () => {
                       hidden
                       @input="uploadNewImage"
                     >
-                   
                   </div>
 
                   <p class="text-body-1 mb-0 mt-5">
@@ -257,7 +243,7 @@ const onSubmit = () => {
                     <span>
                       <VTextField
                         v-model="lesson.alt"
-                        :rules="[requiredValidator]"
+                      
                         label=" alt text "
 
                         style="width: 20.9rem;"
@@ -308,64 +294,61 @@ const onSubmit = () => {
             </div>
           </VCardText>
           <VCardText class="d-flex flex-wrap   flex-column flex-sm-row gap-4">
-           
-            
-              <div class="d-flex align-center mb-6">
+            <div class="d-flex align-center mb-6">
               <VTextField
-              @input="uploadFile"
-              label="file"
-              type="file"
+                label="file"
+                type="file"
+                style="width: 20.9rem;"
 
-            
-              style="width: 20.9rem;"
+                @input="uploadFile"
               />
-             
-              <a target="_blank" :href="`https://b2b.prokoders.space/${lesson.file}`">click to show file</a>
-              </div>
-           
+
+              <a
+                target="_blank"
+                :href="`https://b2b.prokoders.space/${lesson.file}`"
+              >click to show file</a>
+            </div>
           </VCardText>
           <VDivider />
-          <VCardText >
+          <VCardText>
             <label> description</label>
             <Editor
-                    v-model="lesson.description"
-                   
-                    :init="{
-                      toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                      toolbar_sticky: true,
+              v-model="lesson.description"
 
-                      autosave_ask_before_unload: true,
-                      autosave_interval: '30s',
-                      autosave_prefix: '{path}{query}-{idd}-',
-                      autosave_restore_when_empty: false,
-                      autosave_retention: '2m',
+              :init="{
+                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                toolbar_sticky: true,
 
-                      plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-                }"
-                  />
+                autosave_ask_before_unload: true,
+                autosave_interval: '30s',
+                autosave_prefix: '{path}{query}-{idd}-',
+                autosave_restore_when_empty: false,
+                autosave_retention: '2m',
+
+                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+              }"
+            />
           </VCardText>
-       
-          <VCardText >
-          
+
+          <VCardText>
             <label> summary</label>
             <Editor
-                    v-model="lesson.summary"
-                   
-                    :init="{
-                      toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                      toolbar_sticky: true,
+              v-model="lesson.summary"
 
-                      autosave_ask_before_unload: true,
-                      autosave_interval: '30s',
-                      autosave_prefix: '{path}{query}-{idd}-',
-                      autosave_restore_when_empty: false,
-                      autosave_retention: '2m',
+              :init="{
+                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                toolbar_sticky: true,
 
-                      plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-                }"
-                  />
+                autosave_ask_before_unload: true,
+                autosave_interval: '30s',
+                autosave_prefix: '{path}{query}-{idd}-',
+                autosave_restore_when_empty: false,
+                autosave_retention: '2m',
+
+                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+              }"
+            />
           </VCardText>
-
 
           <VCardText>
             <!-- 👉 Send Invoice -->

@@ -2,13 +2,13 @@
 
 // Type: Invoice data
 
+import Editor from '@tinymce/tinymce-vue'
 import { VForm } from 'vuetify/components'
 import type { assignmentData } from '@/views/apps/assignment/types'
-import {  dateRangeValidator, requiredValidator } from '@validators'
 import { useassignmentstore } from '@/views/apps/assignment/useassignmentstore'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
-import Editor from '@tinymce/tinymce-vue'
 import { useLessonstore } from '@/views/apps/lesson/useLessonstore'
+import { dateRangeValidator, requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const assignment = ref<assignmentData>({
@@ -31,14 +31,12 @@ const route = useRoute()
 const coursestore = useCourseStore()
 const lessonstore = useLessonstore()
 
-
 const maxDateAllowed = computed(() => {
   return assignment.value.end_date
 })
 
-
 const FetchCourse = () => {
-  coursestore.fetchcourse(
+  coursestore.fetchcourselist(
     {
       page_size: 10000,
       page: 1,
@@ -52,12 +50,7 @@ const FetchCourse = () => {
   })
 }
 
-
-
-const uploadFile = (i: any) => 
-{
-
-
+const uploadFile = (i: any) => {
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -72,7 +65,6 @@ const uploadFile = (i: any) =>
 
 const swal = inject('$swal')
 const assignmentStore = useassignmentstore()
-
 
 const lessonList = ref([])
 
@@ -144,7 +136,7 @@ const onSubmit = () => {
 </script>
 
 <template>
-   <VForm
+  <VForm
     ref="refForm"
     v-model="isFormValid"
     @submit.prevent="onSubmit"
@@ -227,7 +219,10 @@ const onSubmit = () => {
                 @input="uploadFile"
               />
             </div>
-            <a target="_blank" :href="`https://b2b.prokoders.space/${assignment.file}`">click to show file</a>
+            <a
+              target="_blank"
+              :href="`https://b2b.prokoders.space/${assignment.file}`"
+            >click to show file</a>
           </VCardText>
           <VDivider />
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">

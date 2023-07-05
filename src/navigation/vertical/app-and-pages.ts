@@ -17,6 +17,32 @@ export default [
     to: 'apps-calendar',
   },
   {
+    title: 'User',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-user-list' },
+    
+    ],
+  },
+  {
+    title: 'FAQS',
+    icon: { icon: 'tabler-ad-2' },
+    children: [
+      { title: 'List', to: 'apps-faq-list' },
+      { title: 'Add', to: 'apps-faq-add' },
+    ],
+  },
+  {
+    title: 'Service',
+    icon: { icon: 'tabler-lifebuoy' },
+    children: [
+      { title: 'List', to: 'apps-service-list' },
+      { title: 'Add Service', to: 'apps-service-add' },
+    ],
+  },
+  
+  {
     title: 'Course',
     icon: { icon: 'tabler-calendar' },
 
@@ -60,6 +86,15 @@ export default [
           { title: 'Add', to: 'apps-assignment-add' },
         ],
       },
+    ],
+  },
+  {
+    title: 'Trainer',
+    icon: { icon: 'tabler-users' },
+
+    children: [
+      { title: 'List', to: 'apps-trainer-list' },
+      { title: 'Add', to: 'apps-trainer-add' },
     ],
   },
   {
@@ -167,8 +202,8 @@ export default [
         icon: { icon: 'tabler-calendar' },
 
         children: [
-          { title: 'List', to: 'apps-question-list' },
-          { title: 'Add', to: 'apps-question-add' },
+          { title: 'List', to: 'apps-tag-course-list' },
+          { title: 'Add', to: 'apps-tag-course-add' },
         ],
       },
       // {
@@ -250,11 +285,19 @@ export default [
     ],
   },
   {
+    title: 'Languages',
+    icon: { icon: 'tabler-settings' },
+    children: [
+      { title: 'List', to: 'apps-languages-list' },
+      { title: 'Add', to: 'apps-languages-add' },
+    ],
+  },
+  {
     title: 'Roles & Permissions',
     icon: { icon: 'tabler-settings' },
     children: [
       { title: 'Roles', to: 'apps-roles' },
-      { title: 'Permissions', to: 'apps-permissions' },
+      // { title: 'Permissions', to: 'apps-permissions' },
     ],
   },
 

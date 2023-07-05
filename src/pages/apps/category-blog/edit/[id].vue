@@ -6,7 +6,7 @@ import { VForm } from 'vuetify/components'
 import type { categoriesData } from '@/views/apps/category-blog/types'
 import { requiredValidator } from '@validators'
 import TinycmeEditor from '@/@core/components/tinymce.vue'
-import { useCategoriesstore } from '@/views/apps/category-blog/useCategoriesstore'
+import { useCategorieBlogsstore } from '@/views/apps/category-blog/useCategoriesstore'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
 const courseStore = useCourseStore()
 // 👉 Default Blank Data
@@ -22,7 +22,7 @@ const categories = ref<categoriesData>({
 const route = useRoute()
 const swal = inject('$swal')
 
-const newsStore = useCategoriesstore()
+const newsStore = useCategorieBlogsstore()
 const isFormValid = ref(false)
 const router = useRouter()
 const refForm = ref<VForm>()

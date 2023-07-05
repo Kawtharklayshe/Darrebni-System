@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { VForm } from 'vuetify/components'
-import type { questionData } from '@/views/apps/question/types'
-import { requiredValidator } from '@validators'
-import { useQuestionstore } from '@/views/apps/question/useQuestionstore'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
 import { useLessonstore } from '@/views/apps/lesson/useLessonstore'
+import type { questionData } from '@/views/apps/question/types'
+import { useQuestionstore } from '@/views/apps/question/useQuestionstore'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 
@@ -41,7 +41,7 @@ const typeList = ref([
 ])
 
 const FetchCourse = () => {
-  coursestore.fetchcourse(
+  coursestore.fetchcourselist(
     {
       page_size: 10000,
       page: 1,
@@ -171,7 +171,6 @@ const onSubmit = () => {
             />
           </VCardText>
 
-          
           <VCardText>
             <VTextarea
               v-model="question.answers"

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useCategoriesstore } from '@/views/apps/category-ebook/useCategoriesstore'
+import { useCategoriesEbookstore } from '@/views/apps/category-ebook/useCategoriesstore'
 
 // 👉 Store
-const categoriesstore = useCategoriesstore()
+const categoriesstore = useCategoriesEbookstore()
 const swal = inject('$swal')
 
 const rowPerPage = ref(10)

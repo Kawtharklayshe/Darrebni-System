@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { VForm } from 'vuetify/components'
+import { useCourseStore } from '@/views/apps/course/useCoursestore'
 import { usetagCoursestore } from '@/views/apps/tag-course/usetagstore'
 import { requiredValidator } from '@validators'
-import { useCourseStore } from '@/views/apps/course/useCoursestore'
 
 // 👉 Default Blank Data
 
@@ -27,7 +27,7 @@ coursestore.fetchcourse(
   },
 ).then(response => {
   console.log(response.data)
-  courseList.value = response.data.data
+  courseList.value = response.data.data.data
 }).catch(error => {
   console.log(error)
 })
@@ -35,7 +35,7 @@ coursestore.fetchcourse(
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
 
-const router =  useRoute()
+const router = useRoute()
 const loading = ref(false)
 
 const onSubmit = () => {
@@ -110,7 +110,6 @@ const onSubmit = () => {
                 />
               </h6>
             </div>
-          
           </VCardText>
 
           <VCardText>

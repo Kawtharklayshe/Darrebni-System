@@ -6,7 +6,7 @@ import { VForm } from 'vuetify/components'
 import type { infoData } from '@/views/apps/info/types'
 import {emailValidator, requiredValidator } from '@validators'
 import { useinfostore } from '@/views/apps/info/useinfostore'
-
+import Editor from '@tinymce/tinymce-vue'
 
 // 👉 Default Blank Data
 const info = ref<infoData>({
@@ -36,6 +36,22 @@ const refForm = ref<VForm>()
 const route = useRoute()
 
 
+const refInputE2 = ref<HTMLElement>()
+
+const uploadFirstImage = (i: any) => {
+  console.log('uploadFirstImage')
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  infoStore.uploadImage(fd).then((response: any) => {
+    console.log('res', response.data.path_file)
+    info.value.big_logo = response.data.path_file
+  })
+}
 
 
 const uploadNewImage = (i: any) => {
@@ -53,8 +69,8 @@ const uploadNewImage = (i: any) => {
 
 
 infoStore.fetchinfoById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
-  info.value = response.data.data
+  console.log(response.data)
+  info.value = response.data
 })
 
 
@@ -212,7 +228,67 @@ const onSubmit = () => {
                     @input="uploadNewImage"
                   >
                 </div>
-              
+                <p class="text-body-1 mb-0 mt-5">
+                  <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                  <span>
+                    <VTextField
+                      v-model="info.alt"
+
+                      label="alt text "
+
+                      style="width: 20.9rem;"
+                    />
+                  </span>
+                  <!-- </h6> -->
+                </p>
+              </VCol>
+              <VCol cols="6">
+                <VCard title="Cover Big Logo ">
+                  <VCardText>
+                    <!-- 👉 Upload Photo -->
+                    <VAvatar
+                      rounded
+                      :size="200"
+                      class="me-6"
+                      :image="`https://b2b.prokoders.space/${info.big_logo}`"
+                    />
+                  </VCardText>
+                </VCard>
+                <div class="d-flex flex-wrap gap-2 mt-10">
+                  <VBtn
+                    color="primary"
+                    @click="refInputE2?.click()"
+                  >
+                    <VIcon
+                      icon="tabler-cloud-upload"
+                      class="d-sm-none"
+                    />
+                    <span class="d-none d-sm-block">Upload Big Logo</span>
+                  </VBtn>
+
+                  <input
+                    ref="refInputE2"
+                    type="file"
+                    name="file"
+                    accept=".jpeg,.png,.jpg,GIF"
+                    hidden
+                    @input="uploadFirstImage"
+                  >
+                </div>
+
+                <p class="text-body-1 mb-0 mt-5">
+                  <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                  <span>
+                    <VTextField
+                      v-model="info.alt_big_logo"
+
+                      label="Big Logo alt text "
+
+                      style="width: 20.9rem;"
+                    />
+                  </span>
+                  <!-- </h6> -->
+                </p>
               </VCol>
             </VRow>
           </VCardText>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { VForm } from 'vuetify/components/VForm'
+import { useCourseStore } from '@/views/apps/course/useCoursestore'
 
 interface Permission {
   name: string
@@ -10,6 +11,7 @@ interface Permission {
 
 interface Roles {
   name: string
+  description?: string
   permissions: Permission[]
 }
 
@@ -25,72 +27,25 @@ interface Emit {
 const props = withDefaults(defineProps<Props>(), {
   rolePermissions: () => ({
     name: '',
+    description: '',
     permissions: [],
   }),
 })
 
 const emit = defineEmits<Emit>()
+const coursestore = useCourseStore()
 
 // 👉 Permission List
-const permissions = ref<Permission[]>([
-  {
-    name: 'User Management',
-    read: false,
-    write: false,
-    create: false,
-  },
-  {
-    name: 'Content Management',
-    read: false,
-    write: false,
-    create: false,
-  },
-  {
-    name: 'Disputes Management',
-    read: false,
-    write: false,
-    create: false,
-  },
-  {
-    name: 'Database Management',
-    read: false,
-    write: false,
-    create: false,
-  },
-  {
-    name: 'Financial Management',
-    read: false,
-    write: false,
-    create: false,
-  },
-  {
-    name: 'Reporting',
-    read: false,
-    write: false,
-    create: false,
-  },
-  {
-    name: 'API Control',
-    read: false,
-    write: false,
-    create: false,
-  },
-  {
-    name: 'Repository Management',
-    read: false,
-    write: false,
-    create: false,
-  },
-  {
-    name: 'Payroll',
-    read: false,
-    write: false,
-    create: false,
-  },
-])
+const permissions = ref<Permission[]>([])
+
+coursestore.fetchPermission().then(response => {
+  console.log(response.data)
+  permissions.value = response.data
+})
 
 const isSelectAll = ref(false)
 const role = ref('')
+const description = ref('')
 const refPermissionForm = ref<VForm>()
 
 const checkedCount = computed(() => {
@@ -134,6 +89,7 @@ watch(permissions, () => {
 watch(props, () => {
   if (props.rolePermissions && props.rolePermissions.permissions.length) {
     role.value = props.rolePermissions.name
+    description.value = props.rolePermissions.description
     permissions.value = permissions.value.map(permission => {
       const rolePermission = props.rolePermissions?.permissions.find(item => item.name === permission.name)
 
@@ -149,14 +105,41 @@ watch(props, () => {
   }
 })
 
+const swal = inject('$swal')
+
 const onSubmit = () => {
   const rolePermissions = {
     name: role.value,
     permissions: permissions.value,
+    description: description.value,
   }
 
+  console.log(rolePermissions)
   emit('update:rolePermissions', rolePermissions)
   emit('update:isDialogVisible', false)
+  coursestore.addRole(rolePermissions).then(res => {
+    swal({
+      title: ' Added ',
+      icon: 'success',
+      customClass: {
+        confirmButton: 'btn btn-primary',
+      },
+      buttonsStyling: false,
+    })
+  })
+    .catch(error => {
+      loading.value = false
+      swal({
+        title: '',
+        text: `${error.response.data.message}`,
+        icon: 'error',
+        confirmButtonText: 'ok',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+        },
+        buttonsStyling: false,
+      })
+    })
   isSelectAll.value = false
   refPermissionForm.value?.reset()
 }
@@ -195,6 +178,11 @@ const onReset = () => {
           <AppTextField
             v-model="role"
             label="Role Name"
+            placeholder="Enter Role Name"
+          />
+          <AppTextField
+            v-model="description"
+            label="Role Descripation"
             placeholder="Enter Role Name"
           />
 

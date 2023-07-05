@@ -187,17 +187,17 @@ export interface RegisterResponse {
 // SECTION
 // App: User
 export interface UserProperties {
-  id: number
-  fullName: string
-  company: string
-  role: string
-  country: string
-  contact: string
+  id?: number
+  first_name: string
+  
+  last_name: string
+  role?: string
+  password: string
   email: string
-  currentPlan: string
-  status: string
-  billing:string
-  avatar: string
+  phone_number: string
+  image: string
+  type:string
+  alt: string
 }
 // !SECTION
 

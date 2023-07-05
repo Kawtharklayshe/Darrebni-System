@@ -16,10 +16,8 @@ const quizs = ref<any[]>({})
 
 const courseList = ref([])
 
-
-
 const FetchCourse = () => {
-  coursestore.fetchcourse(
+  coursestore.fetchcourselist(
     {
       page_size: 10000,
       page: 1,
@@ -45,7 +43,7 @@ const FetchData = id => {
   isDialogVisible.value = true
   quizstore.fetchquiz(
     {
-      course_id:id,
+      course_id: id,
       page_size: rowPerPage.value,
       page: currentPage.value,
 
@@ -156,8 +154,6 @@ const paginationData = computed(() => {
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-        
-
           <th scope="col">
             Name
           </th>
@@ -175,8 +171,6 @@ const paginationData = computed(() => {
           :key="item.id"
           style="height: 3.75rem;"
         >
-          
-
           <!-- 👉 Trending -->
           <td class="text-c">
             <VChip

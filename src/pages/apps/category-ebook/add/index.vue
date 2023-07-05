@@ -3,7 +3,7 @@
 // Type: categoriesData
 import { VForm } from 'vuetify/components'
 import type { categoriesData } from '@/views/apps/category-ebook/types'
-import { useCategoriesstore } from '@/views/apps/category-ebook/useCategoriesstore'
+import { useCategoriesEbookstore } from '@/views/apps/category-ebook/useCategoriesstore'
 import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
@@ -18,7 +18,7 @@ const categories = ref<categoriesData>({
 })
 
 const swal = inject('$swal')
-const categoriesStore = useCategoriesstore()
+const categoriesStore = useCategoriesEbookstore()
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
 

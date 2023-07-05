@@ -9,8 +9,9 @@ export interface blogData {
   description: string,
   body: string,
   slug: string,
-
-
+  alt_cover?: string,
+  cover?: string,
+  alt?: string,
 image: string,
 
 

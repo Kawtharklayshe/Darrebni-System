@@ -127,11 +127,11 @@ const paginationData = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            slogan
+            Type
           </th>
 
           <th scope="col">
-            name
+            Title
           </th>
 
 
@@ -150,7 +150,7 @@ const paginationData = computed(() => {
         >
           <!-- 👉 Id -->
           <td class="text-">
-            {{ item.slogan }}
+            {{ item.type }}
           </td>
 
           <!-- 👉 Trending -->
@@ -159,7 +159,7 @@ const paginationData = computed(() => {
               color="primary"
               label
             >
-              {{ item.name }}
+              {{ item.title }}
             </VChip>
           </td>
 

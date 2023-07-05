@@ -33,10 +33,10 @@ const FetchData = () => {
     },
   ).then(response => {
     console.log(response.data)
-    courses.value = response.data.data
+    courses.value = response.data.data.data
     isDialogVisible.value = false
-    totalPage.value = response.data.last_page
-    totalcourses.value = response.data.total
+    totalPage.value = response.data.data.last_page
+    totalcourses.value = response.data.data.total
   }).catch(error => {
     console.log(error)
   })
@@ -194,6 +194,20 @@ const paginationData = computed(() => {
                 size="22"
                 icon="tabler-link"
               />
+           
+            </VBtn>
+            <VBtn
+              icon
+              size="x-small"
+              color="info"
+              variant="text"
+              :to="{ name: 'apps-course-trainerCourse-id', params: { id: item.id } }"
+            >
+              <VIcon
+                size="22"
+                icon="tabler-users"
+              />
+              
             </VBtn>
             <VBtn
               icon

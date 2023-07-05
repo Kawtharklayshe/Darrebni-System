@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { VForm } from 'vuetify/components'
 import Editor from '@tinymce/tinymce-vue'
+import { VForm } from 'vuetify/components'
 import type { bootcampData } from '@/views/apps/bootcamp/types'
 import { usebootcampstore } from '@/views/apps/bootcamp/usebootcampstore'
-import { dateRangeValidator, requiredValidator } from '@validators'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import { dateRangeValidator, requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 
@@ -44,7 +44,7 @@ coursestore.fetchcourse(
   },
 ).then(response => {
   console.log(response.data)
-  courseList.value = response.data.data
+  courseList.value = response.data.data.data
 }).catch(error => {
   console.log(error)
 })
@@ -147,7 +147,7 @@ const onSubmit = () => {
                 </span>
               </h6>
             </div>
-           
+
             <div class="d-flex mb-6 ">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VSelect
@@ -159,8 +159,7 @@ const onSubmit = () => {
                   label="Select Course"
                   style="width: 20.9rem;"
                   chips
-    multiple
-             
+                  multiple
                 />
               </h6>
             </div>
@@ -269,7 +268,6 @@ const onSubmit = () => {
               </h6>
             </div>
           </VCardText>
-      
 
           <VDivider />
           <VCardText>

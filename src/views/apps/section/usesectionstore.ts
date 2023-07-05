@@ -8,7 +8,9 @@ export const usesectionstore = defineStore('usesectionstore', {
     fetchsection(params: any) {
       return axios.get('section/all', { params })
     },
-
+    fetchTypes(params: any) {
+      return axios.get('section/types', { params })
+    },
     // 👉 Fetch single invoice
     fetchsectionById(id: number) {
       return axios.get(`section/${id}`)

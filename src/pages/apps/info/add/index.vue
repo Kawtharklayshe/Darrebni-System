@@ -166,7 +166,7 @@ const onSubmit = () => {
 
                   <VTextField
                     v-model="section.btn"
-                    :rules="[requiredValidator]"
+                   
                     label="btn "
 
                     style="width: 20.9rem;"
@@ -179,7 +179,7 @@ const onSubmit = () => {
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VTextField
                     v-model="section.btn_url"
-                    :rules="[requiredValidator]"
+                  
                     label="Btn Url "
 
                     style="width: 20.9rem;"
@@ -229,7 +229,7 @@ const onSubmit = () => {
                     <span>
                       <VTextField
                         v-model="section.alt"
-                        :rules="[requiredValidator]"
+                       
                         label="Image alt text "
 
                         style="width: 20.9rem;"

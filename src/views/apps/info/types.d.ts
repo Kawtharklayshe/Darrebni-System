@@ -8,7 +8,9 @@ export interface infoData {
   email: string;
 
   address: string;
-
+  alt_big_logo?: string,
+  big_logo?: string,
+  alt?: string,
   logo: string;
 
 }

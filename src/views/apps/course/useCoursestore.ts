@@ -8,8 +8,14 @@ export const useCourseStore = defineStore('useCourseStore', {
     fetchcourse(params: any) {
       return axios.get('course/all', { params })
     },
+    fetchcourselist(params: any) {
+      return axios.get('course/name', { params })
+    },
     fetchlevel(params: any) {
       return axios.get('level/all', { params })
+    },
+    fetchPermission() {
+      return axios.get('authorize/all-permission')
     },
     // 👉 Fetch single invoice
     fetchcourseById(id: number) {
@@ -23,7 +29,14 @@ export const useCourseStore = defineStore('useCourseStore', {
           .catch(error => reject(error))
       })
     },
+    addRole(data: any) {
+      return new Promise((resolve, reject) => {
+        axios.post('authorize/crate-role', data).then(response =>
 
+          resolve(response))
+          .catch(error => reject(error))
+      })
+    },
     uploadImage( payload) {
       return new Promise((resolve, reject) => {
         axios

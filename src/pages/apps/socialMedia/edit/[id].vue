@@ -6,7 +6,6 @@ import { VForm } from 'vuetify/components'
 import type { newsData } from '@/views/apps/socialMedia/types'
 import { requiredValidator } from '@validators'
 import { usesocialMediastore } from '@/views/apps/socialMedia/usesocialMediastore'
-import { useInvoiceStore } from '@/views/apps/langs/useInvoiceStore'
 
 // 👉 Default Blank Data
 const socialMedia = ref<socialMediaData>({
@@ -21,14 +20,12 @@ const socialMedia = ref<socialMediaData>({
 
 const route = useRoute()
 const swal = inject('$swal')
-const invoiceListStore = useInvoiceStore()
+
 const newsStore = usesocialMediastore()
 const isFormValid = ref(false)
 const refInputEl = ref<HTMLElement>()
 const refForm = ref<VForm>()
-const language_id = Number(route.params.id)
-const LanguagesList = ref([])
-const photo = ref('@/assets/images/avatars/avatar-3.png')
+
 
 const SocialList = ref([
   'FaceBook', 'Twitter', 'Instagram', 'WhatsApp', 'LinkedIn',

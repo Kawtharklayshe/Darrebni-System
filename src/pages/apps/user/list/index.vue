@@ -1,59 +1,91 @@
 <script setup lang="ts">
-import { VDataTableServer } from 'vuetify/labs/VDataTable'
-import type { UserProperties } from '@/@fake-db/types'
-import { paginationMeta } from '@/@fake-db/utils'
+
 import AddNewUserDrawer from '@/views/apps/user/list/AddNewUserDrawer.vue'
 import { useUserListStore } from '@/views/apps/user/useUserListStore'
-import type { Options } from '@core/types'
 import { avatarText } from '@core/utils/formatters'
+
 
 // 👉 Store
 const userListStore = useUserListStore()
 const searchQuery = ref('')
-const selectedRole = ref()
-const selectedPlan = ref()
-const selectedStatus = ref()
+
+const rowPerPage = ref(10)
+const currentPage = ref(1)
 const totalPage = ref(1)
+const YesDelete = ref(false)
 const totalUsers = ref(0)
-const users = ref<UserProperties[]>([])
-
-const options = ref<Options>({
-  page: 1,
-  itemsPerPage: 10,
-  sortBy: [],
-  groupBy: [],
-  search: undefined,
-})
-
-// Headers
-const headers = [
-  { title: 'User', key: 'user' },
-  { title: 'Role', key: 'role' },
-  { title: 'Plan', key: 'plan' },
-  { title: 'Billing', key: 'billing' },
-  { title: 'Status', key: 'status' },
-  { title: 'Actions', key: 'actions', sortable: false },
-]
-
+const users = ref([])
+const isDialogVisible = ref(false)
+const swal = inject('$swal')
 // 👉 Fetching users
+
 const fetchUsers = () => {
   userListStore.fetchUsers({
-    q: searchQuery.value,
-    status: selectedStatus.value,
-    plan: selectedPlan.value,
-    role: selectedRole.value,
-    options: options.value,
+    search_text: searchQuery.value,
+    page_size: rowPerPage.value,
+      page: currentPage.value,
+
+    currentPage: currentPage.value,
   }).then(response => {
-    users.value = response.data.users
-    totalPage.value = response.data.totalPage
-    totalUsers.value = response.data.totalUsers
-    options.value.page = response.data.page
+    users.value = response.data.data
+    // totalPage.value = response.data.totalPage
+    totalUsers.value = response.data.total
   }).catch(error => {
     console.error(error)
   })
 }
 
 watchEffect(fetchUsers)
+
+const deleteUser = (id: number) => {
+  swal({
+    icon: 'warning',
+    title: 'Are You Sure?',
+    confirmButtonText: 'YES',
+    cancelButtonText: 'Cancel',
+    customClass: {
+      confirmButton: 'btn btn-primary',
+    },
+  }).then(result => {
+    if (result.value) {
+      userListStore.DeleteUser(id).then(response => {
+    swal({
+      title: ' Deleted ',
+      icon: 'success',
+      customClass: {
+        confirmButton: 'btn btn-primary',
+      },
+      buttonsStyling: false,
+    })
+    FetchData()
+  })
+    .catch(error => {
+      swal({
+        title: '',
+        text: `${error.response.data.message}`,
+        icon: 'error',
+        confirmButtonText: 'ok',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+        },
+        buttonsStyling: false,
+      })
+    })
+}
+    }
+  )
+}
+
+
+const confirmDelete = () => {
+  YesDelete.value = true
+}
+
+// 👉 watching current page
+watchEffect(() => {
+  if (currentPage.value > totalPage.value)
+    currentPage.value = totalPage.value
+})
 
 // 👉 search filters
 const roles = [
@@ -78,29 +110,26 @@ const status = [
 ]
 
 const resolveUserRoleVariant = (role: string) => {
-  const roleLowerCase = role.toLowerCase()
-
-  if (roleLowerCase === 'subscriber')
-    return { color: 'warning', icon: 'tabler-circle-check' }
-  if (roleLowerCase === 'author')
-    return { color: 'success', icon: 'tabler-user' }
-  if (roleLowerCase === 'maintainer')
+  if (role === 'subscriber')
+    return { color: 'warning', icon: 'tabler-user' }
+  if (role === 'author')
+    return { color: 'success', icon: 'tabler-circle-check' }
+  if (role === 'maintainer')
     return { color: 'primary', icon: 'tabler-chart-pie-2' }
-  if (roleLowerCase === 'editor')
-    return { color: 'info', icon: 'tabler-edit' }
-  if (roleLowerCase === 'admin')
+  if (role === 'editor')
+    return { color: 'info', icon: 'tabler-pencil' }
+  if (role === 'admin')
     return { color: 'secondary', icon: 'tabler-device-laptop' }
 
   return { color: 'primary', icon: 'tabler-user' }
 }
 
 const resolveUserStatusVariant = (stat: string) => {
-  const statLowerCase = stat.toLowerCase()
-  if (statLowerCase === 'pending')
+  if (stat === 'pending')
     return 'warning'
-  if (statLowerCase === 'active')
+  if (stat === 'active')
     return 'success'
-  if (statLowerCase === 'inactive')
+  if (stat === 'inactive')
     return 'secondary'
 
   return 'primary'
@@ -108,12 +137,31 @@ const resolveUserStatusVariant = (stat: string) => {
 
 const isAddNewUserDrawerVisible = ref(false)
 
-// 👉 Add new user
-const addNewUser = (userData: UserProperties) => {
-  userListStore.addUser(userData)
+// 👉 watching current page
+watchEffect(() => {
+  if (currentPage.value > totalPage.value)
+    currentPage.value = totalPage.value
+})
 
+// 👉 Computing pagination data
+const paginationData = computed(() => {
+  const firstIndex = users.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
+  const lastIndex = users.value.length + ((currentPage.value - 1) * rowPerPage.value)
+
+  return `Showing ${firstIndex} to ${lastIndex} of ${totalUsers.value} entries`
+})
+
+const getConfirm = (id: number) => {
+  console.log('getConfirm')
+  userListStore.DeleteUser(id)
+}
+
+// 👉 Add new user
+const addNewUser = (userData: any) => {
+  userListStore.addUser(userData).then(() => {
   // refetch User
-  fetchUsers()
+    fetchUsers()
+  })
 }
 
 // 👉 List
@@ -151,133 +199,28 @@ const userListMeta = [
     subtitle: 'Last week analytics',
   },
 ]
-
-// 👉 Delete user
-const deleteUser = (id: number) => {
-  userListStore.deleteUser(id)
-
-  // refetch User
-  fetchUsers()
-}
 </script>
 
 <template>
   <section>
     <VRow>
-      <VCol
-        v-for="meta in userListMeta"
-        :key="meta.title"
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <VCard>
-          <VCardText class="d-flex justify-space-between">
-            <div>
-              <span>{{ meta.title }}</span>
-              <div class="d-flex align-center gap-2 my-1">
-                <h6 class="text-h4">
-                  {{ meta.stats }}
-                </h6>
-                <span :class="meta.percentage > 0 ? 'text-success' : 'text-error'">( {{ meta.percentage > 0 ? '+' : '' }} {{ meta.percentage }}%)</span>
-              </div>
-              <span>{{ meta.subtitle }}</span>
-            </div>
-
-            <VAvatar
-              rounded
-              variant="tonal"
-              :color="meta.color"
-              :icon="meta.icon"
-            />
-          </VCardText>
-        </VCard>
-      </VCol>
+   
+   
 
       <VCol cols="12">
-        <VCard title="Search Filter">
-          <!-- 👉 Filters -->
-          <VCardText>
-            <VRow>
-              <!-- 👉 Select Role -->
-              <VCol
-                cols="12"
-                sm="4"
-              >
-                <AppSelect
-                  v-model="selectedRole"
-                  label="Select Role"
-                  :items="roles"
-                  clearable
-                  clear-icon="tabler-x"
-                />
-              </VCol>
-              <!-- 👉 Select Plan -->
-              <VCol
-                cols="12"
-                sm="4"
-              >
-                <AppSelect
-                  v-model="selectedPlan"
-                  label="Select Plan"
-                  :items="plans"
-                  clearable
-                  clear-icon="tabler-x"
-                />
-              </VCol>
-              <!-- 👉 Select Status -->
-              <VCol
-                cols="12"
-                sm="4"
-              >
-                <AppSelect
-                  v-model="selectedStatus"
-                  label="Select Status"
-                  :items="status"
-                  clearable
-                  clear-icon="tabler-x"
-                />
-              </VCol>
-            </VRow>
-          </VCardText>
-
-          <VDivider />
+        <VCard >
+        
 
           <VCardText class="d-flex flex-wrap py-4 gap-4">
-            <div class="me-3 d-flex gap-3">
-              <AppSelect
-                :model-value="options.itemsPerPage"
-                :items="[
-                  { value: 10, title: '10' },
-                  { value: 25, title: '25' },
-                  { value: 50, title: '50' },
-                  { value: 100, title: '100' },
-                  { value: -1, title: 'All' },
-                ]"
-                style="width: 6.25rem;"
-                @update:model-value="options.itemsPerPage = parseInt($event, 10)"
-              />
-            </div>
-            <VSpacer />
+          
 
-            <div class="app-user-search-filter d-flex align-center flex-wrap gap-4">
-              <!-- 👉 Search  -->
-              <div style="inline-size: 10rem;">
-                <AppTextField
-                  v-model="searchQuery"
-                  placeholder="Search"
-                  density="compact"
-                />
-              </div>
+            <VSpacer />
+            <VSpacer />
+            <div class="d-flex align-end flex-wrap gap-4">
+           
 
               <!-- 👉 Export button -->
-              <VBtn
-                variant="tonal"
-                color="secondary"
-                prepend-icon="tabler-screen-share"
-              >
-                Export
-              </VBtn>
+            
 
               <!-- 👉 Add user button -->
               <VBtn
@@ -291,178 +234,141 @@ const deleteUser = (id: number) => {
 
           <VDivider />
 
-          <!-- SECTION datatable -->
-          <VDataTableServer
-            v-model:items-per-page="options.itemsPerPage"
-            v-model:page="options.page"
-            :items="users"
-            :items-length="totalUsers"
-            :headers="headers"
-            class="text-no-wrap"
-            @update:options="options = $event"
-          >
-            <!-- User -->
-            <template #item.user="{ item }">
-              <div class="d-flex align-center">
-                <VAvatar
-                  size="34"
-                  :variant="!item.raw.avatar ? 'tonal' : undefined"
-                  :color="!item.raw.avatar ? resolveUserRoleVariant(item.raw.role).color : undefined"
-                  class="me-3"
-                >
-                  <VImg
-                    v-if="item.raw.avatar"
-                    :src="item.raw.avatar"
-                  />
-                  <span v-else>{{ avatarText(item.raw.fullName) }}</span>
-                </VAvatar>
+          <VTable class="text-no-wrap">
+            <!-- 👉 table head -->
+            <thead>
+              <tr>
+               
+                <th scope="col">
+                 FIRST NAME
+                </th>
+                <th scope="col">
+                  EMAIL
+                </th>
 
-                <div class="d-flex flex-column">
-                  <h6 class="text-base">
-                    <RouterLink
-                      :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }"
-                      class="font-weight-medium user-list-name"
-                    >
-                      {{ item.raw.fullName }}
-                    </RouterLink>
-                  </h6>
-
-                  <span class="text-sm text-medium-emphasis">@{{ item.raw.email }}</span>
-                </div>
-              </div>
-            </template>
-
-            <!-- 👉 Role -->
-            <template #item.role="{ item }">
-              <div class="d-flex align-center gap-4">
-                <VAvatar
-                  :size="30"
-                  :color="resolveUserRoleVariant(item.raw.role).color"
-                  variant="tonal"
-                >
-                  <VIcon
-                    :size="20"
-                    :icon="resolveUserRoleVariant(item.raw.role).icon"
-                  />
-                </VAvatar>
-                <span class="text-capitalize">{{ item.raw.role }}</span>
-              </div>
-            </template>
-
-            <!-- Plan -->
-            <template #item.plan="{ item }">
-              <span class="text-capitalize font-weight-medium">{{ item.raw.currentPlan }}</span>
-            </template>
-
-            <!-- Status -->
-            <template #item.status="{ item }">
-              <VChip
-                :color="resolveUserStatusVariant(item.raw.status)"
-                size="small"
-                label
-                class="text-capitalize"
+                <th scope="col">
+                  ACTIONS
+                </th>
+              </tr>
+            </thead>
+            <!-- 👉 table body -->
+            <tbody>
+              <tr
+                v-for="user in users"
+                :key="user.id"
+                style="height: 3.75rem;"
               >
-                {{ item.raw.status }}
-              </VChip>
-            </template>
+                <!-- 👉 User -->
+                <td>
+                  <div class="d-flex align-center">
+                    <VAvatar
+                      variant="tonal"
+                      :color="resolveUserRoleVariant(user.role).color"
+                      class="me-3"
+                      size="38"
+                    >
+                     
+                    
+                      <span>{{ avatarText(user.first_name) }}</span>
+                    </VAvatar>
 
-            <!-- Actions -->
-            <template #item.actions="{ item }">
-              <IconBtn @click="deleteUser(item.raw.id)">
-                <VIcon icon="tabler-trash" />
-              </IconBtn>
+                    
+                    </div>
+                
+                </td>
+                <!-- <td>
+                  <div class="d-flex flex-column">
+                      <h6 class="text-base">
+                        <RouterLink
+                          :to="{ name: 'apps-user-view-id', params: { id: user.id } }"
+                          class="font-weight-medium user-list-name"
+                        >
+                          {{ user.name }}
+                        </RouterLink>
+                      </h6>
+                      </div>
+                      
+                </td> -->
+                <!-- 👉 Role -->
 
-              <IconBtn>
-                <VIcon icon="tabler-edit" />
-              </IconBtn>
+                <!-- 👉 Plan -->
+                <td>
+                  <span class="text-sm text-disabled">{{ user.email }}</span>
+                </td>
 
-              <VBtn
-                icon
-                variant="text"
-                size="small"
-                color="medium-emphasis"
-              >
-                <VIcon
-                  size="24"
-                  icon="tabler-dots-vertical"
-                />
 
-                <VMenu activator="parent">
-                  <VList>
-                    <VListItem :to="{ name: 'apps-user-view-id', params: { id: item.raw.id } }">
-                      <template #prepend>
-                        <VIcon icon="tabler-eye" />
-                      </template>
-
-                      <VListItemTitle>View</VListItemTitle>
-                    </VListItem>
-
-                    <VListItem link>
-                      <template #prepend>
-                        <VIcon icon="tabler-pencil" />
-                      </template>
-                      <VListItemTitle>Edit</VListItemTitle>
-                    </VListItem>
-
-                    <VListItem @click="deleteUser(item.raw.id)">
-                      <template #prepend>
-                        <VIcon icon="tabler-trash" />
-                      </template>
-                      <VListItemTitle>Delete</VListItemTitle>
-                    </VListItem>
-                  </VList>
-                </VMenu>
-              </VBtn>
-            </template>
-
-            <!-- pagination -->
-            <template #bottom>
-              <VDivider />
-              <div class="d-flex align-center justify-sm-space-between justify-center flex-wrap gap-3 pa-5 pt-3">
-                <p class="text-sm text-disabled mb-0">
-                  {{ paginationMeta(options, totalUsers) }}
-                </p>
-
-                <VPagination
-                  v-model="options.page"
-                  :length="Math.ceil(totalUsers / options.itemsPerPage)"
-                  :total-visible="$vuetify.display.xs ? 1 : Math.ceil(totalUsers / options.itemsPerPage)"
+                <!-- 👉 Actions -->
+                <td
+                  class="text-center"
+                  style="width: 5rem;"
                 >
-                  <template #prev="slotProps">
-                    <VBtn
-                      variant="tonal"
-                      color="default"
-                      v-bind="slotProps"
-                      :icon="false"
-                    >
-                      Previous
-                    </VBtn>
-                  </template>
+                  <VBtn
+                    icon
+                    size="x-small"
+                    color="info"
+                    variant="text"
+                    :to="{ name: 'apps-user-edit-id', params: { id: user.id } }"
+                  >
+                    <VIcon
+                      size="22"
+                      icon="tabler-edit"
+                    />
+                  </VBtn>
 
-                  <template #next="slotProps">
-                    <VBtn
-                      variant="tonal"
-                      color="default"
-                      v-bind="slotProps"
-                      :icon="false"
-                    >
-                      Next
-                    </VBtn>
-                  </template>
-                </VPagination>
-              </div>
-            </template>
-          </VDataTableServer>
-          <!-- SECTION -->
+                  <VBtn
+                    icon
+                    size="x-small"
+                    color="error"
+                    variant="text"
+                    @click="deleteUser(user.id)"
+                  >
+                    <VIcon
+                      size="22"
+                      icon="tabler-trash"
+                    />
+                  </VBtn>
+
+               
+                </td>
+              </tr>
+            </tbody>
+
+            <!-- 👉 table footer  -->
+            <tfoot v-show="!users.length">
+              <tr>
+                <td
+                  colspan="7"
+                  class="text-center"
+                >
+                  No data available
+                </td>
+              </tr>
+            </tfoot>
+          </VTable>
+
+          <VDivider />
+
+          <VCardText class="d-flex align-center flex-wrap justify-space-between gap-4 py-3 px-5">
+            <span class="text-sm text-disabled">
+              {{ paginationData }}
+            </span>
+
+            <VPagination
+              v-model="currentPage"
+              size="small"
+              :total-visible="5"
+              :length="totalPage"
+            />
+          </VCardText>
         </VCard>
+      </VCol>
+    </VRow>
 
-        <!-- 👉 Add New User -->
-        <AddNewUserDrawer
-          v-model:isDrawerOpen="isAddNewUserDrawerVisible"
-          @user-data="addNewUser"
-        />
-      </vcol>
-    </vrow>
+    <!-- 👉 Add New User -->
+    <AddNewUserDrawer
+      v-model:isDrawerOpen="isAddNewUserDrawerVisible"
+      @user-data="addNewUser"
+    />
   </section>
 </template>
 
@@ -476,6 +382,6 @@ const deleteUser = (id: number) => {
 }
 
 .user-list-name:not(:hover) {
-  color: rgba(var(--v-theme-on-background), var(--v-medium-emphasis-opacity));
+  color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
 }
 </style>

@@ -1,11 +1,16 @@
 <script lang="ts" setup>
+import Editor from '@tinymce/tinymce-vue'
 import { VForm } from 'vuetify/components'
-import type { courseData } from '@/views/apps/course/types'
-import { requiredValidator } from '@validators'
-import { useCourseStore } from '@/views/apps/course/useCoursestore'
+
+import { SmartTagz } from 'smart-tagz'
+import 'smart-tagz/dist/smart-tagz.css'
 import { useCategoriesstore } from '@/views/apps/categories/useCategoriesstore'
 import { useCompanystore } from '@/views/apps/company/useCompanystore'
-import Editor from '@tinymce/tinymce-vue'
+import type { courseData } from '@/views/apps/course/types'
+import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import { uselanguagesstore } from '@/views/apps/languages/uselanguagesstore'
+import { requiredValidator } from '@validators'
+
 // 👉 Default Blank Data
 
 const categoriesstore = useCategoriesstore()
@@ -22,8 +27,8 @@ const course = ref<courseData>({
   summary: '',
   first_image_alt: '',
   alt: '',
-  status: '',
-  version: null,
+  status: 'publish',
+  version: 1,
   level_id: null,
   number_hour: null,
   first_image: 'img/deflate.jpg',
@@ -31,15 +36,50 @@ const course = ref<courseData>({
   video: '',
   file: '',
   youtube_url: '',
-  seo_title: '',
-  seo_description: '',
-  seo_author: '',
-  seo_keyword: '',
-  seo_og_image: 'img/deflate.jpg',
+  languages: [],
   course_company_id: null,
+  seo: {
+    title: '',
+    author: '',
+    description: '',
+    keyword: '',
+    og_image: 'img/deflate.jpg',
+  },
 
   course_category_id: null,
 
+})
+const LangsList = ref([])
+
+const languagestore = uselanguagesstore()
+
+languagestore.fetchlanguage(
+  {
+    page_size: 10000,
+    page: 1,
+  },
+).then(response => {
+  LangsList.value = response.data.data
+}).catch(error => {
+  console.log(error)
+})
+const tags = ref([])
+
+const handleTagsUpdated = e => {
+  console.log('e')
+
+  // 'tags' parameter contains the selected tags data
+  console.log(e)
+
+  // You can store the tags in a component data property or perform any other logic with the tags
+}
+
+watch(() => course.value.name, newValue => {
+  course.value.slug = newValue.toLowerCase().replace(/\s+/g, '-')
+})
+watch(() => course.value.name, newValue => {
+  course.value.first_image_alt = newValue
+  course.value.alt = newValue
 })
 
 const swal = inject('$swal')
@@ -148,7 +188,7 @@ const uploadSeoImage = (i: any) => {
   fd.append('folder', 'course')
   courseStore.uploadImage(fd).then((response: any) => {
     console.log('res', response?.data.path_file)
-    course.value.seo_og_image = response?.data.path_file
+    course.value.seo.og_image = response?.data.path_file
   })
 }
 
@@ -173,15 +213,16 @@ const uploadFile = (i: any) => {
   fd.append('file', file)
   fd.append('folder', 'course')
   courseStore.uploadFile(fd).then((response: any) => {
-    
     course.value.file = response?.data
   })
 }
 
 const router = useRouter()
 const loading = ref(false)
+const smarttag = ref(null)
 
 const onSubmit = () => {
+ 
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
       console.log('course', course)
@@ -257,7 +298,7 @@ const onSubmit = () => {
                 <span>
                   <VTextField
                     v-model="course.price"
-                  
+
                     label="price "
                     type="number"
 
@@ -290,6 +331,22 @@ const onSubmit = () => {
                     item-title="name"
                     item-value="id"
                     label="Select Status"
+                    style="width: 20.9rem;"
+                  />
+                </span>
+              </h6>
+            </div>
+            <div class="d-flex mb-6">
+              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+
+                  <VSelect
+                    v-model="course.languages"
+                    :items="LangsList"
+                  
+                    item-title="name"
+                    item-value="id"
+                    label="Select Lnaguages"
                     style="width: 20.9rem;"
                   />
                 </span>
@@ -328,7 +385,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="course.course_company_id"
                   :items="courseList"
-                  :rules="[requiredValidator]"
+                  
                   label="Select Company"
                   item-title="name"
                   item-value="id"
@@ -404,7 +461,7 @@ const onSubmit = () => {
                     <span>
                       <VTextField
                         v-model="course.first_image_alt"
-                        :rules="[requiredValidator]"
+                     
                         label="First Image alt text "
 
                         style="width: 20.9rem;"
@@ -452,7 +509,7 @@ const onSubmit = () => {
                     <span>
                       <VTextField
                         v-model="course.alt"
-                        :rules="[requiredValidator]"
+                      
                         label="alt text "
 
                         style="width: 20.9rem;"
@@ -508,129 +565,123 @@ const onSubmit = () => {
                 v-model="course.youtube_url"
                 label="youtube_url"
 
-              
                 style="width: 20.9rem;"
               />
             </div>
             <div class="d-flex align-center mb-6">
               <VTextField
-             @input="uploadFile"
-              label="file"
-              type="file"
+                label="file"
+                type="file"
+                style="width: 20.9rem;"
 
-              
-              style="width: 20.9rem;"
+                @input="uploadFile"
               />
-              </div>
+            </div>
           </VCardText>
           <VDivider />
-          <VCardText >
+          <VCardText>
             <label> description</label>
-                  <Editor
-                    v-model="course.description"
-                   
-                    :init="{
-                      toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                      toolbar_sticky: true,
+            <Editor
+              v-model="course.description"
 
-                      autosave_ask_before_unload: true,
-                      autosave_interval: '30s',
-                      autosave_prefix: '{path}{query}-{idd}-',
-                      autosave_restore_when_empty: false,
-                      autosave_retention: '2m',
+              :init="{
+                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                toolbar_sticky: true,
 
-                      plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-                }"
-                  />
+                autosave_ask_before_unload: true,
+                autosave_interval: '30s',
+                autosave_prefix: '{path}{query}-{idd}-',
+                autosave_restore_when_empty: false,
+                autosave_retention: '2m',
+
+                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+              }"
+            />
           </VCardText>
-          <VCardText >
-            
+          <VCardText>
             <label> prerequisites</label>
-                  <Editor
-                    v-model="course.prerequisites"
-                   
-                    :init="{
-                      toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                      toolbar_sticky: true,
+            <Editor
+              v-model="course.prerequisites"
 
-                      autosave_ask_before_unload: true,
-                      autosave_interval: '30s',
-                      autosave_prefix: '{path}{query}-{idd}-',
-                      autosave_restore_when_empty: false,
-                      autosave_retention: '2m',
+              :init="{
+                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                toolbar_sticky: true,
 
-                      plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-                }"
-                  />
+                autosave_ask_before_unload: true,
+                autosave_interval: '30s',
+                autosave_prefix: '{path}{query}-{idd}-',
+                autosave_restore_when_empty: false,
+                autosave_retention: '2m',
+
+                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+              }"
+            />
           </VCardText>
-          <VCardText >
-           
+          <VCardText>
             <label> summary</label>
-                  <Editor
-                    v-model="course.summary"
-                   
-                    :init="{
-                      toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                      toolbar_sticky: true,
+            <Editor
+              v-model="course.summary"
 
-                      autosave_ask_before_unload: true,
-                      autosave_interval: '30s',
-                      autosave_prefix: '{path}{query}-{idd}-',
-                      autosave_restore_when_empty: false,
-                      autosave_retention: '2m',
+              :init="{
+                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                toolbar_sticky: true,
 
-                      plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-                }"
-                  />
+                autosave_ask_before_unload: true,
+                autosave_interval: '30s',
+                autosave_prefix: '{path}{query}-{idd}-',
+                autosave_restore_when_empty: false,
+                autosave_retention: '2m',
+
+                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+              }"
+            />
           </VCardText>
-          <VCardText >
-           
-           <label> objectives</label>
-                 <Editor
-                   v-model="course.objectives"
-                  
-                   :init="{
-                     toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                     toolbar_sticky: true,
+          <VCardText>
+            <label> objectives</label>
+            <Editor
+              v-model="course.objectives"
 
-                     autosave_ask_before_unload: true,
-                     autosave_interval: '30s',
-                     autosave_prefix: '{path}{query}-{idd}-',
-                     autosave_restore_when_empty: false,
-                     autosave_retention: '2m',
+              :init="{
+                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                toolbar_sticky: true,
 
-                     plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-               }"
-                 />
-         </VCardText>
-         <VCardText >
-           
-           <label> audience</label>
-                 <Editor
-                   v-model="course.audience"
-                  
-                   :init="{
-                     toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                     toolbar_sticky: true,
+                autosave_ask_before_unload: true,
+                autosave_interval: '30s',
+                autosave_prefix: '{path}{query}-{idd}-',
+                autosave_restore_when_empty: false,
+                autosave_retention: '2m',
 
-                     autosave_ask_before_unload: true,
-                     autosave_interval: '30s',
-                     autosave_prefix: '{path}{query}-{idd}-',
-                     autosave_restore_when_empty: false,
-                     autosave_retention: '2m',
+                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+              }"
+            />
+          </VCardText>
+          <VCardText>
+            <label> audience</label>
+            <Editor
+              v-model="course.audience"
 
-                     plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-               }"
-                 />
-         </VCardText>
+              :init="{
+                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                toolbar_sticky: true,
+
+                autosave_ask_before_unload: true,
+                autosave_interval: '30s',
+                autosave_prefix: '{path}{query}-{idd}-',
+                autosave_restore_when_empty: false,
+                autosave_retention: '2m',
+
+                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+              }"
+            />
+          </VCardText>
 
           <VDivider />
-          <VCardText >
+          <VCardText>
             <div class="d-flex  mb-6">
               <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
                   <VTextField
-                    v-model="course.seo_title"
+                    v-model="course.seo.title"
                     label="Seo Title "
                     :rules="[requiredValidator]"
 
@@ -643,8 +694,8 @@ const onSubmit = () => {
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
                   <VTextField
-                    v-model="course.seo_author"
-                    :rules="[requiredValidator]"
+                    v-model="course.seo.author"
+
                     label="Seo author "
 
                     style="width: 20.9rem;"
@@ -652,45 +703,55 @@ const onSubmit = () => {
                 </span>
               </h6>
             </div>
-            <VCardText >
-            
+            <VCardText>
               <label> SEO Keyword</label>
-                  <Editor
-                    v-model="course.seo_keyword"
-                   
-                    :init="{
-                      toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                      toolbar_sticky: true,
+              <!-- {{ course.seo.keyword }}
+              {{ tags }}
+              course.seo.keyword
+              <SmartTagz
+                ref="smarttag"
+                :tags="tags"
+                input-placeholder="Select Countries ..."
+                :default-tags="tags"
+                :read-only="false"
+                @click="handleTagsUpdated"
+              /> -->
+              <Editor
+                v-model="course.seo.keyword"
 
-                      autosave_ask_before_unload: true,
-                      autosave_interval: '30s',
-                      autosave_prefix: '{path}{query}-{idd}-',
-                      autosave_restore_when_empty: false,
-                      autosave_retention: '2m',
+                :init="{
+                  toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                  toolbar_sticky: true,
 
-                      plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+                  autosave_ask_before_unload: true,
+                  autosave_interval: '30s',
+                  autosave_prefix: '{path}{query}-{idd}-',
+                  autosave_restore_when_empty: false,
+                  autosave_retention: '2m',
+
+                  plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
                 }"
-                  />
+              />
             </VCardText>
-            <VCardText >
-            <label> SEO Description</label>
-                  <Editor
-                    v-model="course.seo_description"
-                   
-                    :init="{
-                      toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                      toolbar_sticky: true,
+            <VCardText>
+              <label> SEO Description</label>
+              <Editor
+                v-model="course.seo.description"
 
-                      autosave_ask_before_unload: true,
-                      autosave_interval: '30s',
-                      autosave_prefix: '{path}{query}-{idd}-',
-                      autosave_restore_when_empty: false,
-                      autosave_retention: '2m',
+                :init="{
+                  toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                  toolbar_sticky: true,
 
-                      plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+                  autosave_ask_before_unload: true,
+                  autosave_interval: '30s',
+                  autosave_prefix: '{path}{query}-{idd}-',
+                  autosave_restore_when_empty: false,
+                  autosave_retention: '2m',
+
+                  plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
                 }"
-                  />
-                  </VCardText>
+              />
+            </VCardText>
             <VRow>
               <VCol cols="4">
                 <VCard title="Seo Image ">
@@ -700,7 +761,7 @@ const onSubmit = () => {
                       rounded
                       :size="200"
                       class="me-6"
-                      :image="`https://b2b.prokoders.space/${course.seo_og_image}`"
+                      :image="`https://b2b.prokoders.space/${course.seo.og_image}`"
                     />
                   </VCardText>
                 </VCard>

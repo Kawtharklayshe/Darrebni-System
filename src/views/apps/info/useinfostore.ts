@@ -11,7 +11,7 @@ export const useinfostore = defineStore('useinfostore', {
 
     // 👉 Fetch single invoice
     fetchinfoById(id: number) {
-      return axios.get(`info/update/${id}`)
+      return axios.get(`info/get`)
     },
     addinfo(info: infoData) {
       return new Promise((resolve, reject) => {
@@ -56,7 +56,7 @@ export const useinfostore = defineStore('useinfostore', {
     },
     updateinfo(info: infoData) {
       return new Promise((resolve, reject) => {
-        axios.post(`info/update/${info.id}`, info).then(response =>
+        axios.post(`info/update`, info).then(response =>
 
           resolve(response))
           .catch(error => reject(error))

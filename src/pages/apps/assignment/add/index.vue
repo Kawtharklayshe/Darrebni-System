@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { VForm } from 'vuetify/components'
 import Editor from '@tinymce/tinymce-vue'
+import { VForm } from 'vuetify/components'
 import type { assignmentData } from '@/views/apps/assignment/types'
-import { dateRangeValidator, requiredValidator } from '@validators'
 import { useassignmentstore } from '@/views/apps/assignment/useassignmentstore'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
 import { useLessonstore } from '@/views/apps/lesson/useLessonstore'
+import { dateRangeValidator, requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 
@@ -44,7 +44,7 @@ const lessonList = ref([])
 const photo = ref('@images/avatars/avatar-14.png')
 
 const FetchCourse = () => {
-  coursestore.fetchcourse(
+  coursestore.fetchcourselist(
     {
       page_size: 10000,
       page: 1,
