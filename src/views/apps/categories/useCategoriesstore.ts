@@ -16,7 +16,14 @@ export const useCategoriesstore = defineStore('useCategoriesstore', {
     fetchcategoriesById(id: number) {
       return axios.get(`course/category/${id}`)
     },
-
+    uploadImage( payload:any) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('upload/image', payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+          .then(response => resolve(response.data))
+          .catch(error => reject(error))
+      })
+    },
     addcategories(categories: categoriesData) {
       return new Promise((resolve, reject) => {
         axios.post('course/category/create', categories).then(response =>

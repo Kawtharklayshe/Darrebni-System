@@ -21,6 +21,16 @@ export const useCompanystore = defineStore('useCompanystore', {
           .catch(error => reject(error))
       })
     },
+
+    uploadImage( payload:any) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('upload/image', payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+          .then(response => resolve(response.data))
+          .catch(error => reject(error))
+      })
+    },
+    
     login(company: any) {
       return new Promise((resolve, reject) => {
         axios.post('auth/login', company).then(response =>

@@ -12,7 +12,8 @@ import { useCategoriesstore } from '@/views/apps/categories/useCategoriesstore'
 const categories = ref<categoriesData>({
 
   name: '',
-
+  alt: '',
+  image: 'img/deflate.jpg',
   description: '',
   slug: '',
   icon: '',
@@ -23,11 +24,30 @@ const categories = ref<categoriesData>({
 const route = useRoute()
 const swal = inject('$swal')
 
+const refInputEl = ref<HTMLElement>()
+
 const newsStore = useCategoriesstore()
 const isFormValid = ref(false)
 const router = useRouter()
 const refForm = ref<VForm>()
   const categoryList = ref([])
+
+
+  const uploadNewImage = (i: any) => {
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  newsStore.uploadImage(fd).then((response: any) => {
+    categories.value.image = response?.data.path_file
+  })
+}
+
+watch(() => categories.value.name, newValue => {
+  categories.value.slug = newValue.toLowerCase().replace(/\s+/g, '-')
+})
 
 newsStore.fetchcategories(
     {
@@ -153,6 +173,58 @@ const onSubmit = () => {
               </h6>
             </div>
           </VCardText>
+          <div class="ma-sm-4">
+              <VRow>
+                <VCol cols="4">
+                  <VCard title=" image ">
+                    <VCardText>
+                      <!-- 👉 Upload Photo -->
+                      <VAvatar
+                        rounded
+                        :size="200"
+                        class="me-6"
+                        :image="`https://b2b.prokoders.space/${categories.image}`"
+                      />
+                    </VCardText>
+                  </VCard>
+                  <div class="d-flex flex-wrap gap-2 mt-10">
+                    <VBtn
+                      color="primary"
+                      @click="refInputEl?.click()"
+                    >
+                      <VIcon
+                        icon="tabler-cloud-upload"
+                        class="d-sm-none"
+                      />
+                      <span class="d-none d-sm-block">Upload new photo</span>
+                    </VBtn>
+
+                    <input
+                      ref="refInputEl"
+                      type="file"
+                      name="file"
+                      accept=".jpeg,.png,.jpg,GIF"
+                      hidden
+                      @input="uploadNewImage"
+                    >
+                  </div>
+
+                  <p class="text-body-1 mb-0 mt-5">
+                    <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                    <span>
+                      <VTextField
+                        v-model="categories.alt"
+                      
+                        label="alt text "
+
+                        style="width: 20.9rem;"
+                      />
+                    </span>
+                    <!-- </h6> -->
+                  </p>
+                </VCol>
+                </VRow>
+                </div>
           <VCardText>
             <!-- <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
             <label> description</label>

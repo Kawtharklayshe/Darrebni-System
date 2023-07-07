@@ -65,15 +65,6 @@ languagestore.fetchlanguage(
 })
 const tags = ref([])
 
-const handleTagsUpdated = e => {
-  console.log('e')
-
-  // 'tags' parameter contains the selected tags data
-  console.log(e)
-
-  // You can store the tags in a component data property or perform any other logic with the tags
-}
-
 watch(() => course.value.name, newValue => {
   course.value.slug = newValue.toLowerCase().replace(/\s+/g, '-')
 })
@@ -683,7 +674,7 @@ const onSubmit = () => {
                   <VTextField
                     v-model="course.seo.title"
                     label="Seo Title "
-                    :rules="[requiredValidator]"
+                   
 
                     style="width: 20.9rem;"
                   />

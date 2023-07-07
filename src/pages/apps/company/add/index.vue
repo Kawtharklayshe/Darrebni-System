@@ -12,7 +12,9 @@ import Editor from '@tinymce/tinymce-vue'
 const company = ref<companyData>({
 
   name: '',
-
+  alt: '',
+  image: 'img/deflate.jpg',
+  slug: '',
   description: '',
 
   icon: '',
@@ -23,6 +25,24 @@ const swal = inject('$swal')
 const companyStore = useCompanystore()
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
+  const refInputEl = ref<HTMLElement>()
+
+
+  watch(() => company.value.name, newValue => {
+  company.value.slug = newValue.toLowerCase().replace(/\s+/g, '-')
+})
+
+const uploadNewImage = (i: any) => {
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  companyStore.uploadImage(fd).then((response: any) => {
+    company.value.image = response?.data.path_file
+  })
+}
 
 const loading = ref(false)
 const router = useRouter()
@@ -107,8 +127,71 @@ const onSubmit = () => {
                   />
                 </span>
               </h6>
+              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+                  <VTextField
+                    v-model="company.slug"
+
+                    label="Slug "
+
+                    style="width: 15.9rem;"
+                  />
+                </span>
+              </h6>
             </div>
           </VCardText>
+          <div class="ma-sm-4">
+              <VRow>
+                <VCol cols="4">
+                  <VCard title=" image ">
+                    <VCardText>
+                      <!-- 👉 Upload Photo -->
+                      <VAvatar
+                        rounded
+                        :size="200"
+                        class="me-6"
+                        :image="`https://b2b.prokoders.space/${company.image}`"
+                      />
+                    </VCardText>
+                  </VCard>
+                  <div class="d-flex flex-wrap gap-2 mt-10">
+                    <VBtn
+                      color="primary"
+                      @click="refInputEl?.click()"
+                    >
+                      <VIcon
+                        icon="tabler-cloud-upload"
+                        class="d-sm-none"
+                      />
+                      <span class="d-none d-sm-block">Upload new photo</span>
+                    </VBtn>
+
+                    <input
+                      ref="refInputEl"
+                      type="file"
+                      name="file"
+                      accept=".jpeg,.png,.jpg,GIF"
+                      hidden
+                      @input="uploadNewImage"
+                    >
+                  </div>
+
+                  <p class="text-body-1 mb-0 mt-5">
+                    <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                    <span>
+                      <VTextField
+                        v-model="company.alt"
+                      
+                        label="alt text "
+
+                        style="width: 20.9rem;"
+                      />
+                    </span>
+                    <!-- </h6> -->
+                  </p>
+                </VCol>
+                </VRow>
+                </div>
           <VCardText >
             <!-- <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
           <label> description</label>

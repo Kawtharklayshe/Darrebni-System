@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+
 // Type: categoriesData
 import { VForm } from 'vuetify/components'
 import Editor from '@tinymce/tinymce-vue'
@@ -11,7 +12,8 @@ import { useCategoriesstore } from '@/views/apps/categories/useCategoriesstore'
 const categories = ref<categoriesData>({
 
   name: '',
-
+  alt: '',
+  image: 'img/deflate.jpg',
   description: '',
   slug: '',
   icon: '',
@@ -19,25 +21,47 @@ const categories = ref<categoriesData>({
 
 })
 
-const swal = inject('$swal')
 
+
+
+
+const swal = inject('$swal')
+const categoriesstore = useCategoriesstore()
+const refInputEl = ref<HTMLElement>()
+
+const uploadNewImage = (i: any) => {
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  categoriesstore.uploadImage(fd).then((response: any) => {
+    categories.value.image = response?.data.path_file
+  })
+}
+
+watch(() => categories.value.name, newValue => {
+  categories.value.slug = newValue.toLowerCase().replace(/\s+/g, '-')
+})
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
-  const categoryList = ref([])
-const categoriesstore = useCategoriesstore()
+const categoryList = ref([])
+
 
 categoriesstore.fetchcategories(
-    {
-      page_size: 10000,
-      page: 1,
+  {
+    page_size: 10000,
+    page: 1,
 
-    },
-  ).then(response => {
-    console.log(response.data)
-    categoryList.value = response.data.data
-  }).catch(error => {
-    console.log(error)
-  })
+  },
+).then(response => {
+  console.log(response.data)
+  categoryList.value = response.data.data
+}).catch(error => {
+  console.log(error)
+})
+
 const loading = ref(false)
 const router = useRouter()
 
@@ -91,7 +115,7 @@ const onSubmit = () => {
         cols="12"
         md="12"
       >
-        <VCard  title="Add Category">
+        <VCard title="Add Category">
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <!-- 👉 Left Content -->
 
@@ -108,9 +132,7 @@ const onSubmit = () => {
                   />
                 </span>
               </h6>
-          
-            
-             
+
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
                   <VTextField
@@ -122,12 +144,12 @@ const onSubmit = () => {
                   />
                 </span>
               </h6>
-        
+
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
                   <VTextField
                     v-model="categories.icon"
-                    
+
                     label="Icon "
 
                     style="width: 15.9rem;"
@@ -140,7 +162,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="categories.course_category_id"
                   :items="categoryList"
-                  
+
                   item-title="name"
                   item-value="id"
                   label="Select Category"
@@ -149,27 +171,79 @@ const onSubmit = () => {
               </h6>
             </div>
           </VCardText>
-          <VCardText >
+          <div class="ma-sm-4">
+              <VRow>
+                <VCol cols="4">
+                  <VCard title=" image ">
+                    <VCardText>
+                      <!-- 👉 Upload Photo -->
+                      <VAvatar
+                        rounded
+                        :size="200"
+                        class="me-6"
+                        :image="`https://b2b.prokoders.space/${categories.image}`"
+                      />
+                    </VCardText>
+                  </VCard>
+                  <div class="d-flex flex-wrap gap-2 mt-10">
+                    <VBtn
+                      color="primary"
+                      @click="refInputEl?.click()"
+                    >
+                      <VIcon
+                        icon="tabler-cloud-upload"
+                        class="d-sm-none"
+                      />
+                      <span class="d-none d-sm-block">Upload new photo</span>
+                    </VBtn>
+
+                    <input
+                      ref="refInputEl"
+                      type="file"
+                      name="file"
+                      accept=".jpeg,.png,.jpg,GIF"
+                      hidden
+                      @input="uploadNewImage"
+                    >
+                  </div>
+
+                  <p class="text-body-1 mb-0 mt-5">
+                    <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                    <span>
+                      <VTextField
+                        v-model="categories.alt"
+                      
+                        label="alt text "
+
+                        style="width: 20.9rem;"
+                      />
+                    </span>
+                    <!-- </h6> -->
+                  </p>
+                </VCol>
+                </VRow>
+                </div>
+          <VCardText>
             <!-- <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
-          <label> description</label>
-          <!-- </h6> -->
-                  <Editor
-                    v-model="categories.description"
-                   
-                    :init="{
-                      toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                      toolbar_sticky: true,
+            <label> description</label>
+            <!-- </h6> -->
+            <Editor
+              v-model="categories.description"
 
-                      autosave_ask_before_unload: true,
-                      autosave_interval: '30s',
-                      autosave_prefix: '{path}{query}-{idd}-',
-                      autosave_restore_when_empty: false,
-                      autosave_retention: '2m',
+              :init="{
+                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                toolbar_sticky: true,
 
-                      plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-                }"
-                  />
-</VCardText>
+                autosave_ask_before_unload: true,
+                autosave_interval: '30s',
+                autosave_prefix: '{path}{query}-{idd}-',
+                autosave_restore_when_empty: false,
+                autosave_retention: '2m',
+
+                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+              }"
+            />
+          </VCardText>
           <VCardText>
             <!-- 👉 Send Invoice -->
             <VBtn
@@ -201,4 +275,3 @@ const onSubmit = () => {
     </VRow>
   </VForm>
 </template>
-

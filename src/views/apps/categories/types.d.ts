@@ -5,4 +5,6 @@ export interface categoriesData {
   course_category_id: string;
   icon: string;
   description: string;
+  image: string,
+  alt:string,
 }

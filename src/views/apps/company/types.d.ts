@@ -3,4 +3,7 @@ export interface companyData {
   name: string;
   icon: string;
   description: string;
+  slug: string;
+  image: string,
+  alt:string,
 }

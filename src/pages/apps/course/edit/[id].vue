@@ -120,7 +120,7 @@ const FetchCourse = () => {
     },
   ).then(response => {
     console.log(response.data)
-    courseList.value = response.data.data.data
+    courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
   })
@@ -660,7 +660,7 @@ const onSubmit = () => {
                   <VTextField
                     v-model="course.seo.title"
                     label="Seo Title "
-                    :rules="[requiredValidator]"
+                   
 
                     style="width: 20.9rem;"
                   />
