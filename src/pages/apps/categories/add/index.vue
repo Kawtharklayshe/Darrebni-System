@@ -162,7 +162,8 @@ const onSubmit = () => {
                 <VSelect
                   v-model="categories.course_category_id"
                   :items="categoryList"
-
+                  clearable
+    clear-icon="tabler-x"
                   item-title="name"
                   item-value="id"
                   label="Select Category"

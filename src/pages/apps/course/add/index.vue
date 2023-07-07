@@ -321,6 +321,8 @@ const onSubmit = () => {
                     :rules="[requiredValidator]"
                     item-title="name"
                     item-value="id"
+                    clearable
+    clear-icon="tabler-x"
                     label="Select Status"
                     style="width: 20.9rem;"
                   />
@@ -334,7 +336,8 @@ const onSubmit = () => {
                   <VSelect
                     v-model="course.languages"
                     :items="LangsList"
-                  
+                    clearable
+    clear-icon="tabler-x"
                     item-title="name"
                     item-value="id"
                     label="Select Lnaguages"
@@ -376,7 +379,8 @@ const onSubmit = () => {
                 <VSelect
                   v-model="course.course_company_id"
                   :items="courseList"
-                  
+                  clearable
+    clear-icon="tabler-x"
                   label="Select Company"
                   item-title="name"
                   item-value="id"
@@ -390,6 +394,8 @@ const onSubmit = () => {
                   v-model="course.course_category_id"
                   :items="categoryList"
                   :rules="[requiredValidator]"
+                  clearable
+    clear-icon="tabler-x"
                   item-title="name"
                   item-value="id"
                   label="Select Category"
