@@ -211,6 +211,19 @@ const paginationData = computed(() => {
             </VBtn>
             <VBtn
               icon
+              size="x-small"
+              color="info"
+              variant="text"
+              :to="{ name: 'apps-course-blogCourse-id', params: { id: item.id } }"
+            >
+              <VIcon
+                size="22"
+                icon="tabler-ad"
+              />
+              
+            </VBtn>
+            <VBtn
+              icon
               variant="text"
               color="error"
               size="x-small"

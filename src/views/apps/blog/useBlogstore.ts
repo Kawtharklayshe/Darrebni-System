@@ -21,6 +21,15 @@ export const useBlogstore = defineStore('useBlogstore', {
           .catch(error => reject(error))
       })
     },
+    addblogCourse(blog: any) {
+      return new Promise((resolve, reject) => {
+        axios.post(`course/${blog.id}/sync/blog`, blog).then(response =>
+
+          resolve(response))
+          .catch(error => reject(error))
+      })
+    },
+
 
     uploadImage( payload) {
       return new Promise((resolve, reject) => {

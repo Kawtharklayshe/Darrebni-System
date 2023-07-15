@@ -562,6 +562,19 @@ const onSubmit = () => {
               />
               </div>
             -->
+            <VDivider />
+            <VCardText>
+           
+           <VTextarea
+               label="Small Text"
+               v-model="course.small_text"
+         
+               density="compact"
+               
+             
+             />
+          
+         </VCardText>
           </VCardText>
           <VDivider />
           <VCardText>

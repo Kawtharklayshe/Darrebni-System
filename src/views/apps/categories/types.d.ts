@@ -3,6 +3,7 @@ export interface categoriesData {
   name: string;
   slug: string;
   course_category_id: string;
+  course_company_id?: string;
   icon: string;
   description: string;
   image: string,

@@ -7,6 +7,10 @@ import type { categoriesData } from '@/views/apps/categories/types'
 
 import { requiredValidator } from '@validators'
 import { useCategoriesstore } from '@/views/apps/categories/useCategoriesstore'
+import { useCompanystore } from '@/views/apps/company/useCompanystore'
+
+// 👉 Store
+const companystore = useCompanystore()
 
 // 👉 Default Blank Data
 const categories = ref<categoriesData>({
@@ -17,6 +21,7 @@ const categories = ref<categoriesData>({
   description: '',
   slug: '',
   icon: '',
+  course_company_id: '',
   course_category_id: '',
 
 })
@@ -45,9 +50,10 @@ watch(() => categories.value.name, newValue => {
   categories.value.slug = newValue.toLowerCase().replace(/\s+/g, '-')
 })
 const isFormValid = ref(false)
+
 const refForm = ref<VForm>()
 const categoryList = ref([])
-
+const companyList = ref([])
 
 categoriesstore.fetchcategories(
   {
@@ -61,9 +67,34 @@ categoriesstore.fetchcategories(
 }).catch(error => {
   console.log(error)
 })
+companystore.fetchcompany(
+  {
+    page_size: 10000,
+    page: 1,
+
+  },
+).then(response => {
+  console.log(response.data)
+  companyList.value = response.data.data
+}).catch(error => {
+  console.log(error)
+})
 
 const loading = ref(false)
 const router = useRouter()
+
+const uploadFile = (i: any) => {
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  categoriesstore.uploadImage(fd).then((response: any) => {
+    console.log('res', response?.data)
+    categories.value.icon = response?.data.path_file
+  })
+}
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -147,13 +178,23 @@ const onSubmit = () => {
 
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
-                  <VTextField
-                    v-model="categories.icon"
+                 
+                  <div class="d-flex align-center">
+              <VTextField
+                label="Icon"
+                type="file"
+                style="width: 20.9rem;"
 
-                    label="Icon "
-
-                    style="width: 15.9rem;"
-                  />
+                @input="uploadFile"
+              />
+              <a
+              v-if="categories.icon"
+              class="mx-2"
+             target="_blank"
+             :href="`https://b2b.prokoders.space/${categories.icon}`"
+           > <h6>   click to show file    </h6></a>
+            </div>
+          
                 </span>
               </h6>
             </div>
@@ -167,6 +208,18 @@ const onSubmit = () => {
                   item-title="name"
                   item-value="id"
                   label="Select Category"
+                  style="width: 20.9rem;"
+                />
+              </h6>
+              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <VSelect
+                  v-model="categories.course_company_id"
+                  :items="companyList"
+                  clearable
+    clear-icon="tabler-x"
+                  item-title="name"
+                  item-value="id"
+                  label="Select Company"
                   style="width: 20.9rem;"
                 />
               </h6>

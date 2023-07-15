@@ -9,7 +9,7 @@ const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
 const totalinfos = ref(0)
-const infos = ref<any[]>({})
+const infos = ref<any>({})
 
 const selectedLangs = ref(1)
 const isDialogVisible = ref(false)
@@ -33,10 +33,10 @@ const FetchData = () => {
     },
   ).then(response => {
     console.log(response.data)
-    infos.value = response.data.data
+    infos.value = response.data
     isDialogVisible.value = false
-    totalPage.value = response.data.last_page
-    totalinfos.value = response.data.total
+    // totalPage.value = response.data.data.last_page
+    // totalinfos.value = response.data.total
   }).catch(error => {
     console.log(error)
   })
@@ -144,13 +144,12 @@ const paginationData = computed(() => {
       <!-- 👉 Table Body -->
       <tbody>
         <tr
-          v-for="item in infos"
-          :key="item.id"
+        
           style="height: 3.75rem;"
         >
           <!-- 👉 Id -->
           <td class="text-">
-            {{ item.type }}
+            {{ infos.name }}
           </td>
 
           <!-- 👉 Trending -->
@@ -159,7 +158,7 @@ const paginationData = computed(() => {
               color="primary"
               label
             >
-              {{ item.title }}
+              {{ infos.email }}
             </VChip>
           </td>
 
@@ -171,7 +170,7 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-info-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-info-edit-id', params: { id: infos.id } }"
             >
               <VIcon
                 size="22"
@@ -179,18 +178,18 @@ const paginationData = computed(() => {
               />
             </VBtn>
 
-            <VBtn
+            <!-- <VBtn
               icon
               variant="text"
               color="error"
               size="x-small"
-              @click="deleteLang(item.id)"
+              @click="deleteLang(infos.id)"
             >
               <VIcon
                 :size="22"
                 icon="tabler-trash"
               />
-            </VBtn>
+            </VBtn> -->
           </td>
         </tr>
       </tbody>

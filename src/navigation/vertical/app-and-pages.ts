@@ -163,6 +163,15 @@ export default [
     ],
   },
   {
+    title: 'Duration',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-duration-list' },
+      { title: 'Add', to: 'apps-duration-add' },
+    ],
+  },
+  {
     title: 'Quiz',
     icon: { icon: 'tabler-calendar' },
 
@@ -243,7 +252,24 @@ export default [
           { title: 'Add', to: 'apps-setting-add' },
         ],
       },
+      {
+        title: 'Slider',
+        icon: { icon: 'tabler-calendar' },
 
+        children: [
+          { title: 'List', to: 'apps-slider-list' },
+          { title: 'Add', to: 'apps-slider-add' },
+        ],
+      },
+      {
+        title: 'Partner',
+        icon: { icon: 'tabler-calendar' },
+
+        children: [
+          { title: 'List', to: 'apps-partner-list' },
+          { title: 'Add', to: 'apps-partner-add' },
+        ],
+      },
     ],
   },
   {

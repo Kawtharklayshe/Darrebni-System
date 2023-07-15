@@ -6,7 +6,7 @@ export const useinfostore = defineStore('useinfostore', {
   actions: {
     // 👉 Fetch all Invoices
     fetchinfo(params: any) {
-      return axios.get('section/all', { params })
+      return axios.get('info/get', { params })
     },
 
     // 👉 Fetch single invoice

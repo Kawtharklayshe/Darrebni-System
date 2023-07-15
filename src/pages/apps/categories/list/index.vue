@@ -10,8 +10,15 @@ const currentPage = ref(1)
 const totalPage = ref(1)
 const totalcategoriess = ref(0)
 const categoriess = ref<any[]>({})
+const categoryType = ref('category')
 
-const selectedLangs = ref(1)
+const categoryTypeList = ref([{
+  name: 'Category', id: 'category',
+},
+{
+  name: 'Sub Category', id: 'sub_category',
+}])
+
 const isDialogVisible = ref(false)
 
 watch(isDialogVisible, value => {
@@ -27,6 +34,7 @@ const FetchData = () => {
   isDialogVisible.value = true
   categoriesstore.fetchcategories(
     {
+      need: categoryType.value,
       page_size: rowPerPage.value,
       page: currentPage.value,
 
@@ -120,7 +128,19 @@ const paginationData = computed(() => {
         </VCardText>
       </VCard>
     </VDialog>
+    <div class="d-flex my-6  mx-5">
+      <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+        <VSelect
+          v-model="categoryType"
+          :items="categoryTypeList"
 
+          item-title="name"
+          item-value="id"
+          label="Select Category Type"
+          style="width: 20.9rem;"
+        />
+      </h6>
+    </div>
     <!-- SECTION Table -->
     <VTable class="text-no-wrap invoice-list-table">
       <!-- 👉 Table head -->

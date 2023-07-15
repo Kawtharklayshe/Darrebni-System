@@ -171,7 +171,7 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-setting-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-setting-edit-id', params: { id: item.type } }"
             >
               <VIcon
                 size="22"

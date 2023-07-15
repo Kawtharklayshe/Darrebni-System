@@ -36,6 +36,8 @@ const course = ref<courseData>({
   video: '',
   file: '',
   youtube_url: '',
+  
+  small_text:'',
   languages: [],
   course_company_id: null,
   seo: {
@@ -574,6 +576,19 @@ const onSubmit = () => {
                 @input="uploadFile"
               />
             </div>
+          </VCardText>
+          <VDivider />
+          <VCardText>
+           
+            <VTextarea
+                label="Small Text"
+                v-model="course.small_text"
+           
+                density="compact"
+                
+              
+              />
+           
           </VCardText>
           <VDivider />
           <VCardText>

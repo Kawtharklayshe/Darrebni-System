@@ -23,11 +23,13 @@ number_hour: number|null,
 first_image: string,
 image: string,
 video:string,
+small_text?: string,
 file: string,
 youtube_url:string,
 seo:{
   title: string,
   author: string,
+
   description: string,
   keyword: string,
   og_image: string,

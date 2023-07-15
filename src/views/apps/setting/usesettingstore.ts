@@ -58,7 +58,7 @@ export const usesettingstore = defineStore('usesettingstore', {
     },
     updatesetting(setting: settingData) {
       return new Promise((resolve, reject) => {
-        axios.post(`setting/create-or-update/${setting.id}`, setting).then(response =>
+        axios.post(`setting/create-or-update/${setting.type}`, setting).then(response =>
 
           resolve(response))
           .catch(error => reject(error))

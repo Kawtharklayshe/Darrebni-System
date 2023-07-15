@@ -42,6 +42,22 @@ const uploadNewImage = (i: any) => {
 }
 
 
+const uploadFile = (i: any) => {
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  newsStore.uploadImage(fd).then((response: any) => {
+    console.log('res', response?.data)
+    company.value.icon = response?.data.path_file
+  })
+}
+
+
+
+
 const isFormValid = ref(false)
 
 const refForm = ref<VForm>()
@@ -121,14 +137,23 @@ const onSubmit = () => {
 
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
-                  <VTextField
-                    v-model="company.icon"
+                 
+                 <div class="d-flex align-center">
+             <VTextField
+               label="Icon"
+               type="file"
+               style="width: 20.9rem;"
 
-                    label="Icon "
-
-                    style="width: 15.9rem;"
-                  />
-                </span>
+               @input="uploadFile"
+             />
+           </div>
+           <a
+              v-if="company.icon"
+              class="mx-2"
+             target="_blank"
+             :href="`https://b2b.prokoders.space/${company.icon}`"
+           > <h6>   click to show file    </h6></a>
+               </span>
               </h6>
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
