@@ -39,7 +39,7 @@ const course = ref<courseData>({
   
   small_text:'',
   languages: [],
-  course_company_id: null,
+ 
   seo: {
     title: '',
     author: '',
@@ -47,8 +47,8 @@ const course = ref<courseData>({
     keyword: '',
     og_image: 'img/deflate.jpg',
   },
-
   course_category_id: null,
+  company_category_id: null,
 
 })
 const LangsList = ref([])
@@ -98,6 +98,7 @@ const photo = ref('@images/avatars/avatar-14.png')
 const FetchCategory = () => {
   categoriesstore.fetchcategories(
     {
+      need: 'sub_category',
       page_size: 10000,
       page: 1,
 
@@ -123,7 +124,7 @@ const FetchCategory = () => {
 }
 
 const FetchCourse = () => {
-  companystore.fetchcompany(
+  companystore.fetchcompanyCategory(
     {
       page_size: 10000,
       page: 1,
@@ -379,7 +380,7 @@ const onSubmit = () => {
             <div class="d-flex mb-6">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VSelect
-                  v-model="course.course_company_id"
+                  v-model="course.company_category_id"
                   :items="courseList"
                   clearable
     clear-icon="tabler-x"

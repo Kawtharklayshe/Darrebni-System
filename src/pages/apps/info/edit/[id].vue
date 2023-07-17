@@ -9,10 +9,11 @@ import { useinfostore } from '@/views/apps/info/useinfostore'
 import Editor from '@tinymce/tinymce-vue'
 
 // 👉 Default Blank Data
-const info = ref<infoData>({
+const info = ref<any>({
   name: '',
   slogan: '',
-
+  logo_dark: '',
+  big_logo_dark: '',
   phone: '',
   phone2: '',
 
@@ -37,6 +38,8 @@ const route = useRoute()
 
 
 const refInputE2 = ref<HTMLElement>()
+const refInputEBD = ref<HTMLElement>()
+  const refInputED = ref<HTMLElement>()
 
 const uploadFirstImage = (i: any) => {
   console.log('uploadFirstImage')
@@ -53,6 +56,36 @@ const uploadFirstImage = (i: any) => {
   })
 }
 
+
+const uploadBigLogoDark = (i: any) => {
+  console.log('uploadFirstImage')
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  infoStore.uploadImage(fd).then((response: any) => {
+    console.log('res', response.data.path_file)
+    info.value.big_logo_dark = response.data.path_file
+  })
+}
+
+const uploadLogoDark = (i: any) => {
+  console.log('uploadFirstImage')
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  infoStore.uploadImage(fd).then((response: any) => {
+    console.log('res', response.data.path_file)
+    info.value.logo_dark = response.data.path_file
+  })
+}
 
 const uploadNewImage = (i: any) => {
   const file = i.target.files[0]
@@ -287,6 +320,95 @@ const onSubmit = () => {
                       style="width: 20.9rem;"
                     />
                   </span>
+                  <!-- </h6> -->
+                </p>
+              </VCol>
+            </VRow>
+            <VRow>
+              <VCol cols="6">
+                <VCard title=" Logo Dark ">
+                  <VCardText>
+                    <!-- 👉 Upload Photo -->
+                    <VAvatar
+                      rounded
+                      :size="200"
+                      class="me-6"
+                      :image="`https://b2b.prokoders.space/${info.logo_dark}`"
+                    />
+                  </VCardText>
+                </VCard>
+                <div class="d-flex flex-wrap gap-2 mt-10">
+                  <VBtn
+                    color="primary"
+                    @click="refInputED?.click()"
+                  >
+                    <VIcon
+                      icon="tabler-cloud-upload"
+                      class="d-sm-none"
+                    />
+                    <span class="d-none d-sm-block">Upload new Logo Dark</span>
+                  </VBtn>
+
+                  <input
+                    ref="refInputED"
+                    type="file"
+                    name="file"
+                    accept=".jpeg,.png,.jpg,GIF"
+                    hidden
+                    @input="uploadLogoDark"
+                  >
+                </div>
+                <p class="text-body-1 mb-0 mt-5">
+                  <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                 
+                  <!-- </h6> -->
+                </p>
+              </VCol>
+              <VCol cols="6">
+                <VCard title="Cover Big Logo Dark ">
+                  <VCardText>
+                    <!-- 👉 Upload Photo -->
+                    <VAvatar
+                      rounded
+                      :size="200"
+                      class="me-6"
+                      :image="`https://b2b.prokoders.space/${info.big_logo_dark}`"
+                    />
+                  </VCardText>
+                </VCard>
+                <div class="d-flex flex-wrap gap-2 mt-10">
+                  <VBtn
+                    color="primary"
+                    @click="refInputEBD?.click()"
+                  >
+                    <VIcon
+                      icon="tabler-cloud-upload"
+                      class="d-sm-none"
+                    />
+                    <span class="d-none d-sm-block">Upload Big Logo Dark</span>
+                  </VBtn>
+
+                  <input
+                    ref="refInputEBD"
+                    type="file"
+                    name="file"
+                    accept=".jpeg,.png,.jpg,GIF"
+                    hidden
+                    @input="uploadBigLogoDark"
+                  >
+                </div>
+
+                <p class="text-body-1 mb-0 mt-5">
+                  <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                  <!-- <span>
+                    <VTextField
+                      v-model="info.alt_big_logo"
+
+                      label="Big Logo alt text "
+
+                      style="width: 20.9rem;"
+                    /> -->
+                  <!-- </span> -->
                   <!-- </h6> -->
                 </p>
               </VCol>

@@ -8,6 +8,9 @@ export const useCompanystore = defineStore('useCompanystore', {
     fetchcompany(params: any) {
       return axios.get('course/company/all', { params })
     },
+    fetchcompanyCategory(params: any) {
+      return axios.get('course/category/categorize')
+    },
 
     // 👉 Fetch single invoice
     fetchcompanyById(id: number) {

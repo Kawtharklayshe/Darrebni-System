@@ -39,9 +39,8 @@ const course = ref<courseData>({
     keyword: '',
     og_image: 'img/deflate.jpg',
   },
-  course_company_id: null,
-
   course_category_id: null,
+  company_category_id: null,
 
 })
 
@@ -87,6 +86,7 @@ const companystore = useCompanystore()
 const FetchCategory = () => {
   categoriesstore.fetchcategories(
     {
+      need: 'sub_category',
       page_size: 10000,
       page: 1,
 
@@ -112,7 +112,7 @@ const FetchCategory = () => {
 }
 
 const FetchCourse = () => {
-  companystore.fetchcompany(
+  companystore.fetchcompanyCategory(
     {
       page_size: 10000,
       page: 1,

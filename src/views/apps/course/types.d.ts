@@ -34,11 +34,11 @@ seo:{
   keyword: string,
   og_image: string,
 },
-
-
-course_company_id: number|null,
-
 course_category_id: number|null,
+
+company_category_id: number|null,
+
+
   
 }
 

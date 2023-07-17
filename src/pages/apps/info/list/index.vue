@@ -159,6 +159,7 @@ const paginationData = computed(() => {
               label
             >
               {{ infos.email }}
+           
             </VChip>
           </td>
 

@@ -8,6 +8,10 @@ export const useCategoriesstore = defineStore('useCategoriesstore', {
     fetchcategories(params: any) {
       return axios.get('course/category/all', { params })
     },
+    
+    fetchcategoriesType(params: any) {
+      return axios.get('course/category/categorize', { params })
+    },
     fetchlevel(params: any) {
       return axios.get('level/all', { params })
     },

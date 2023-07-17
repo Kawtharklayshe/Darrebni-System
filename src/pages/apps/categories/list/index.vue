@@ -17,6 +17,9 @@ const categoryTypeList = ref([{
 },
 {
   name: 'Sub Category', id: 'sub_category',
+},
+{
+  name: 'Company', id: 'company',
 }])
 
 const isDialogVisible = ref(false)
@@ -31,9 +34,20 @@ watch(isDialogVisible, value => {
 })
 
 const FetchData = () => {
+  // let Category=null
+  // let subCategory=null
+  // if(categoryType.value=='category'){
+  //   Category=1
+  //   subCategory=0
+  // }
+  // else{
+  //   Category=0
+  //   subCategory=1
+  // }
   isDialogVisible.value = true
   categoriesstore.fetchcategories(
     {
+   
       need: categoryType.value,
       page_size: rowPerPage.value,
       page: currentPage.value,
