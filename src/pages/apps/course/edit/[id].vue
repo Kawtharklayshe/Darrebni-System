@@ -112,8 +112,9 @@ const FetchCategory = () => {
 }
 
 const FetchCourse = () => {
-  companystore.fetchcompanyCategory(
+  categoriesstore.fetchcategories(
     {
+      need: 'company',
       page_size: 10000,
       page: 1,
 
