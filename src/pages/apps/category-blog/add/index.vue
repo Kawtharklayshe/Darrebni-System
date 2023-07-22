@@ -29,6 +29,8 @@ const router = useRouter()
 const courseStore = useCourseStore()
 
 const uploadNewImage = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -36,7 +38,7 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   courseStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+    loading.value = false
     categories.value.image = response?.data.path_file
   })
 }

@@ -36,6 +36,8 @@ const trainer = ref<trainerData>({
 const GenderList = ref([{ name: 'Male', id: 'male' }, { name: 'Female', id: 'female' }])
 
 const uploadFile = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -43,6 +45,7 @@ const uploadFile = (i: any) => {
   fd.append('file', file)
   fd.append('folder', 'other')
   courseStore.uploadFile(fd).then((response: any) => {
+    loading.value = false
     trainer.value.cv = response?.data
   })
 }
@@ -53,10 +56,13 @@ const refInputEl = ref<HTMLElement>()
 
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
+  const loading = ref(false)
 
 // uploadFirstImage function
 
 const uploadNewImage = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -64,13 +70,12 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   trainerStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+        loading.value = false
     trainer.value.image = response?.data.path_file
   })
 }
 
 const router = useRouter()
-const loading = ref(false)
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

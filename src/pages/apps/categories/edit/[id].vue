@@ -39,32 +39,44 @@ const refForm = ref<VForm>()
   const categoryList = ref([])
   const companyList = ref([])
 
-  const uploadNewImage = (i: any) => {
-  const file = i.target.files[0]
-
-  const fd = new FormData()
-
-  fd.append('image', file)
-  fd.append('folder', 'other')
-  newsStore.uploadImage(fd).then((response: any) => {
-    categories.value.image = response?.data.path_file
-  })
-}
 
 watch(() => categories.value.name, newValue => {
   categories.value.slug = newValue.toLowerCase().replace(/\s+/g, '-')
 })
 
 
+
+const loading = ref(false)
+
+
+
+const uploadNewImage = (i: any) => {
+
+loading.value = true
+
+const file = i.target.files[0]
+
+const fd = new FormData()
+
+fd.append('image', file)
+fd.append('folder', 'other')
+categoriesstore.uploadImage(fd).then((response: any) => {
+  loading.value = false
+  categories.value.image = response?.data.path_file
+})
+}
+
 const uploadFile = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
 
   fd.append('image', file)
   fd.append('folder', 'other')
-  newsStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data)
+  categoriesstore.uploadImage(fd).then((response: any) => {
+  loading.value = false
     categories.value.icon = response?.data.path_file
   })
 }
@@ -100,7 +112,6 @@ newsStore.fetchcategoriesById(Number(route.params.id)).then(response => {
   categories.value = response.data.data
 })
 
-const loading = ref(false)
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

@@ -23,20 +23,22 @@ const courseList = ref([])
 const route = useRoute()
 const coursestore = useCourseStore()
 
+const loading = ref(false)
+
 const uploadNewImage = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
 
   fd.append('image', file)
-  fd.append('folder', 'partner')
+  fd.append('folder', 'other')
   coursestore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+       loading.value = false
     partner.value.image = response?.data.path_file
   })
 }
-
-
 
 const swal = inject('$swal')
 const partnerStore = usepartnerstore()
@@ -55,7 +57,6 @@ partnerStore.fetchpartnerById(Number(route.params.id)).then(response => {
 })
 
 
-const loading = ref(false)
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

@@ -228,48 +228,51 @@ export default [
     ],
   },
   {
+    title: 'Section',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-section-list' },
+      { title: 'Add', to: 'apps-section-add' },
+    ],
+  },
+  {
+    title: 'Setting',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-setting-list' },
+      { title: 'Add', to: 'apps-setting-add' },
+    ],
+  },
+  {
+    title: 'Slider',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-slider-list' },
+      { title: 'Add', to: 'apps-slider-add' },
+    ],
+  },
+  {
+    title: 'Partner',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-partner-list' },
+      { title: 'Add', to: 'apps-partner-add' },
+    ],
+  },
+  {
     title: 'Info',
     icon: { icon: 'tabler-calendar' },
 
     children: [
       { title: 'List', to: 'apps-info-list' },
       // { title: 'Add', to: 'apps-tag-add' },
-      {
-        title: 'Section',
-        icon: { icon: 'tabler-calendar' },
-
-        children: [
-          { title: 'List', to: 'apps-section-list' },
-          { title: 'Add', to: 'apps-section-add' },
-        ],
-      },
-      {
-        title: 'Setting',
-        icon: { icon: 'tabler-calendar' },
-
-        children: [
-          { title: 'List', to: 'apps-setting-list' },
-          { title: 'Add', to: 'apps-setting-add' },
-        ],
-      },
-      {
-        title: 'Slider',
-        icon: { icon: 'tabler-calendar' },
-
-        children: [
-          { title: 'List', to: 'apps-slider-list' },
-          { title: 'Add', to: 'apps-slider-add' },
-        ],
-      },
-      {
-        title: 'Partner',
-        icon: { icon: 'tabler-calendar' },
-
-        children: [
-          { title: 'List', to: 'apps-partner-list' },
-          { title: 'Add', to: 'apps-partner-add' },
-        ],
-      },
+    
+     
+      
     ],
   },
   {

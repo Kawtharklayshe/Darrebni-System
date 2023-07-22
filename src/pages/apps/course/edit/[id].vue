@@ -127,9 +127,11 @@ const FetchCourse = () => {
   })
 }
 
+const loading = ref(false)
+
 // uploadFirstImage function
 const uploadFirstImage = (i: any) => {
-  console.log('uploadFirstImage')
+  loading.value = true
 
   const file = i.target.files[0]
 
@@ -138,12 +140,15 @@ const uploadFirstImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'course')
   courseStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response.data.path_file)
+    loading.value = false
     course.value.first_image = response.data.path_file
   })
 }
 
 const uploadNewImage = (i: any) => {
+
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -151,12 +156,15 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'course')
   courseStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+     loading.value = false
     course.value.image = response?.data.path_file
   })
 }
 
 const uploadSeoImage = (i: any) => {
+
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -164,12 +172,14 @@ const uploadSeoImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'course')
   courseStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+     loading.value = false
     course.value.seo.og_image = response?.data.path_file
   })
 }
 
 const uploadVideo = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -177,12 +187,14 @@ const uploadVideo = (i: any) => {
   fd.append('video', file)
   fd.append('folder', 'course')
   courseStore.uploadVideo(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+     loading.value = false
     course.value.video = response?.data.path_file
   })
 }
 
 const uploadFile = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -191,8 +203,10 @@ const uploadFile = (i: any) => {
   fd.append('folder', 'course')
   courseStore.uploadFile(fd).then((response: any) => {
     course.value.file = response?.data
+    loading.value = false
   })
 }
+
 
 courseStore.fetchcourseById(Number(route.params.id)).then(response => {
   console.log(response.data.data)
@@ -204,7 +218,7 @@ watchEffect(() => {
   FetchCourse()
 })
 
-const loading = ref(false)
+
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -363,7 +377,7 @@ const onSubmit = () => {
             <div class="d-flex mb-6">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VSelect
-                  v-model="course.course_company_id"
+                  v-model="course.company_category_id"
                   :items="courseList"
                   clearable
     clear-icon="tabler-x"

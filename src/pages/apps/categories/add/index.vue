@@ -26,7 +26,7 @@ const categories = ref<categoriesData>({
 
 })
 
-
+const loading = ref(false)
 
 
 
@@ -34,17 +34,7 @@ const swal = inject('$swal')
 const categoriesstore = useCategoriesstore()
 const refInputEl = ref<HTMLElement>()
 
-const uploadNewImage = (i: any) => {
-  const file = i.target.files[0]
 
-  const fd = new FormData()
-
-  fd.append('image', file)
-  fd.append('folder', 'other')
-  categoriesstore.uploadImage(fd).then((response: any) => {
-    categories.value.image = response?.data.path_file
-  })
-}
 
 watch(() => categories.value.name, newValue => {
   categories.value.slug = newValue.toLowerCase().replace(/\s+/g, '-')
@@ -80,10 +70,28 @@ companystore.fetchcompany(
   console.log(error)
 })
 
-const loading = ref(false)
+
 const router = useRouter()
 
+const uploadNewImage = (i: any) => {
+
+loading.value = true
+
+const file = i.target.files[0]
+
+const fd = new FormData()
+
+fd.append('image', file)
+fd.append('folder', 'other')
+categoriesstore.uploadImage(fd).then((response: any) => {
+  loading.value = false
+  categories.value.image = response?.data.path_file
+})
+}
+
 const uploadFile = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -91,7 +99,7 @@ const uploadFile = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   categoriesstore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data)
+  loading.value = false
     categories.value.icon = response?.data.path_file
   })
 }

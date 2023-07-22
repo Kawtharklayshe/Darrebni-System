@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-
 // Type: Invoice data
 
 import { VForm } from 'vuetify/components'
-import type { infoData } from '@/views/apps/info/types'
-import {emailValidator, requiredValidator } from '@validators'
-import { useinfostore } from '@/views/apps/info/useinfostore'
 import Editor from '@tinymce/tinymce-vue'
+import { emailValidator, requiredValidator } from '@validators'
+import { useinfostore } from '@/views/apps/info/useinfostore'
 
 // 👉 Default Blank Data
 const info = ref<any>({
@@ -19,10 +17,9 @@ const info = ref<any>({
 
   email: '',
 
-  address:  '',
+  address: '',
 
   logo: 'img/deflate.jpg',
-
 
 })
 
@@ -36,13 +33,14 @@ const isFormValid = ref(false)
 const refForm = ref<VForm>()
 const route = useRoute()
 
-
 const refInputE2 = ref<HTMLElement>()
 const refInputEBD = ref<HTMLElement>()
-  const refInputED = ref<HTMLElement>()
+const refInputED = ref<HTMLElement>()
+
+const loading = ref(false)
 
 const uploadFirstImage = (i: any) => {
-  console.log('uploadFirstImage')
+  loading.value = true
 
   const file = i.target.files[0]
 
@@ -51,14 +49,13 @@ const uploadFirstImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   infoStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response.data.path_file)
+    loading.value = false
     info.value.big_logo = response.data.path_file
   })
 }
 
-
 const uploadBigLogoDark = (i: any) => {
-  console.log('uploadFirstImage')
+  loading.value = true
 
   const file = i.target.files[0]
 
@@ -67,13 +64,13 @@ const uploadBigLogoDark = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   infoStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response.data.path_file)
+    loading.value = false
     info.value.big_logo_dark = response.data.path_file
   })
 }
 
 const uploadLogoDark = (i: any) => {
-  console.log('uploadFirstImage')
+  loading.value = true
 
   const file = i.target.files[0]
 
@@ -82,7 +79,7 @@ const uploadLogoDark = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   infoStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response.data.path_file)
+    loading.value = false
     info.value.logo_dark = response.data.path_file
   })
 }
@@ -100,14 +97,10 @@ const uploadNewImage = (i: any) => {
   })
 }
 
-
 infoStore.fetchinfoById(Number(route.params.id)).then(response => {
   console.log(response.data)
   info.value = response.data
 })
-
-
-const loading = ref(false)
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -204,28 +197,27 @@ const onSubmit = () => {
             <div class="d-flex mb-6">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VTextField
-                    v-model="info.phone2"
-                    :rules="[requiredValidator]"
-                    label="phone 2  "
+                  v-model="info.phone2"
+                  :rules="[requiredValidator]"
+                  label="phone 2  "
 
-                    style="width: 20.9rem;"
-                  />
+                  style="width: 20.9rem;"
+                />
               </h6>
             </div>
             <div class="d-flex mb-6">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VTextField
-                    v-model="info.email"
-                    :rules="[emailValidator,requiredValidator]"
-                    label="Email "
+                  v-model="info.email"
+                  :rules="[emailValidator, requiredValidator]"
+                  label="Email "
 
-                    style="width: 20.9rem;"
-                  />
+                  style="width: 20.9rem;"
+                />
               </h6>
             </div>
-            
           </VCardText>
-       
+
           <VCardText>
             <VRow>
               <VCol cols="6">
@@ -360,7 +352,7 @@ const onSubmit = () => {
                 </div>
                 <p class="text-body-1 mb-0 mt-5">
                   <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
-                 
+
                   <!-- </h6> -->
                 </p>
               </VCol>
@@ -400,14 +392,16 @@ const onSubmit = () => {
 
                 <p class="text-body-1 mb-0 mt-5">
                   <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
-                  <!-- <span>
+                  <!--
+                    <span>
                     <VTextField
-                      v-model="info.alt_big_logo"
+                    v-model="info.alt_big_logo"
 
-                      label="Big Logo alt text "
+                    label="Big Logo alt text "
 
-                      style="width: 20.9rem;"
-                    /> -->
+                    style="width: 20.9rem;"
+                    />
+                  -->
                   <!-- </span> -->
                   <!-- </h6> -->
                 </p>
@@ -435,8 +429,6 @@ const onSubmit = () => {
               }"
             />
           </VCardText>
-
-
 
           <VCardText>
             <!-- 👉 Send Invoice -->

@@ -64,9 +64,14 @@ watchEffect(() => {
   FetchCategory()
 })
 
+
+const loading = ref(false)
+
 // uploadFirstImage function
 
 const uploadNewImage = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -74,12 +79,14 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'lesson')
   coursestore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+    loading.value = false
     lesson.value.image = response?.data.path_file
   })
 }
 
 const uploadVideo = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -87,12 +94,14 @@ const uploadVideo = (i: any) => {
   fd.append('video', file)
   fd.append('folder', 'lesson')
   coursestore.uploadVideo(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+    loading.value = false
     lesson.value.video = response?.data.path_file
   })
 }
 
 const uploadFile = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -100,12 +109,13 @@ const uploadFile = (i: any) => {
   fd.append('file', file)
   fd.append('folder', 'lesson')
   coursestore.uploadFile(fd).then((response: any) => {
+    loading.value = false
     lesson.value.file = response?.data
   })
 }
 
 const router = useRouter()
-const loading = ref(false)
+
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

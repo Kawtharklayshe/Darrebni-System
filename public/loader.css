@@ -14,7 +14,9 @@ html {
   block-size: 100%;
   inline-size: 100%;
 }
-
+.v-avatar.v-theme--light.v-avatar--density-default.v-avatar--rounded.v-avatar--variant-flat.me-6 {
+  width: 100% !important;
+}
 .loading-logo {
   position: absolute;
   inset-block-start: 40%;

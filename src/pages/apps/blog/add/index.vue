@@ -64,9 +64,13 @@ watchEffect(() => {
   FetchCategory()
 })
 
+const loading = ref(false)
+
 // uploadFirstImage function
 
 const uploadNewImage = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -74,7 +78,7 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   blogStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+    loading.value = false
     blog.value.image = response?.data.path_file
   })
 }
@@ -82,7 +86,7 @@ const uploadNewImage = (i: any) => {
 const refInputE2 = ref<HTMLElement>()
 
 const uploadFirstImage = (i: any) => {
-  console.log('uploadFirstImage')
+  loading.value = true
 
   const file = i.target.files[0]
 
@@ -91,13 +95,13 @@ const uploadFirstImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   blogStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response.data.path_file)
+    loading.value = false
     blog.value.cover = response.data.path_file
   })
 }
 
 const router = useRouter()
-const loading = ref(false)
+
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

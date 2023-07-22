@@ -29,7 +29,11 @@ watch(() => company.value.name, newValue => {
   company.value.slug = newValue.toLowerCase().replace(/\s+/g, '-')
 })
 
+const loading = ref(false)
+
 const uploadNewImage = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -37,12 +41,15 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   newsStore.uploadImage(fd).then((response: any) => {
+    loading.value = false
     company.value.image = response?.data.path_file
   })
 }
 
 
 const uploadFile = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -50,7 +57,7 @@ const uploadFile = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   newsStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data)
+    loading.value = false
     company.value.icon = response?.data.path_file
   })
 }
@@ -68,7 +75,7 @@ newsStore.fetchcompanyById(Number(route.params.id)).then(response => {
   company.value = response.data.data
 })
 
-const loading = ref(false)
+
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

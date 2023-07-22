@@ -26,13 +26,17 @@ const companyStore = useCompanystore()
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
   const refInputEl = ref<HTMLElement>()
-
+    const loading = ref(false)
+    
 
   watch(() => company.value.name, newValue => {
   company.value.slug = newValue.toLowerCase().replace(/\s+/g, '-')
 })
 
 const uploadNewImage = (i: any) => {
+
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -41,11 +45,14 @@ const uploadNewImage = (i: any) => {
   fd.append('folder', 'other')
   companyStore.uploadImage(fd).then((response: any) => {
     company.value.image = response?.data.path_file
+    loading.value = false
   })
 }
 
 
 const uploadFile = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -53,12 +60,12 @@ const uploadFile = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   companyStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data)
+    loading.value = false
     company.value.icon = response?.data.path_file
   })
 }
 
-const loading = ref(false)
+
 const router = useRouter()
 
 const onSubmit = () => {

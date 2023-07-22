@@ -23,10 +23,13 @@ const refInputEl = ref<HTMLElement>()
 
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
-
+  const loading = ref(false)
 
 
 const uploadNewImage = (i: any) => {
+
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -34,7 +37,7 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   authorStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+   loading.value = false
     author.value.image = response?.data.path_file
   })
 }
@@ -42,7 +45,7 @@ const uploadNewImage = (i: any) => {
 
 
 const router = useRouter()
-const loading = ref(false)
+
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

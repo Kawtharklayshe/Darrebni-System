@@ -21,6 +21,7 @@ const setting = ref<settingData>({
 })
 
 
+
 const uploadNewImage = (i: any) => {
   const file = i.target.files[0]
 
@@ -29,7 +30,7 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   authorStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+  
     // author.value.image = response?.data.path_file
   })
 }

@@ -35,7 +35,14 @@ const ebook = ref<ebookData>({
 
 })
 
+const loading = ref(false)
+
+
+
 const uploadFile = (i: any) => {
+  
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -43,6 +50,7 @@ const uploadFile = (i: any) => {
   fd.append('file', file)
   fd.append('folder', 'other')
   courseStore.uploadFile(fd).then((response: any) => {
+    loading.value = false
     ebook.value.file = response?.data
   })
 }
@@ -116,6 +124,9 @@ watchEffect(() => {
 // uploadFirstImage function
 
 const uploadNewImage = (i: any) => {
+
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -123,13 +134,13 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   ebookStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+    loading.value = false
     ebook.value.image = response?.data.path_file
   })
 }
 
 const router = useRouter()
-const loading = ref(false)
+
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

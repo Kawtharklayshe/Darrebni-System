@@ -56,27 +56,13 @@ const FetchCategory = () => {
 }
 const refInputE2 = ref<HTMLElement>()
 
-const uploadFirstImage = (i: any) => {
-  console.log('uploadFirstImage')
-
-  const file = i.target.files[0]
-
-  const fd = new FormData()
-
-  fd.append('image', file)
-  fd.append('folder', 'other')
-  blogStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response.data.path_file)
-    blog.value.cover = response.data.path_file
-  })
-}
-
-
+const loading = ref(false)
 
 // uploadFirstImage function
 
-
 const uploadNewImage = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -84,11 +70,27 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   blogStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+    loading.value = false
     blog.value.image = response?.data.path_file
   })
 }
 
+
+
+const uploadFirstImage = (i: any) => {
+  loading.value = true
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  blogStore.uploadImage(fd).then((response: any) => {
+    loading.value = false
+    blog.value.cover = response.data.path_file
+  })
+}
 
 blogStore.fetchblogById(Number(route.params.id)).then(response => {
   console.log(response.data.data)
@@ -100,7 +102,7 @@ watchEffect(() => {
 
 })
 
-const loading = ref(false)
+
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

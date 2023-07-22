@@ -50,9 +50,10 @@ const refForm = ref<VForm>()
 const route = useRoute()
 const sectionstore = usesectionstore()
 
-
+const loading = ref(false)
 
 const uploadNewImage = (i: any) => {
+  loading.value = true
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -60,12 +61,13 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   sectionStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+    loading.value = false
     section.value.image = response?.data.path_file
   })
 }
 
 const uploadFile = (i: any) => {
+  loading.value = true
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -74,6 +76,7 @@ const uploadFile = (i: any) => {
   fd.append('folder', 'other')
   courseStore.uploadFile(fd).then((response: any) => {
     section.value.file = response?.data
+    loading.value = false
   })
 }
 
@@ -84,7 +87,7 @@ sectionStore.fetchsectionById(Number(route.params.id)).then(response => {
 })
 const typeList = ref([])
 
-const loading = ref(false)
+
 sectionStore.fetchTypes(
     {
       page_size: 10000,
@@ -183,7 +186,7 @@ const onSubmit = () => {
 
                   <VTextField
                     v-model="section.btn"
-                    :rules="[requiredValidator]"
+                  
                     label="btn "
 
                     style="width: 20.9rem;"
@@ -196,7 +199,7 @@ const onSubmit = () => {
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VTextField
                     v-model="section.btn_url"
-                    :rules="[requiredValidator]"
+                  
                     label="Btn Url "
 
                     style="width: 20.9rem;"

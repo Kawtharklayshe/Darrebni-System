@@ -50,7 +50,12 @@ const FetchCourse = () => {
   })
 }
 
+const loading = ref(false)
+
+
 const uploadFile = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -58,7 +63,7 @@ const uploadFile = (i: any) => {
   fd.append('file', file)
   fd.append('folder', 'assignment')
   coursestore.uploadFile(fd).then((response: any) => {
-    console.log('res', response?.data)
+    loading.value = false
     assignment.value.file = response?.data
   })
 }
@@ -99,7 +104,6 @@ watchEffect(() => {
   fetchLesson(assignment.value.course_id)
 })
 
-const loading = ref(false)
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

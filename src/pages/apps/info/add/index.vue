@@ -30,6 +30,10 @@ const section = ref<sectionData>({
 
 })
 
+
+const loading = ref(false)
+
+
 const uploadFile = (i: any) => {
   const file = i.target.files[0]
 
@@ -48,19 +52,13 @@ const refInputEl = ref<HTMLElement>()
 
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
-const categoryList = ref([])
-const levelList = ref([])
-const authorList = ref([])
 
-const statusList = ref([
-  { title: 'draft', id: 'draft' },
-  { title: 'active', id: 'active' },
-  { title: 'canceled', id: 'canceled' },
-])
 
 // uploadFirstImage function
 
 const uploadNewImage = (i: any) => {
+  loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -68,13 +66,13 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   sectionStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+    loading.value = false
     section.value.image = response?.data.path_file
   })
 }
 
 const router = useRouter()
-const loading = ref(false)
+
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
