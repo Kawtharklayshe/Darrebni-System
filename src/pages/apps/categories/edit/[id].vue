@@ -60,7 +60,7 @@ const fd = new FormData()
 
 fd.append('image', file)
 fd.append('folder', 'other')
-categoriesstore.uploadImage(fd).then((response: any) => {
+newsStore.uploadImage(fd).then((response: any) => {
   loading.value = false
   categories.value.image = response?.data.path_file
 })
@@ -75,7 +75,7 @@ const uploadFile = (i: any) => {
 
   fd.append('image', file)
   fd.append('folder', 'other')
-  categoriesstore.uploadImage(fd).then((response: any) => {
+  newsStore.uploadImage(fd).then((response: any) => {
   loading.value = false
     categories.value.icon = response?.data.path_file
   })
@@ -88,7 +88,7 @@ companystore.fetchcompany(
 
   },
 ).then(response => {
-  console.log(response.data)
+
   companyList.value = response.data.data
 }).catch(error => {
   console.log(error)
@@ -101,14 +101,14 @@ newsStore.fetchcategories(
 
     },
   ).then(response => {
-    console.log(response.data)
+
     categoryList.value = response.data.data
   }).catch(error => {
     console.log(error)
   })
 
 newsStore.fetchcategoriesById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+
   categories.value = response.data.data
 })
 

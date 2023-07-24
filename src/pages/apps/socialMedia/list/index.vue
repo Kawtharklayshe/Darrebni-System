@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-
 import { usesocialMediastore } from '@/views/apps/socialMedia/usesocialMediastore'
 
 // 👉 Store
@@ -13,18 +11,15 @@ const totalPage = ref(1)
 const totalsocialMedias = ref(0)
 const socialMedias = ref<any[]>({})
 
-
-
 const FetchData = () => {
   socialMediastore.fetchsocialMedia(
     {
       page_size: rowPerPage.value,
       page: currentPage.value,
 
-  
     },
   ).then(response => {
-    console.log(response.data.data)
+    // .data)
     socialMedias.value = response.data.data.data
 
     totalPage.value = response.data.data.last_page
@@ -33,10 +28,6 @@ const FetchData = () => {
     console.log(error)
   })
 }
-
-
-
-
 
 const deleteLang = (id: number) => {
   swal({
@@ -49,7 +40,7 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      socialMediastore.DeletesocialMedia( id).then(response => {
+      socialMediastore.DeletesocialMedia(id).then(response => {
         swal({
           title: ' Deleted ',
           icon: 'success',
@@ -82,8 +73,6 @@ watchEffect(() => {
   FetchData()
 })
 
-
-
 // 👉 watching current page
 watchEffect(() => {
   if (currentPage.value > totalPage.value)
@@ -100,12 +89,7 @@ const paginationData = computed(() => {
 </script>
 
 <template>
-  <VCard
-
-    id="invoice-list"
-  >
-    
-
+  <VCard id="invoice-list">
     <VDivider />
 
     <!-- SECTION Table -->
@@ -121,10 +105,7 @@ const paginationData = computed(() => {
             Name
           </th>
 
-          <th
-            scope="col"
-          
-          >
+          <th scope="col">
             url
           </th>
 
@@ -146,16 +127,12 @@ const paginationData = computed(() => {
             class="text-center"
             style="font-size:20px"
           >
-          <!-- <span class="fab fa-linkedin-in" > </span> -->
+            <!-- <span class="fab fa-linkedin-in" > </span> -->
             <span :class="item.icon" />
-        
           </td>
 
-
           <!-- 👉 Trending -->
-          <td
-            class="text-c"
-          >
+          <td class="text-c">
             <VChip
               color="primary"
               label
@@ -164,9 +141,7 @@ const paginationData = computed(() => {
             </VChip>
           </td>
 
-          <td
-            class="text-c"
-          >
+          <td class="text-c">
             {{ item.url }}
           </td>
           <!-- 👉 Actions -->

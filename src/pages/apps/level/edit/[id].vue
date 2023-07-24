@@ -3,15 +3,13 @@
 
 import { VForm } from 'vuetify/components'
 import type { levelData } from '@/views/apps/level/types'
-import { requiredValidator } from '@validators'
 import { uselevelstore } from '@/views/apps/level/uselevelstore'
-import Editor from '@tinymce/tinymce-vue'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const level = ref<levelData>({
 
   name: '',
-
 
 })
 
@@ -24,10 +22,9 @@ const router = useRouter()
 const refForm = ref<VForm>()
 
 newsStore.fetchlevelById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   level.value = response.data.data
 })
-
 
 const loading = ref(false)
 
@@ -77,7 +74,7 @@ const onSubmit = () => {
         cols="9"
         md="9"
       >
-        <VCard  title="Update Level">
+        <VCard title="Update Level">
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <!-- 👉 Left Content -->
 
@@ -94,11 +91,9 @@ const onSubmit = () => {
                   />
                 </span>
               </h6>
-          
-
             </div>
           </VCardText>
-    
+
           <VCardText>
             <!-- 👉 Send Invoice -->
             <VBtn

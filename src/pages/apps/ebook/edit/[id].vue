@@ -1,15 +1,14 @@
 <script lang="ts" setup>
-
 // Type: Invoice data
 
-import { VForm } from 'vuetify/components'
-import type { ebookData } from '@/views/apps/ebook/types'
-import { requiredValidator } from '@validators'
-import { useEbookstore } from '@/views/apps/ebook/useEbookstore'
-import { useCategoriesEbookstore } from '@/views/apps/category-ebook/useCategoriesstore'
-import { useAuthorstore } from '@/views/apps/author/useAuthorstore'
-import { useCourseStore } from '@/views/apps/course/useCoursestore'
 import Editor from '@tinymce/tinymce-vue'
+import { VForm } from 'vuetify/components'
+import { useAuthorstore } from '@/views/apps/author/useAuthorstore'
+import { useCategoriesEbookstore } from '@/views/apps/category-ebook/useCategoriesstore'
+import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import type { ebookData } from '@/views/apps/ebook/types'
+import { useEbookstore } from '@/views/apps/ebook/useEbookstore'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const ebook = ref<ebookData>({
@@ -62,7 +61,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     categoryList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -74,13 +73,15 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     levelList.value = response.data.data
   }).catch(error => {
     console.log(error)
   })
 }
+
 const authorStore = useAuthorstore()
+
 const Fetchebook = () => {
   authorStore.fetchauthor(
     {
@@ -89,7 +90,7 @@ const Fetchebook = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     authorList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -114,7 +115,6 @@ const uploadNewImage = (i: any) => {
 }
 
 const uploadFile = (i: any) => {
-
   loading.value = true
 
   const file = i.target.files[0]
@@ -129,9 +129,8 @@ const uploadFile = (i: any) => {
   })
 }
 
-
 ebookStore.fetchebookById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   ebook.value = response.data.data
 })
 
@@ -139,8 +138,6 @@ watchEffect(() => {
   FetchCategory()
   Fetchebook()
 })
-
-
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -281,12 +278,15 @@ const onSubmit = () => {
               <VTextField
                 label="file"
                 type="file"
-              
+
                 style="width: 20.9rem;"
 
                 @input="uploadFile"
               />
-              <a target="_blank" :href="`https://b2b.prokoders.space/${ebook.file}`">click to show file</a>
+              <a
+                target="_blank"
+                :href="`https://b2b.prokoders.space/${ebook.file}`"
+              >click to show file</a>
             </div>
           </VCardText>
           <VCardText>

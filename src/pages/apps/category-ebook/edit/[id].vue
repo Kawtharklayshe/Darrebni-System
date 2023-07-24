@@ -3,9 +3,8 @@
 
 import { VForm } from 'vuetify/components'
 import type { categoriesData } from '@/views/apps/category-ebook/types'
-import { requiredValidator } from '@validators'
 import { useCategoriesEbookstore } from '@/views/apps/category-ebook/useCategoriesstore'
-import Editor from '@tinymce/tinymce-vue'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const categories = ref<categoriesData>({
@@ -27,10 +26,9 @@ const router = useRouter()
 const refForm = ref<VForm>()
 
 newsStore.fetchcategoriesById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   categories.value = response.data.data
 })
-
 
 const loading = ref(false)
 
@@ -77,10 +75,10 @@ const onSubmit = () => {
     <VRow>
       <!-- 👉 InvoiceEditable -->
       <VCol
-      cols="12"
+        cols="12"
         md="12"
       >
-        <VCard  title="Update Category">
+        <VCard title="Update Category">
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <!-- 👉 Left Content -->
 
@@ -97,14 +95,12 @@ const onSubmit = () => {
                   />
                 </span>
               </h6>
-          
-            
-            
+
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
                   <VTextField
                     v-model="categories.icon"
-                    
+
                     label="Icon "
 
                     style="width: 15.9rem;"
@@ -115,7 +111,7 @@ const onSubmit = () => {
                 <span>
                   <VTextField
                     v-model="categories.slug"
-                    
+
                     label="slug "
 
                     style="width: 15.9rem;"
@@ -124,7 +120,7 @@ const onSubmit = () => {
               </h6>
             </div>
           </VCardText>
-        
+
           <VCardText>
             <!-- 👉 Send Invoice -->
             <VBtn

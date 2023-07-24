@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { VForm } from 'vuetify/components'
 
-import { requiredValidator } from '@validators'
 import { usetrainerstore } from '@/views/apps/trainer/usetrainerstore'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 
@@ -25,7 +25,7 @@ trainerstore.fetchtrainer(
 
   },
 ).then(response => {
-  console.log(response.data)
+  // )
   response.data.data.forEach(el => {
     tagList.value.push({
       title: `${el.first_name} ${el.last_name}`,
@@ -60,6 +60,7 @@ const onSubmit = () => {
           },
           buttonsStyling: false,
         })
+
         // nextTick(() => {
         //   // router.push('/apps/tag/list')
         //   loading.value = false

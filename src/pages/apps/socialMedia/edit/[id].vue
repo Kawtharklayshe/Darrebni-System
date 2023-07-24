@@ -3,9 +3,8 @@
 // Type: Invoice data
 
 import { VForm } from 'vuetify/components'
-import type { newsData } from '@/views/apps/socialMedia/types'
-import { requiredValidator } from '@validators'
 import { usesocialMediastore } from '@/views/apps/socialMedia/usesocialMediastore'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const socialMedia = ref<socialMediaData>({
@@ -26,13 +25,12 @@ const isFormValid = ref(false)
 const refInputEl = ref<HTMLElement>()
 const refForm = ref<VForm>()
 
-
 const SocialList = ref([
   'FaceBook', 'Twitter', 'Instagram', 'WhatsApp', 'LinkedIn',
 ])
 
 newsStore.fetchsocialMediaById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   socialMedia.value = response.data.data
 })
 
@@ -164,4 +162,3 @@ const onSubmit = () => {
     </VRow>
   </VForm>
 </template>
-

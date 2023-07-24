@@ -3,9 +3,8 @@
 
 import { VForm } from 'vuetify/components'
 import type { languageData } from '@/views/apps/languages/types'
-import { requiredValidator } from '@validators'
 import { uselanguagesstore } from '@/views/apps/languages/uselanguagesstore'
-
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const language = ref<languageData>({
@@ -27,10 +26,9 @@ const router = useRouter()
 const refForm = ref<VForm>()
 
 newsStore.fetchlanguageById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   language.value = response.data.data
 })
-
 
 const loading = ref(false)
 
@@ -80,7 +78,7 @@ const onSubmit = () => {
         cols="9"
         md="9"
       >
-        <VCard  title="Update Language">
+        <VCard title="Update Language">
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <!-- 👉 Left Content -->
 
@@ -97,14 +95,12 @@ const onSubmit = () => {
                   />
                 </span>
               </h6>
-          
-            
-            
+
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
                   <VTextField
                     v-model="language.icon"
-                    
+
                     label="Icon "
 
                     style="width: 15.9rem;"
@@ -113,16 +109,16 @@ const onSubmit = () => {
               </h6>
             </div>
           </VCardText>
-          <VCardText >
+          <VCardText>
             <!-- <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
-              <VTextField
-                    v-model="language.code"
-                    
-                    label="code "
+            <VTextField
+              v-model="language.code"
 
-                    style="width: 15.9rem;"
-                  />
-</VCardText>
+              label="code "
+
+              style="width: 15.9rem;"
+            />
+          </VCardText>
           <VCardText>
             <!-- 👉 Send Invoice -->
             <VBtn

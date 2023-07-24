@@ -23,6 +23,14 @@ export const useServiceStore = defineStore('ServiceStore', {
           .catch(error => reject(error))
       })
     },
+    uploadImage( payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('upload/image', payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+          .then(response => resolve(response.data))
+          .catch(error => reject(error))
+      })
+    },
     updateService(Service: ServiceData) {
    
 

@@ -53,14 +53,14 @@ coursestore.fetchcourse(
 
   },
 ).then(response => {
-  console.log(response.data)
+
   courseList.value = response.data.data.data
 }).catch(error => {
   console.log(error)
 })
 
 bootcampStore.fetchbootcampById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+
   bootcamp.value = response.data.data
 })
 

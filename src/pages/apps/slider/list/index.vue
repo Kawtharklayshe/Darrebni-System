@@ -32,7 +32,7 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     sliders.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page
@@ -126,14 +126,15 @@ const paginationData = computed(() => {
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-          <!-- <th scope="col">
+          <!--
+            <th scope="col">
             type
-          </th> -->
+            </th>
+          -->
 
           <th scope="col">
             Title
           </th>
-
 
           <th scope="col">
             ACTIONS
@@ -149,7 +150,7 @@ const paginationData = computed(() => {
           style="height: 3.75rem;"
         >
           <!-- 👉 Id -->
-       
+
           <!-- 👉 Trending -->
           <td class="text-c">
             <VChip
@@ -160,7 +161,6 @@ const paginationData = computed(() => {
             </VChip>
           </td>
 
-         
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
             <VBtn

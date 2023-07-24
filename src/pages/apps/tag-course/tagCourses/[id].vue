@@ -26,7 +26,7 @@ coursestore.fetchcourse(
 
   },
 ).then(response => {
-  console.log(response.data)
+  // )
   courseList.value = response.data.data.data
 }).catch(error => {
   console.log(error)

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { VForm } from 'vuetify/components'
 import Editor from '@tinymce/tinymce-vue'
-import type { ebookData } from '@/views/apps/ebook/types'
-import { requiredValidator } from '@validators'
-import { useEbookstore } from '@/views/apps/ebook/useEbookstore'
+import { VForm } from 'vuetify/components'
 import { useCategoriesEbookstore } from '@/views/apps/category-ebook/useCategoriesstore'
+import type { ebookData } from '@/views/apps/ebook/types'
+import { useEbookstore } from '@/views/apps/ebook/useEbookstore'
+import { requiredValidator } from '@validators'
 
 import { useAuthorstore } from '@/views/apps/author/useAuthorstore'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
@@ -37,10 +37,7 @@ const ebook = ref<ebookData>({
 
 const loading = ref(false)
 
-
-
 const uploadFile = (i: any) => {
-  
   loading.value = true
 
   const file = i.target.files[0]
@@ -81,7 +78,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     categoryList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -93,7 +90,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     levelList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -108,7 +105,7 @@ const Fetchebook = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     authorList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -124,7 +121,6 @@ watchEffect(() => {
 // uploadFirstImage function
 
 const uploadNewImage = (i: any) => {
-
   loading.value = true
 
   const file = i.target.files[0]
@@ -140,7 +136,6 @@ const uploadNewImage = (i: any) => {
 }
 
 const router = useRouter()
-
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

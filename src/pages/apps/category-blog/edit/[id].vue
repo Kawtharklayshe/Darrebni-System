@@ -29,7 +29,7 @@ const refForm = ref<VForm>()
 const refInputEl = ref<HTMLElement>()
 
 newsStore.fetchcategoriesById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+
   categories.value = response.data.data
 })
 const loading = ref(false)

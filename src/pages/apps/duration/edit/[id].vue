@@ -1,14 +1,10 @@
 <script lang="ts" setup>
-
 // Type: Invoice data
 
 import { VForm } from 'vuetify/components'
 import type { durationData } from '@/views/apps/duration/types'
-import { requiredValidator } from '@validators'
 import { usedurationstore } from '@/views/apps/duration/usedurationstore'
-
-
-
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const duration = ref<durationData>({
@@ -20,24 +16,19 @@ const duration = ref<durationData>({
 
 })
 
-
-
-
 const swal = inject('$swal')
-
 
 const isFormValid = ref(false)
 
 const refForm = ref<VForm>()
 const route = useRoute()
 const durationstore = usedurationstore()
-const typeList = ref([{id:'!=',name:'!='}, {id:'>',name:'>'}, {id:'<',name:'<'}, {id:'=',name:'='}])
+const typeList = ref([{ id: '!=', name: '!=' }, { id: '>', name: '>' }, { id: '<', name: '<' }, { id: '=', name: '=' }])
 
 durationstore.fetchdurationById(route.params.id).then(response => {
-  console.log(response.data.data)
+  // .data)
   duration.value = response.data.data
 })
-
 
 const loading = ref(false)
 
@@ -87,7 +78,7 @@ const onSubmit = () => {
         cols="12"
         md="12"
       >
-      <VCard title="Update duration">
+        <VCard title="Update duration">
           <!-- duration Header -->
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <div class="d-flex  mb-6">
@@ -137,7 +128,7 @@ const onSubmit = () => {
                   <VTextField
                     v-model="duration.number2"
                     label="Number 2 "
-                  type="number"
+                    type="number"
 
                     style="width: 20.9rem;"
                   />
@@ -166,7 +157,6 @@ const onSubmit = () => {
               }"
             />
           </VCardText>
-
 
           <VCardText>
             <!-- 👉 Send Invoice -->

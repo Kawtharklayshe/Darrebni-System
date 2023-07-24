@@ -18,36 +18,30 @@ const courseList = ref([])
 const isDialogVisible = ref(false)
 
 const FetchData = () => {
- 
- isDialogVisible.value = true
+  isDialogVisible.value = true
 
- partnerstore.fetchpartner(
-   {
-   
-     page_size: rowPerPage.value,
-     page: currentPage.value,
+  partnerstore.fetchpartner(
+    {
 
-   },
- ).then(response => {
-   console.log(response.data)
-   partners.value = response.data.data
-   isDialogVisible.value = false
-   totalPage.value = response.data.last_page
-   totalpartners.value = response.data.total
- }).catch(error => {
-   console.log(error)
- })
+      page_size: rowPerPage.value,
+      page: currentPage.value,
+
+    },
+  ).then(response => {
+    // )
+    partners.value = response.data.data
+    isDialogVisible.value = false
+    totalPage.value = response.data.last_page
+    totalpartners.value = response.data.total
+  }).catch(error => {
+    console.log(error)
+  })
 }
 
 // 👉 Fetch categoriess
 watchEffect(() => {
   FetchData()
 })
-
-
-
-
-
 
 const deleteLang = (id: number) => {
   swal({
@@ -128,8 +122,6 @@ const paginationData = computed(() => {
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-       
-
           <th scope="col">
             Name
           </th>
@@ -148,7 +140,6 @@ const paginationData = computed(() => {
           style="height: 3.75rem;"
         >
           <!-- 👉 Id -->
-        
 
           <!-- 👉 Trending -->
           <td class="text-c">

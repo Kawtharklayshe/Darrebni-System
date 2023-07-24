@@ -2,14 +2,13 @@
 import Editor from '@tinymce/tinymce-vue'
 import { VForm } from 'vuetify/components'
 
-import { SmartTagz } from 'smart-tagz'
-import 'smart-tagz/dist/smart-tagz.css'
 import { useCategoriesstore } from '@/views/apps/categories/useCategoriesstore'
 import { useCompanystore } from '@/views/apps/company/useCompanystore'
 import type { courseData } from '@/views/apps/course/types'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
 import { uselanguagesstore } from '@/views/apps/languages/uselanguagesstore'
 import { requiredValidator } from '@validators'
+import 'smart-tagz/dist/smart-tagz.css'
 
 // 👉 Default Blank Data
 
@@ -36,10 +35,10 @@ const course = ref<courseData>({
   video: '',
   file: '',
   youtube_url: '',
-  
-  small_text:'',
+
+  small_text: '',
   languages: [],
- 
+
   seo: {
     title: '',
     author: '',
@@ -51,6 +50,7 @@ const course = ref<courseData>({
   company_category_id: null,
 
 })
+
 const LangsList = ref([])
 
 const languagestore = uselanguagesstore()
@@ -65,6 +65,7 @@ languagestore.fetchlanguage(
 }).catch(error => {
   console.log(error)
 })
+
 const tags = ref([])
 
 watch(() => course.value.name, newValue => {
@@ -104,7 +105,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     categoryList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -116,7 +117,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     levelList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -132,7 +133,7 @@ const FetchCourse = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -144,6 +145,7 @@ watchEffect(() => {
   FetchCategory()
   FetchCourse()
 })
+
 const loading = ref(false)
 
 // uploadFirstImage function
@@ -163,7 +165,6 @@ const uploadFirstImage = (i: any) => {
 }
 
 const uploadNewImage = (i: any) => {
-
   loading.value = true
 
   const file = i.target.files[0]
@@ -173,13 +174,12 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'course')
   courseStore.uploadImage(fd).then((response: any) => {
-     loading.value = false
+    loading.value = false
     course.value.image = response?.data.path_file
   })
 }
 
 const uploadSeoImage = (i: any) => {
-
   loading.value = true
 
   const file = i.target.files[0]
@@ -189,7 +189,7 @@ const uploadSeoImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'course')
   courseStore.uploadImage(fd).then((response: any) => {
-     loading.value = false
+    loading.value = false
     course.value.seo.og_image = response?.data.path_file
   })
 }
@@ -204,7 +204,7 @@ const uploadVideo = (i: any) => {
   fd.append('video', file)
   fd.append('folder', 'course')
   courseStore.uploadVideo(fd).then((response: any) => {
-     loading.value = false
+    loading.value = false
     course.value.video = response?.data.path_file
   })
 }
@@ -229,7 +229,6 @@ const router = useRouter()
 const smarttag = ref(null)
 
 const onSubmit = () => {
- 
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
       console.log('course', course)
@@ -338,7 +337,7 @@ const onSubmit = () => {
                     item-title="name"
                     item-value="id"
                     clearable
-    clear-icon="tabler-x"
+                    clear-icon="tabler-x"
                     label="Select Status"
                     style="width: 20.9rem;"
                   />
@@ -353,7 +352,7 @@ const onSubmit = () => {
                     v-model="course.languages"
                     :items="LangsList"
                     clearable
-    clear-icon="tabler-x"
+                    clear-icon="tabler-x"
                     item-title="name"
                     item-value="id"
                     label="Select Lnaguages"
@@ -396,7 +395,7 @@ const onSubmit = () => {
                   v-model="course.company_category_id"
                   :items="courseList"
                   clearable
-    clear-icon="tabler-x"
+                  clear-icon="tabler-x"
                   label="Select Company"
                   item-title="name"
                   item-value="id"
@@ -411,7 +410,7 @@ const onSubmit = () => {
                   :items="categoryList"
                   :rules="[requiredValidator]"
                   clearable
-    clear-icon="tabler-x"
+                  clear-icon="tabler-x"
                   item-title="name"
                   item-value="id"
                   label="Select Category"
@@ -474,7 +473,7 @@ const onSubmit = () => {
                     <span>
                       <VTextField
                         v-model="course.first_image_alt"
-                     
+
                         label="First Image alt text "
 
                         style="width: 20.9rem;"
@@ -522,7 +521,7 @@ const onSubmit = () => {
                     <span>
                       <VTextField
                         v-model="course.alt"
-                      
+
                         label="alt text "
 
                         style="width: 20.9rem;"
@@ -593,16 +592,12 @@ const onSubmit = () => {
           </VCardText>
           <VDivider />
           <VCardText>
-           
             <VTextarea
-                label="Small Text"
-                v-model="course.small_text"
-           
-                density="compact"
-                
-              
-              />
-           
+              v-model="course.small_text"
+              label="Small Text"
+
+              density="compact"
+            />
           </VCardText>
           <VDivider />
           <VCardText>
@@ -709,7 +704,6 @@ const onSubmit = () => {
                   <VTextField
                     v-model="course.seo.title"
                     label="Seo Title "
-                   
 
                     style="width: 20.9rem;"
                   />
@@ -731,17 +725,19 @@ const onSubmit = () => {
             </div>
             <VCardText>
               <label> SEO Keyword</label>
-              <!-- {{ course.seo.keyword }}
-              {{ tags }}
-              course.seo.keyword
-              <SmartTagz
+              <!--
+                {{ course.seo.keyword }}
+                {{ tags }}
+                course.seo.keyword
+                <SmartTagz
                 ref="smarttag"
                 :tags="tags"
                 input-placeholder="Select Countries ..."
                 :default-tags="tags"
                 :read-only="false"
                 @click="handleTagsUpdated"
-              /> -->
+                />
+              -->
               <Editor
                 v-model="course.seo.keyword"
 

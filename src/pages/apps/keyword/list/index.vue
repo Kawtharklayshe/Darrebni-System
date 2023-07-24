@@ -32,7 +32,7 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     keywords.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page
@@ -126,13 +126,10 @@ const paginationData = computed(() => {
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-        
-
           <th scope="col">
             Name
           </th>
 
-        
           <th scope="col">
             ACTIONS
           </th>
@@ -147,7 +144,6 @@ const paginationData = computed(() => {
           style="height: 3.75rem;"
         >
           <!-- 👉 Id -->
-         
 
           <!-- 👉 Trending -->
           <td class="text-c">

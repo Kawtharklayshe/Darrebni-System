@@ -36,7 +36,7 @@ const FetchCourse = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -53,7 +53,7 @@ const isFormValid = ref(false)
 const refForm = ref<VForm>()
 
 quizStore.fetchquizById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   quiz.value = response.data.data
 })
 
@@ -66,7 +66,7 @@ const fetchlevel = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     levelList.value = response.data.data
   }).catch(error => {
     console.log(error)

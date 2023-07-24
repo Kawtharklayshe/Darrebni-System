@@ -43,7 +43,7 @@ const FetchCourse = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -51,7 +51,6 @@ const FetchCourse = () => {
 }
 
 const loading = ref(false)
-
 
 const uploadFile = (i: any) => {
   loading.value = true
@@ -78,7 +77,7 @@ const isFormValid = ref(false)
 const refForm = ref<VForm>()
 
 assignmentStore.fetchassignmentById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   assignment.value = response.data.data
 })
 
@@ -91,7 +90,7 @@ const fetchLesson = id => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     lessonList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -103,7 +102,6 @@ watchEffect(() => {
   FetchCourse()
   fetchLesson(assignment.value.course_id)
 })
-
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {

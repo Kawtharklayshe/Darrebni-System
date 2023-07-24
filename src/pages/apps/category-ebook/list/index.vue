@@ -32,7 +32,7 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     categoriess.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page
@@ -133,8 +133,6 @@ const paginationData = computed(() => {
           <th scope="col">
             Name
           </th>
-
-        
 
           <th scope="col">
             ACTIONS

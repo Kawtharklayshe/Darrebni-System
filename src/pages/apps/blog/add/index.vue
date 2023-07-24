@@ -40,7 +40,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+ 
     categoryList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -52,7 +52,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+ 
     levelList.value = response.data.data
   }).catch(error => {
     console.log(error)

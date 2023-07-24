@@ -32,7 +32,7 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     languages.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page
@@ -197,7 +197,6 @@ const paginationData = computed(() => {
                 size="22"
                 icon="tabler-link"
               />
-           
             </VBtn>
 
             <VBtn

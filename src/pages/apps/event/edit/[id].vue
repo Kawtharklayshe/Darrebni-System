@@ -1,13 +1,12 @@
 <script lang="ts" setup>
-
 // Type: Invoice data
 
 import { VForm } from 'vuetify/components'
+import Editor from '@tinymce/tinymce-vue'
 import type { eventData } from '@/views/apps/event/types'
 
 import { useEventstore } from '@/views/apps/event/useEventstore'
 import { dateRangeValidator, requiredValidator } from '@validators'
-import Editor from '@tinymce/tinymce-vue'
 
 // 👉 Default Blank Data
 const event = ref<eventData>({
@@ -27,11 +26,10 @@ const event = ref<eventData>({
 const swal = inject('$swal')
 
 const refInputEl = ref<HTMLElement>()
-  const eventStore = useEventstore()
-
+const eventStore = useEventstore()
 
 const statusList = ref([
-{ name: 'publish', id: 'publish' },
+  { name: 'publish', id: 'publish' },
   { name: 'hide', id: 'hide' },
   { name: 'draft', id: 'draft' },
 ])
@@ -58,13 +56,10 @@ const uploadNewImage = (i: any) => {
   })
 }
 
-
 eventStore.fetcheventById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   event.value = response.data.data
 })
-
-
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -162,7 +157,7 @@ const onSubmit = () => {
           </VCardText>
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <!-- 👉 Left Content -->
-            
+
             <!-- 👉 Right Content -->
 
             <!-- 👉 Invoice Id -->
@@ -197,7 +192,7 @@ const onSubmit = () => {
               </h6>
             </div>
           </VCardText>
-          
+
           <VCardText>
             <VRow>
               <VCol cols="3">
@@ -234,18 +229,18 @@ const onSubmit = () => {
                   >
                 </div>
                 <p class="text-body-1 mb-0 mt-5">
-                    <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
-                    <span>
-                      <VTextField
-                        v-model="event.alt"
-                       
-                        label=" alt text "
+                  <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                  <span>
+                    <VTextField
+                      v-model="event.alt"
 
-                        style="width: 20.9rem;"
-                      />
-                    </span>
-                    <!-- </h6> -->
-                  </p>
+                      label=" alt text "
+
+                      style="width: 20.9rem;"
+                    />
+                  </span>
+                  <!-- </h6> -->
+                </p>
               </VCol>
             </VRow>
           </VCardText>

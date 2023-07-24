@@ -3,7 +3,6 @@ import { VForm } from 'vuetify/components'
 import { usetagstore } from '@/views/apps/tag/usetagstore'
 import { requiredValidator } from '@validators'
 
-
 // 👉 Default Blank Data
 
 const tagCourse = ref<any>({
@@ -11,7 +10,6 @@ const tagCourse = ref<any>({
   tag_ids: [],
 
 })
-
 
 const tagCoursestore = usetagstore()
 
@@ -26,7 +24,7 @@ tagCoursestore.fetchtag(
 
   },
 ).then(response => {
-  console.log(response.data)
+  // )
   tagList.value = response.data.data
 }).catch(error => {
   console.log(error)
@@ -35,7 +33,7 @@ tagCoursestore.fetchtag(
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
 
-const router =  useRoute()
+const router = useRoute()
 const loading = ref(false)
 
 const onSubmit = () => {
@@ -110,7 +108,6 @@ const onSubmit = () => {
                 />
               </h6>
             </div>
-          
           </VCardText>
 
           <VCardText>

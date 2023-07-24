@@ -32,7 +32,7 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     courses.value = response.data.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.data.last_page
@@ -194,7 +194,6 @@ const paginationData = computed(() => {
                 size="22"
                 icon="tabler-link"
               />
-           
             </VBtn>
             <VBtn
               icon
@@ -207,7 +206,6 @@ const paginationData = computed(() => {
                 size="22"
                 icon="tabler-users"
               />
-              
             </VBtn>
             <VBtn
               icon
@@ -220,7 +218,6 @@ const paginationData = computed(() => {
                 size="22"
                 icon="tabler-ad"
               />
-              
             </VBtn>
             <VBtn
               icon

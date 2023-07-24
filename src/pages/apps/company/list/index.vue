@@ -32,7 +32,7 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     companys.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page

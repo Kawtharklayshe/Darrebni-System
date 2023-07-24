@@ -46,7 +46,7 @@ const FetchCourse = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -62,7 +62,7 @@ const fetchlevel = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     levelList.value = response.data.data
   }).catch(error => {
     console.log(error)

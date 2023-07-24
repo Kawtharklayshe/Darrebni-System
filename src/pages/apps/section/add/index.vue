@@ -1,14 +1,13 @@
 <script lang="ts" setup>
-import { VForm } from 'vuetify/components'
 import Editor from '@tinymce/tinymce-vue'
+import { VForm } from 'vuetify/components'
 import type { sectionData } from '@/views/apps/section/types'
-import { requiredValidator } from '@validators'
 import { usesectionstore } from '@/views/apps/section/usesectionstore'
+import { requiredValidator } from '@validators'
 
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
 
 // 👉 Default Blank Data
-
 
 const courseStore = useCourseStore()
 
@@ -21,12 +20,11 @@ const section = ref<sectionData>({
 
   btn: '',
 
-  btn_url:  '',
+  btn_url: '',
 
   image: 'img/deflate.jpg',
 
   alt: '',
-
 
 })
 
@@ -73,17 +71,17 @@ const router = useRouter()
 const typeList = ref([])
 
 sectionStore.fetchTypes(
-    {
-      page_size: 10000,
-      page: 1,
+  {
+    page_size: 10000,
+    page: 1,
 
-    },
-  ).then(response => {
-    console.log(response.data)
-    typeList.value = response.data.data
-  }).catch(error => {
-    console.log(error)
-  })
+  },
+).then(response => {
+  // )
+  typeList.value = response.data.data
+}).catch(error => {
+  console.log(error)
+})
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -159,16 +157,16 @@ const onSubmit = () => {
             <div class="d-flex mb-6  me-2 ">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
-                 
+
                   <VSelect
-                  v-model="section.type"
-                  :items="typeList"
-                  :rules="[requiredValidator]"
-                  item-title="name"
-                  item-value="id"
-                  label="Select Type"
-                  style="width: 20.9rem;"
-                />
+                    v-model="section.type"
+                    :items="typeList"
+                    :rules="[requiredValidator]"
+                    item-title="name"
+                    item-value="id"
+                    label="Select Type"
+                    style="width: 20.9rem;"
+                  />
                 </span>
               </h6>
             </div>
@@ -178,7 +176,7 @@ const onSubmit = () => {
 
                   <VTextField
                     v-model="section.btn"
-             
+
                     label="btn "
 
                     style="width: 20.9rem;"
@@ -190,17 +188,16 @@ const onSubmit = () => {
             <div class="d-flex mb-6">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VTextField
-                    v-model="section.btn_url"
-                   
-                    label="Btn Url "
+                  v-model="section.btn_url"
 
-                    style="width: 20.9rem;"
-                  />
+                  label="Btn Url "
+
+                  style="width: 20.9rem;"
+                />
               </h6>
             </div>
-            
           </VCardText>
-       
+
           <VCardText>
             <VRow>
               <VCol cols="6">
@@ -237,18 +234,18 @@ const onSubmit = () => {
                   >
                 </div>
                 <p class="text-body-1 mb-0 mt-5">
-                    <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
-                    <span>
-                      <VTextField
-                        v-model="section.alt"
-                        
-                        label="Image alt text "
+                  <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                  <span>
+                    <VTextField
+                      v-model="section.alt"
 
-                        style="width: 20.9rem;"
-                      />
-                    </span>
-                    <!-- </h6> -->
-                  </p>
+                      label="Image alt text "
+
+                      style="width: 20.9rem;"
+                    />
+                  </span>
+                  <!-- </h6> -->
+                </p>
               </VCol>
             </VRow>
           </VCardText>
@@ -257,13 +254,12 @@ const onSubmit = () => {
           <VCardText>
             <label> description</label>
             <span>
-                      <VTextArea
-                        v-model="section.description"
-                        :rules="[requiredValidator]"
-                        label="description "
-
-                      />
-                    </span>
+              <VTextArea
+                v-model="section.description"
+                :rules="[requiredValidator]"
+                label="description "
+              />
+            </span>
             <Editor
               v-model="section.description"
 

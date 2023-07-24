@@ -2,14 +2,13 @@
 
 // Type: Invoice data
 
+import Editor from '@tinymce/tinymce-vue'
 import { VForm } from 'vuetify/components'
 import type { settingData } from '@/views/apps/setting/types'
-import { requiredValidator } from '@validators'
 import { usesettingstore } from '@/views/apps/setting/usesettingstore'
-
+import { requiredValidator } from '@validators'
 
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
-import Editor from '@tinymce/tinymce-vue'
 
 // 👉 Default Blank Data
 const setting = ref<settingData>({
@@ -20,8 +19,6 @@ const setting = ref<settingData>({
   type: '',
 })
 
-
-
 const uploadNewImage = (i: any) => {
   const file = i.target.files[0]
 
@@ -30,11 +27,10 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   authorStore.uploadImage(fd).then((response: any) => {
-  
+
     // author.value.image = response?.data.path_file
   })
 }
-
 
 const swal = inject('$swal')
 const courseStore = useCourseStore()
@@ -50,24 +46,22 @@ const settingstore = usesettingstore()
 const typeList = ref([])
 
 settingstore.fetchTypes(
-    {
-      page_size: 10000,
-      page: 1,
+  {
+    page_size: 10000,
+    page: 1,
 
-    },
-  ).then(response => {
-    console.log(response.data)
-    typeList.value = response.data.data
-  }).catch(error => {
-    console.log(error)
-  })
-
-
-settingstore.fetchsettingById(route.params.id).then(response => {
-  console.log(response.data.data)
-  setting.value = response.data.data
+  },
+).then(response => {
+  // )
+  typeList.value = response.data.data
+}).catch(error => {
+  console.log(error)
 })
 
+settingstore.fetchsettingById(route.params.id).then(response => {
+  // .data)
+  setting.value = response.data.data
+})
 
 const loading = ref(false)
 
@@ -117,7 +111,7 @@ const onSubmit = () => {
         cols="12"
         md="12"
       >
-      <VCard title="Update setting">
+        <VCard title="Update setting">
           <!-- setting Header -->
 
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
@@ -138,16 +132,16 @@ const onSubmit = () => {
             <div class="d-flex mb-6  me-2 ">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
-                  
+
                   <VSelect
-                  v-model="setting.type"
-                  :items="typeList"
-                  :rules="[requiredValidator]"
-                  item-title="name"
-                  item-value="id"
-                  label="Select Type"
-                  style="width: 20.9rem;"
-                />
+                    v-model="setting.type"
+                    :items="typeList"
+                    :rules="[requiredValidator]"
+                    item-title="name"
+                    item-value="id"
+                    label="Select Type"
+                    style="width: 20.9rem;"
+                  />
                 </span>
               </h6>
             </div>
@@ -156,21 +150,18 @@ const onSubmit = () => {
                 <span>
 
                   <AppDateTimePicker
-                  v-model="setting.date"
+                    v-model="setting.date"
                     label=" Date"
                     :rules="[requiredValidator]"
 
-                    :config=" { enableTime: true, dateFormat: 'Y-m-d H:i'}"
+                    :config=" { enableTime: true, dateFormat: 'Y-m-d H:i' }"
                     style="width: 20rem;"
                     ok-text="OK"
                   />
                 </span>
               </h6>
             </div>
-
-            
           </VCardText>
-    
 
           <VDivider />
           <VCardText>
@@ -192,7 +183,6 @@ const onSubmit = () => {
               }"
             />
           </VCardText>
-
 
           <VCardText>
             <!-- 👉 Send Invoice -->

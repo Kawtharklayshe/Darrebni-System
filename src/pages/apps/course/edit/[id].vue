@@ -92,7 +92,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     categoryList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -104,7 +104,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     levelList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -120,7 +120,7 @@ const FetchCourse = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -146,7 +146,6 @@ const uploadFirstImage = (i: any) => {
 }
 
 const uploadNewImage = (i: any) => {
-
   loading.value = true
 
   const file = i.target.files[0]
@@ -156,13 +155,12 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'course')
   courseStore.uploadImage(fd).then((response: any) => {
-     loading.value = false
+    loading.value = false
     course.value.image = response?.data.path_file
   })
 }
 
 const uploadSeoImage = (i: any) => {
-
   loading.value = true
 
   const file = i.target.files[0]
@@ -172,7 +170,7 @@ const uploadSeoImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'course')
   courseStore.uploadImage(fd).then((response: any) => {
-     loading.value = false
+    loading.value = false
     course.value.seo.og_image = response?.data.path_file
   })
 }
@@ -187,7 +185,7 @@ const uploadVideo = (i: any) => {
   fd.append('video', file)
   fd.append('folder', 'course')
   courseStore.uploadVideo(fd).then((response: any) => {
-     loading.value = false
+    loading.value = false
     course.value.video = response?.data.path_file
   })
 }
@@ -207,9 +205,8 @@ const uploadFile = (i: any) => {
   })
 }
 
-
 courseStore.fetchcourseById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   course.value = response.data.data
 })
 
@@ -217,8 +214,6 @@ watchEffect(() => {
   FetchCategory()
   FetchCourse()
 })
-
-
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -321,7 +316,7 @@ const onSubmit = () => {
                     item-title="name"
                     item-value="id"
                     clearable
-    clear-icon="tabler-x"
+                    clear-icon="tabler-x"
                     label="Select Status"
                     style="width: 20.9rem;"
                   />
@@ -335,9 +330,9 @@ const onSubmit = () => {
                   <VSelect
                     v-model="course.languages"
                     clearable
-    clear-icon="tabler-x"
+                    clear-icon="tabler-x"
                     :items="LangsList"
-                  
+
                     item-title="name"
                     item-value="id"
                     label="Select Lnaguages"
@@ -380,7 +375,7 @@ const onSubmit = () => {
                   v-model="course.company_category_id"
                   :items="courseList"
                   clearable
-    clear-icon="tabler-x"
+                  clear-icon="tabler-x"
                   label="Select Company"
                   item-title="name"
                   item-value="id"
@@ -395,7 +390,7 @@ const onSubmit = () => {
                   :items="categoryList"
                   :rules="[requiredValidator]"
                   clearable
-    clear-icon="tabler-x"
+                  clear-icon="tabler-x"
                   item-title="name"
                   item-value="id"
                   label="Select Category"
@@ -579,17 +574,13 @@ const onSubmit = () => {
             -->
             <VDivider />
             <VCardText>
-           
-           <VTextarea
-               label="Small Text"
-               v-model="course.small_text"
-         
-               density="compact"
-               
-             
-             />
-          
-         </VCardText>
+              <VTextarea
+                v-model="course.small_text"
+                label="Small Text"
+
+                density="compact"
+              />
+            </VCardText>
           </VCardText>
           <VDivider />
           <VCardText>
@@ -695,7 +686,6 @@ const onSubmit = () => {
                   <VTextField
                     v-model="course.seo.title"
                     label="Seo Title "
-                   
 
                     style="width: 20.9rem;"
                   />

@@ -52,7 +52,7 @@ categoriesstore.fetchcategories(
 
   },
 ).then(response => {
-  console.log(response.data)
+
   categoryList.value = response.data.data
 }).catch(error => {
   console.log(error)
@@ -64,7 +64,7 @@ companystore.fetchcompany(
 
   },
 ).then(response => {
-  console.log(response.data)
+
   companyList.value = response.data.data
 }).catch(error => {
   console.log(error)

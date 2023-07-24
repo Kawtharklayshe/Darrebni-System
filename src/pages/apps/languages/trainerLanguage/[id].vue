@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { VForm } from 'vuetify/components'
 
-import { requiredValidator } from '@validators'
 import { usetrainerstore } from '@/views/apps/trainer/usetrainerstore'
-
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 
@@ -12,7 +11,6 @@ const tagCourse = ref<any>({
   trainer_ids: [],
 
 })
-
 
 const trainerstore = usetrainerstore()
 
@@ -27,7 +25,7 @@ trainerstore.fetchtag(
 
   },
 ).then(response => {
-  console.log(response.data)
+  // )
   tagList.value = response.data.data
 }).catch(error => {
   console.log(error)
@@ -36,7 +34,7 @@ trainerstore.fetchtag(
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
 
-const router =  useRoute()
+const router = useRoute()
 const loading = ref(false)
 
 const onSubmit = () => {
@@ -111,7 +109,6 @@ const onSubmit = () => {
                 />
               </h6>
             </div>
-          
           </VCardText>
 
           <VCardText>

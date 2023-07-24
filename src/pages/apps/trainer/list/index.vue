@@ -32,7 +32,7 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     trainers.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page
@@ -137,7 +137,6 @@ const paginationData = computed(() => {
             email
           </th>
 
-
           <th scope="col">
             ACTIONS
           </th>
@@ -169,7 +168,6 @@ const paginationData = computed(() => {
             {{ item.email }}
           </td>
 
-         
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
             <VBtn

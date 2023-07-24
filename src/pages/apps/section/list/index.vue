@@ -32,7 +32,7 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     sections.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page
@@ -134,7 +134,6 @@ const paginationData = computed(() => {
             Title
           </th>
 
-
           <th scope="col">
             ACTIONS
           </th>
@@ -163,7 +162,6 @@ const paginationData = computed(() => {
             </VChip>
           </td>
 
-         
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
             <VBtn

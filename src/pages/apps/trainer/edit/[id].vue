@@ -4,12 +4,10 @@
 
 import { VForm } from 'vuetify/components'
 import type { trainerData } from '@/views/apps/trainer/types'
-import { emailValidator, passwordValidator, requiredValidator }  from '@validators'
 import { usetrainerstore } from '@/views/apps/trainer/usetrainerstore'
-
+import { emailValidator, requiredValidator } from '@validators'
 
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
-import Editor from '@tinymce/tinymce-vue'
 
 // 👉 Default Blank Data
 const trainer = ref<trainerData>({
@@ -21,13 +19,14 @@ const trainer = ref<trainerData>({
 
   btn: '',
 
-  btn_url:  '',
+  btn_url: '',
 
   image: 'img/deflate.jpg',
 
   alt: '',
 
 })
+
 const GenderList = ref([{ name: 'Male', id: 'male' }, { name: 'Female', id: 'female' }])
 const swal = inject('$swal')
 const courseStore = useCourseStore()
@@ -52,7 +51,6 @@ const trainerstore = usetrainerstore()
 
 const loading = ref(false)
 
-
 const uploadNewImage = (i: any) => {
   loading.value = true
 
@@ -63,13 +61,14 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   trainerStore.uploadImage(fd).then((response: any) => {
-   loading.value = false
+    loading.value = false
     trainer.value.image = response?.data.path_file
   })
 }
 
 const uploadFile = (i: any) => {
   loading.value = true
+
   const file = i.target.files[0]
 
   const fd = new FormData()
@@ -82,14 +81,10 @@ const uploadFile = (i: any) => {
   })
 }
 
-
 trainerStore.fetchtrainerById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   trainer.value = response.data.data
 })
-
-
-
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -131,7 +126,7 @@ const onSubmit = () => {
     v-model="isFormValid"
     @submit.prevent="onSubmit"
   >
-  <VRow>
+    <VRow>
       <!-- 👉 InvoiceEditable -->
       <VCol
         cols="12"
@@ -168,7 +163,7 @@ const onSubmit = () => {
                 </span>
               </h6>
             </div>
-           
+
             <div class="d-flex mb-6 ">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VSelect
@@ -209,7 +204,7 @@ const onSubmit = () => {
 
               <!-- </h6> -->
             </div>
-            
+
             <div class="d-flex mb-6">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VTextField
@@ -221,7 +216,6 @@ const onSubmit = () => {
                 />
               </h6>
             </div>
-            
           </VCardText>
 
           <VCardText>
@@ -309,6 +303,7 @@ const onSubmit = () => {
     </VRow>
   </VForm>
 </template>
+
 <style>
 .mb-date {
     margin-bottom: 62px !important;

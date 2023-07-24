@@ -47,7 +47,6 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
     categoryList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -93,7 +92,7 @@ const uploadFirstImage = (i: any) => {
 }
 
 blogStore.fetchblogById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+
   blog.value = response.data.data
 })
 

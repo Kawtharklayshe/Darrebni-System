@@ -1,10 +1,11 @@
 <script lang="ts" setup>
+
 // Type: Invoice data
 
-import { VForm } from 'vuetify/components'
 import Editor from '@tinymce/tinymce-vue'
-import { emailValidator, requiredValidator } from '@validators'
+import { VForm } from 'vuetify/components'
 import { useinfostore } from '@/views/apps/info/useinfostore'
+import { emailValidator, requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const info = ref<any>({
@@ -98,7 +99,7 @@ const uploadNewImage = (i: any) => {
 }
 
 infoStore.fetchinfoById(Number(route.params.id)).then(response => {
-  console.log(response.data)
+  // )
   info.value = response.data
 })
 

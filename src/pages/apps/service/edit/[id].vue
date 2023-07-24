@@ -4,17 +4,16 @@
 
 import { VForm } from 'vuetify/components'
 import type { ServiceData } from '@/views/apps/service/types'
-import { requiredValidator } from '@validators'
 import { useServiceStore } from '@/views/apps/service/useServiceStore'
-
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const Service = ref<ServiceData>({
- 
+
   name: '',
 
   description: '',
- 
+
   summary: '',
   icon: '',
 
@@ -28,16 +27,13 @@ const isFormValid = ref(false)
 const refForm = ref<VForm>()
 
 const LanguagesList = ref([])
-const photo = ref('@/assets/images/avatars/avatar-14.png')
+const photo = ref('@images/avatars/avatar-14.png')
 const refInputEl = ref<HTMLElement>()
 
 ServiceStore.fetchServiceById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   Service.value = response.data.data
-
-
 })
-
 
 const loading = ref(false)
 
@@ -45,7 +41,7 @@ const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
       loading.value = true
-    
+
       ServiceStore.updateService(Service.value).then(res => {
         swal({
           title: ' Updated ',
@@ -90,9 +86,7 @@ const onSubmit = () => {
         <VCard>
           <!-- SECTION Header -->
           <!--  eslint-disable vue/no-mutating-props -->
-          
 
-         
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <!-- 👉 Left Content -->
 
@@ -113,7 +107,7 @@ const onSubmit = () => {
                     />
                   </span>
                 </h6>
-              
+
                 <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
                   <span>
                     <VTextField
@@ -129,7 +123,7 @@ const onSubmit = () => {
               </div>
             </div>
           </VCardText>
-         <VCardText class="  ">
+          <VCardText class="  ">
             <div class="row">
               <div class="d-flex align-center mb-6 col-sm-12 col-xl-12">
                 <VTextarea
@@ -137,13 +131,12 @@ const onSubmit = () => {
                   label="description"
                   :rules="[requiredValidator]"
                   density="compact"
-                 
                 />
               </div>
             </div>
           </VCardText>
           <VDivider />
-         <VCardText class="  ">
+          <VCardText class="  ">
             <div class="row">
               <div class="d-flex align-center mb-6 col-sm-12 col-xl-12">
                 <VTextarea
@@ -151,7 +144,6 @@ const onSubmit = () => {
                   label="summary"
                   :rules="[requiredValidator]"
                   density="compact"
-                 
                 />
               </div>
             </div>
@@ -187,4 +179,3 @@ const onSubmit = () => {
     </VRow>
   </VForm>
 </template>
-

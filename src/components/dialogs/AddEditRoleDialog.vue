@@ -39,7 +39,7 @@ const coursestore = useCourseStore()
 const permissions = ref<Permission[]>([])
 
 coursestore.fetchPermission().then(response => {
-  console.log(response.data)
+
   permissions.value = response.data
 })
 

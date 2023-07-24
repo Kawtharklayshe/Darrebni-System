@@ -2,7 +2,6 @@
 
 // Type: Invoice data
 
-import Editor from '@tinymce/tinymce-vue'
 import { VForm } from 'vuetify/components'
 import { useCourseStore } from '@/views/apps/course/useCoursestore'
 import type { partnerData } from '@/views/apps/partner/types'
@@ -12,7 +11,6 @@ import { requiredValidator } from '@validators'
 // 👉 Default Blank Data
 const partner = ref<partnerData>({
   name: '',
-
 
   alt: '',
 
@@ -35,7 +33,7 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   coursestore.uploadImage(fd).then((response: any) => {
-       loading.value = false
+    loading.value = false
     partner.value.image = response?.data.path_file
   })
 }
@@ -46,17 +44,14 @@ const refInputEl = ref<HTMLElement>()
 
 const refInputE3 = ref<HTMLElement>()
 
-
 const isFormValid = ref(false)
 
 const refForm = ref<VForm>()
 
 partnerStore.fetchpartnerById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   partner.value = response.data.data
 })
-
-
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -122,61 +117,56 @@ const onSubmit = () => {
               </h6>
             </div>
 
-          
+            <VRow>
+              <VCol cols="6">
+                <VCard title=" image ">
+                  <VCardText>
+                    <!-- 👉 Upload Photo -->
+                    <VAvatar
+                      rounded
+                      :size="200"
+                      class="me-6"
+                      :image="`https://b2b.prokoders.space/${partner.image}`"
+                    />
+                  </VCardText>
+                </VCard>
+                <div class="d-flex flex-wrap gap-2 mt-10">
+                  <VBtn
+                    color="primary"
+                    @click="refInputEl?.click()"
+                  >
+                    <VIcon
+                      icon="tabler-cloud-upload"
+                      class="d-sm-none"
+                    />
+                    <span class="d-none d-sm-block">Upload new photo</span>
+                  </VBtn>
 
-       
-              <VRow>
-                <VCol cols="6">
-                  <VCard title=" image ">
-                    <VCardText>
-                      <!-- 👉 Upload Photo -->
-                      <VAvatar
-                        rounded
-                        :size="200"
-                        class="me-6"
-                        :image="`https://b2b.prokoders.space/${partner.image}`"
-                      />
-                    </VCardText>
-                  </VCard>
-                  <div class="d-flex flex-wrap gap-2 mt-10">
-                    <VBtn
-                      color="primary"
-                      @click="refInputEl?.click()"
-                    >
-                      <VIcon
-                        icon="tabler-cloud-upload"
-                        class="d-sm-none"
-                      />
-                      <span class="d-none d-sm-block">Upload new photo</span>
-                    </VBtn>
+                  <input
+                    ref="refInputEl"
+                    type="file"
+                    name="file"
+                    accept=".jpeg,.png,.jpg,GIF"
+                    hidden
+                    @input="uploadNewImage"
+                  >
+                </div>
 
-                    <input
-                      ref="refInputEl"
-                      type="file"
-                      name="file"
-                      accept=".jpeg,.png,.jpg,GIF"
-                      hidden
-                      @input="uploadNewImage"
-                    >
-                  </div>
+                <p class="text-body-1 mb-0 mt-5">
+                  <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                  <span>
+                    <VTextField
+                      v-model="partner.alt"
 
-                  <p class="text-body-1 mb-0 mt-5">
-                    <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
-                    <span>
-                      <VTextField
-                        v-model="partner.alt"
-                    
-                        label=" alt text "
+                      label=" alt text "
 
-                        style="width: 20.9rem;"
-                      />
-                    </span>
-                    <!-- </h6> -->
-                  </p>
-                </VCol>
-                
-              </VRow>
-         
+                      style="width: 20.9rem;"
+                    />
+                  </span>
+                  <!-- </h6> -->
+                </p>
+              </VCol>
+            </VRow>
           </VCardText>
 
           <VCardText>

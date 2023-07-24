@@ -28,7 +28,7 @@ const router = useRouter()
 const refForm = ref<VForm>()
 
 authorStore.fetchauthorById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  
   author.value = response.data.data
 })
 const loading = ref(false)

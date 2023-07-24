@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { VForm } from 'vuetify/components'
 
-import { requiredValidator } from '@validators'
 import { useBlogstore } from '@/views/apps/blog/useBlogstore'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 
@@ -25,8 +25,8 @@ blogstore.fetchblog(
 
   },
 ).then(response => {
-  console.log(response.data)
-  blogList.value=response.data.data
+  // )
+  blogList.value = response.data.data
 
   // blogList.value = response.data.data
 }).catch(error => {

@@ -11,7 +11,6 @@ const totalPage = ref(1)
 const totalevents = ref(0)
 const events = ref<any[]>({})
 
-
 const isDialogVisible = ref(false)
 
 watch(isDialogVisible, value => {
@@ -32,7 +31,7 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     events.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page

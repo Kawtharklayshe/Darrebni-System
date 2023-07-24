@@ -26,7 +26,7 @@ const FetchCourse = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -51,7 +51,7 @@ const FetchData = id => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     lessons.value = response.data.data
     isDialogVisible.value = false
     totalPage.value = response.data.last_page

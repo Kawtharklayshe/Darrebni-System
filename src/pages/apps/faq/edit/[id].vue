@@ -1,17 +1,16 @@
 <script lang="ts" setup>
+
 // Type: Invoice data
 
 import { VForm } from 'vuetify/components'
-import type { faqsData } from '@/views/apps/faqs/types'
-import { requiredValidator } from '@validators'
 import { usefaqsstore } from '@/views/apps/faq/usefaqsstore'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const faqs = ref<any>({
- 
+
   answer: '',
   question: '',
-
 
 })
 
@@ -23,22 +22,14 @@ const isFormValid = ref(false)
 
 const refForm = ref<VForm>()
 
-
-
 faqsStore.fetchfaqsById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   faqs.value = response.data.data
-
-
 })
-
-
-
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-   
       faqsStore.updatefaqs(faqs.value).then(res => {
         swal({
           title: ' Updated ',
@@ -79,10 +70,6 @@ const onSubmit = () => {
         md="9"
       >
         <VCard>
-      
-
-      
-
           <VCardText class="d-flex flex-wrap   flex-column flex-sm-row gap-4">
             <div class="row">
               <div class="d-flex align-center mb-6">
@@ -110,11 +97,11 @@ const onSubmit = () => {
               </div>
             </div>
           </VCardText>
-       
+
           <VCardText>
             <!-- 👉 Send Invoice -->
             <VBtn
-              
+
               prepend-icon="tabler-send"
               type="submit"
               class="me-3"
@@ -129,4 +116,3 @@ const onSubmit = () => {
     </VRow>
   </VForm>
 </template>
-

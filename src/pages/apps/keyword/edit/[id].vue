@@ -1,17 +1,16 @@
 <script lang="ts" setup>
+
 // Type: Invoice data
 
 import { VForm } from 'vuetify/components'
 import type { keywordData } from '@/views/apps/keyword/types'
-import { requiredValidator } from '@validators'
 import { usekeywordstore } from '@/views/apps/keyword/usekeywordstore'
-import Editor from '@tinymce/tinymce-vue'
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const keyword = ref<keywordData>({
 
   name: '',
-
 
 })
 
@@ -24,10 +23,9 @@ const router = useRouter()
 const refForm = ref<VForm>()
 
 newsStore.fetchkeywordById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   keyword.value = response.data.data
 })
-
 
 const loading = ref(false)
 
@@ -77,7 +75,7 @@ const onSubmit = () => {
         cols="9"
         md="9"
       >
-        <VCard  title="Update keyword">
+        <VCard title="Update keyword">
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <!-- 👉 Left Content -->
 
@@ -94,11 +92,9 @@ const onSubmit = () => {
                   />
                 </span>
               </h6>
-          
-
             </div>
           </VCardText>
-    
+
           <VCardText>
             <!-- 👉 Send Invoice -->
             <VBtn

@@ -39,7 +39,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -97,21 +97,18 @@ const refInputEl = ref<HTMLElement>()
 const refInputE2 = ref<HTMLElement>()
 const refInputE3 = ref<HTMLElement>()
 
-
 const isFormValid = ref(false)
 
 const refForm = ref<VForm>()
 
 lessonStore.fetchlessonById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   lesson.value = response.data.data
 })
 
 watchEffect(() => {
   FetchCategory()
 })
-
-
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -246,7 +243,7 @@ const onSubmit = () => {
                     <span>
                       <VTextField
                         v-model="lesson.alt"
-                      
+
                         label=" alt text "
 
                         style="width: 20.9rem;"

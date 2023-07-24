@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-
 import { usefaqsstore } from '@/views/apps/faq/usefaqsstore'
 
 // 👉 Store
@@ -17,7 +15,6 @@ const selectedLangs = ref(1)
 
 const LanguagesList = ref([])
 
-
 const FetchData = () => {
   faqsstore.fetchfaqs(
     {
@@ -27,7 +24,7 @@ const FetchData = () => {
       language_id: selectedLangs.value,
     },
   ).then(response => {
-    console.log(response.data.data)
+    // .data)
     faqss.value = response.data.data
 
     // totalPage.value = response.data.data.last_page
@@ -36,8 +33,6 @@ const FetchData = () => {
     console.log(error)
   })
 }
-
-
 
 const deleteLang = (id: number) => {
   swal({
@@ -83,8 +78,6 @@ watchEffect(() => {
   FetchData()
 })
 
-
-
 // 👉 watching current page
 watchEffect(() => {
   if (currentPage.value > totalPage.value)
@@ -101,12 +94,7 @@ const paginationData = computed(() => {
 </script>
 
 <template>
-  <VCard
-
-    id="invoice-list"
-  >
-   
-
+  <VCard id="invoice-list">
     <VDivider />
 
     <!-- SECTION Table -->
@@ -114,13 +102,9 @@ const paginationData = computed(() => {
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
-         
-
           <th scope="col">
             question
           </th>
-
-         
 
           <th scope="col">
             ACTIONS
@@ -135,12 +119,8 @@ const paginationData = computed(() => {
           :key="item.id"
           style="height: 3.75rem;"
         >
-        
-
           <!-- 👉 Trending -->
-          <td
-            class="text-c"
-          >
+          <td class="text-c">
             <VChip
               color="primary"
               label

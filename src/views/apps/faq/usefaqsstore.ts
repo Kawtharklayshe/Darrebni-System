@@ -34,9 +34,9 @@ export const usefaqsstore = defineStore('faqsStore', {
     },
 
     // Deletefaqs
-    Deletefaqs( faqs) {
+    Deletefaqs(faqs) {
       return new Promise((resolve, reject) => {
-        axios.get(`/faq/delete/${faqs}`).then(response =>
+        axios.delete(`/faq/delete/${faqs}`).then(response =>
 
           resolve(response))
           .catch(error => reject(error))

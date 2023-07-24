@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import type { ServiceData } from '@/views/apps/service/types'
 import { useServiceStore } from '@/views/apps/service/useServiceStore'
 
@@ -26,18 +25,16 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data.data)
+    // .data)
     services.value = response.data.data
     isDialogVisible.value = false
+
     // totalPage.value = response.data.data.last_page
     // totalservices.value = response.data.data.total
   }).catch(error => {
     console.log(error)
   })
 }
-
-
-
 
 const deleteLang = (id: number) => {
   swal({
@@ -50,31 +47,31 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      ServiceStore.DeleteService( id).then(response => {
-    swal({
-      title: ' Deleted ',
-      icon: 'success',
-      customClass: {
-        confirmButton: 'btn btn-primary',
-      },
-      buttonsStyling: false,
-    })
-    FetchData()
-  })
-    .catch(error => {
-      swal({
-        title: '',
-        text: `${error.response.data.message}`,
-        icon: 'error',
-        confirmButtonText: 'ok',
-        customClass: {
-          confirmButton: 'btn btn-primary',
-        },
-        buttonsStyling: false,
+      ServiceStore.DeleteService(id).then(response => {
+        swal({
+          title: ' Deleted ',
+          icon: 'success',
+          customClass: {
+            confirmButton: 'btn btn-primary',
+          },
+          buttonsStyling: false,
+        })
+        FetchData()
       })
-    })
-}
+        .catch(error => {
+          swal({
+            title: '',
+            text: `${error.response.data.message}`,
+            icon: 'error',
+            confirmButtonText: 'ok',
+            customClass: {
+              confirmButton: 'btn btn-primary',
+            },
+            buttonsStyling: false,
+          })
+        })
     }
+  },
   )
 }
 
@@ -82,8 +79,6 @@ const deleteLang = (id: number) => {
 watchEffect(() => {
   FetchData()
 })
-
-
 
 // 👉 watching current page
 watchEffect(() => {
@@ -101,12 +96,8 @@ const paginationData = computed(() => {
 </script>
 
 <template>
-  <VCard
-
-    id="invoice-list"
-  >
-   
-  <VDialog
+  <VCard id="invoice-list">
+    <VDialog
       v-model="isDialogVisible"
       width="300"
     >
@@ -142,7 +133,7 @@ const paginationData = computed(() => {
             scope="col"
             class="text-center"
           >
-          Summary
+            Summary
           </th>
 
           <th scope="col">
@@ -161,15 +152,13 @@ const paginationData = computed(() => {
           <!-- 👉 Id -->
           <td>
             <!-- <RouterLink :to="{ name: 'apps-invoice-preview-id', params: { id: blog.id } }"> -->
-     
-              {{ item.code }}
+
+            {{ item.code }}
             <!-- </RouterLink> -->
           </td>
 
           <!-- 👉 TITLE -->
-          <td
-            class="text-c"
-          >
+          <td class="text-c">
             <VChip
               color="primary"
               label
@@ -177,16 +166,13 @@ const paginationData = computed(() => {
               {{ item.name }}
             </VChip>
           </td>
-          <td
-            class="text-center"
-          >
+          <td class="text-center">
             <span> {{ item.summary }}</span>
             <!-- <span :class="item.slogan" /> -->
           </td>
 
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
-           
             <VBtn
               icon
               size="x-small"
@@ -243,7 +229,7 @@ const paginationData = computed(() => {
 
       <!-- 👉 Pagination -->
       <VPagination
-      v-model="currentPage"
+        v-model="currentPage"
         size="small"
         :total-visible="5"
         :length="totalPage"

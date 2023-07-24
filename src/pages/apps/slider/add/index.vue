@@ -131,7 +131,7 @@ const onSubmit = () => {
 
                   <VTextField
                     v-model="slider.btn"
-                    :rules="[requiredValidator]"
+                    
                     label="btn "
 
                     style="width: 20.9rem;"
@@ -144,7 +144,7 @@ const onSubmit = () => {
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VTextField
                   v-model="slider.btn_url"
-                  :rules="[requiredValidator]"
+                  
                   label="Btn Url "
 
                   style="width: 20.9rem;"
@@ -157,7 +157,7 @@ const onSubmit = () => {
 
                   <VTextField
                     v-model="slider.btn2"
-                    :rules="[requiredValidator]"
+                    
                     label="btn "
 
                     style="width: 20.9rem;"
@@ -170,7 +170,7 @@ const onSubmit = () => {
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <VTextField
                   v-model="slider.btn2_url"
-                  :rules="[requiredValidator]"
+                  
                   label="Btn Url "
 
                   style="width: 20.9rem;"

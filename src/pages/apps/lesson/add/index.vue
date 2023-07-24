@@ -52,7 +52,7 @@ const FetchCategory = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -63,7 +63,6 @@ const FetchCategory = () => {
 watchEffect(() => {
   FetchCategory()
 })
-
 
 const loading = ref(false)
 
@@ -115,7 +114,6 @@ const uploadFile = (i: any) => {
 }
 
 const router = useRouter()
-
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -257,7 +255,7 @@ const onSubmit = () => {
                     <span>
                       <VTextField
                         v-model="lesson.alt"
-                    
+
                         label=" alt text "
 
                         style="width: 20.9rem;"

@@ -42,7 +42,7 @@ const FetchCourse = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+   
     courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
@@ -79,7 +79,7 @@ const isFormValid = ref(false)
 const refForm = ref<VForm>()
 
 assignmentStore.fetchassignmentById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+
   assignment.value = response.data.data
 })
 
@@ -92,7 +92,7 @@ const fetchLesson = id => {
 
     },
   ).then(response => {
-    console.log(response.data)
+   
     lessonList.value = response.data.data
   }).catch(error => {
     console.log(error)

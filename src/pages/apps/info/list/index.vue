@@ -32,9 +32,10 @@ const FetchData = () => {
 
     },
   ).then(response => {
-    console.log(response.data)
+    // )
     infos.value = response.data
     isDialogVisible.value = false
+
     // totalPage.value = response.data.data.last_page
     // totalinfos.value = response.data.total
   }).catch(error => {
@@ -134,7 +135,6 @@ const paginationData = computed(() => {
             Title
           </th>
 
-
           <th scope="col">
             ACTIONS
           </th>
@@ -143,10 +143,7 @@ const paginationData = computed(() => {
 
       <!-- 👉 Table Body -->
       <tbody>
-        <tr
-        
-          style="height: 3.75rem;"
-        >
+        <tr style="height: 3.75rem;">
           <!-- 👉 Id -->
           <td class="text-">
             {{ infos.name }}
@@ -159,11 +156,9 @@ const paginationData = computed(() => {
               label
             >
               {{ infos.email }}
-           
             </VChip>
           </td>
 
-         
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
             <VBtn
@@ -179,18 +174,20 @@ const paginationData = computed(() => {
               />
             </VBtn>
 
-            <!-- <VBtn
+            <!--
+              <VBtn
               icon
               variant="text"
               color="error"
               size="x-small"
               @click="deleteLang(infos.id)"
-            >
+              >
               <VIcon
-                :size="22"
-                icon="tabler-trash"
+              :size="22"
+              icon="tabler-trash"
               />
-            </VBtn> -->
+              </VBtn>
+            -->
           </td>
         </tr>
       </tbody>

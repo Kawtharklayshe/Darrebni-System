@@ -3,16 +3,13 @@
 
 import { VForm } from 'vuetify/components'
 import type { tagData } from '@/views/apps/tag/types'
-import { requiredValidator } from '@validators'
 import { usetagstore } from '@/views/apps/tag/usetagstore'
-
+import { requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
 const tag = ref<tagData>({
 
   name: '',
-
-
 
   icon: '',
 
@@ -27,10 +24,9 @@ const router = useRouter()
 const refForm = ref<VForm>()
 
 newsStore.fetchtagById(Number(route.params.id)).then(response => {
-  console.log(response.data.data)
+  // .data)
   tag.value = response.data.data
 })
-
 
 const loading = ref(false)
 
@@ -80,7 +76,7 @@ const onSubmit = () => {
         cols="9"
         md="9"
       >
-        <VCard  title="Update Tag">
+        <VCard title="Update Tag">
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <!-- 👉 Left Content -->
 
@@ -97,14 +93,12 @@ const onSubmit = () => {
                   />
                 </span>
               </h6>
-          
-            
-            
+
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
                   <VTextField
                     v-model="tag.icon"
-                    
+
                     label="Icon "
 
                     style="width: 15.9rem;"
@@ -113,7 +107,7 @@ const onSubmit = () => {
               </h6>
             </div>
           </VCardText>
-      
+
           <VCardText>
             <!-- 👉 Send Invoice -->
             <VBtn
