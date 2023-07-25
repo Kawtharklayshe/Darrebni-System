@@ -3,12 +3,16 @@
 import Editor from '@tinymce/tinymce-vue'
 
 import { VForm } from 'vuetify/components'
-import type { ServiceData } from '@/views/apps/service/types'
+import type { featureData } from '@/views/apps/feature/types'
 import { requiredValidator } from '@validators'
+import { usefeatureStore } from '@/views/apps/feature/usefeatureStore'
 import { useServiceStore } from '@/views/apps/service/useServiceStore'
 
+// 👉 Store
+const ServiceStore = useServiceStore()
+
 // 👉 Default Blank Data
-const Service = ref<ServiceData>({
+const feature = ref<featureData>({
 
   name: '',
 
@@ -16,8 +20,8 @@ const Service = ref<ServiceData>({
 
   summary: '',
   icon: '',
-  slug: '',
-  btn: '',
+  service_id: '',
+
   alt: '',
   image: '',
 
@@ -25,9 +29,26 @@ const Service = ref<ServiceData>({
 
 
 const loading = ref(false)
-const ServiceStore = useServiceStore()
+const featureStore = usefeatureStore()
 const refInputE1=ref()
+const Totalservices =ref([])
 
+ServiceStore.fetchService(
+    {
+      page_size: 1000,
+      page: 1,
+
+    },
+  ).then(response => {
+    // .data)
+    Totalservices.value = response.data.data
+
+
+    // totalPage.value = response.data.data.last_page
+    // totalservices.value = response.data.data.total
+  }).catch(error => {
+    console.log(error)
+  })
 const uploadFirstImage = (i: any) => {
   loading.value = true
 
@@ -37,9 +58,9 @@ const uploadFirstImage = (i: any) => {
 
   fd.append('image', file)
   fd.append('folder', 'other')
-  ServiceStore.uploadImage(fd).then((response: any) => {
+  featureStore.uploadImage(fd).then((response: any) => {
     loading.value = false
-    Service.value.image = response.data.path_file
+    feature.value.image = response.data.path_file
   })
 }
 
@@ -56,9 +77,9 @@ const refForm = ref<VForm>()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('Service', Service)
+      console.log('feature', feature)
       loading.value = true
-      ServiceStore.addService(Service.value).then(res => {
+      featureStore.addfeature(feature.value).then(res => {
         swal({
           title: ' Added ',
           icon: 'success',
@@ -71,7 +92,7 @@ const onSubmit = () => {
           loading.value = false
           refForm.value?.reset()
           refForm.value?.resetValidation()
-          Service.value.language_id = 1
+          feature.value.language_id = 1
         })
       })
         .catch(error => {
@@ -119,7 +140,7 @@ const onSubmit = () => {
                 <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
                   <span>
                     <VTextField
-                      v-model="Service.name"
+                      v-model="feature.name"
                       label="Name"
                       :rules="[requiredValidator]"
 
@@ -128,36 +149,27 @@ const onSubmit = () => {
                     />
                   </span>
                 </h6>
+                <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+
+                  <VSelect
+                    v-model="feature.service_id"
+                    :items="Totalservices"
+                    :rules="[requiredValidator]"
+                    item-title="name"
+                    item-value="id"
+                    clearable
+                    clear-icon="tabler-x"
+                    label="Select Status"
+                    style="width: 20.9rem;"
+                  />
+                </span>
+              </h6>
 
                 <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
                   <span>
                     <VTextField
-                      v-model="Service.slug"
-                      label="slug"
-                      :rules="[requiredValidator]"
-
-                      density="compact"
-                      style="width: 15.9rem;"
-                    />
-                  </span>
-                </h6>
-
-                <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
-                  <span>
-                    <VTextField
-                      v-model="Service.btn"
-                      label="btn"
-                    
-
-                      density="compact"
-                      style="width: 15.9rem;"
-                    />
-                  </span>
-                </h6>
-                <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
-                  <span>
-                    <VTextField
-                      v-model="Service.icon"
+                      v-model="feature.icon"
                       label="icon"
                     
 
@@ -180,7 +192,7 @@ const onSubmit = () => {
                         rounded
                         :size="200"
                         class="me-6"
-                        :image="`https://b2b.prokoders.space/${Service.image}`"
+                        :image="`https://b2b.prokoders.space/${feature.image}`"
                       />
                     </VCardText>
                   </VCard>
@@ -210,7 +222,7 @@ const onSubmit = () => {
                     <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
                     <span>
                       <VTextField
-                        v-model="Service.alt"
+                        v-model="feature.alt"
 
                         label=" Image alt text "
 
@@ -226,7 +238,7 @@ const onSubmit = () => {
           <VCardText class="  ">
             <label> description</label>
             <Editor
-              v-model="Service.description"
+              v-model="feature.description"
 
               :init="{
                 toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
@@ -247,7 +259,7 @@ const onSubmit = () => {
             <label> summary</label>
 
             <Editor
-              v-model="Service.summary"
+              v-model="feature.summary"
 
               :init="{
                 toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',

@@ -126,6 +126,16 @@ export default [
     ],
   },
   {
+    title: 'Feature',
+    icon: { icon: 'tabler-calendar' },
+
+    children: [
+      { title: 'List', to: 'apps-feature-list' },
+      { title: 'Add', to: 'apps-feature-add' },
+    ],
+  },
+
+  {
     title: 'Ebook',
     icon: { icon: 'tabler-calendar' },
 

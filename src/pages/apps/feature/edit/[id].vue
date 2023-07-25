@@ -1,78 +1,85 @@
 <script lang="ts" setup>
+
 // Type: Invoice data
-import Editor from '@tinymce/tinymce-vue'
 
 import { VForm } from 'vuetify/components'
-import type { ServiceData } from '@/views/apps/service/types'
+import type { featureData } from '@/views/apps/feature/types'
+import { usefeatureStore } from '@/views/apps/feature/usefeatureStore'
 import { requiredValidator } from '@validators'
 import { useServiceStore } from '@/views/apps/service/useServiceStore'
 
-// 👉 Default Blank Data
-const Service = ref<ServiceData>({
+// 👉 Store
+const ServiceStore = useServiceStore()
 
+// 👉 Default Blank Data
+const feature = ref<featureData>({
   name: '',
 
-  description: '',
+description: '',
 
-  summary: '',
-  icon: '',
-  slug: '',
-  btn: '',
-  alt: '',
-  image: '',
+summary: '',
+icon: '',
+service_id: '',
+
+alt: '',
+image: '',
 
 })
 
-
-const loading = ref(false)
-const ServiceStore = useServiceStore()
-const refInputE1=ref()
-
-const uploadFirstImage = (i: any) => {
-  loading.value = true
-
-  const file = i.target.files[0]
-
-  const fd = new FormData()
-
-  fd.append('image', file)
-  fd.append('folder', 'other')
-  ServiceStore.uploadImage(fd).then((response: any) => {
-    loading.value = false
-    Service.value.image = response.data.path_file
-  })
-}
-
-
-
+const route = useRoute()
 const swal = inject('$swal')
 
-
+const featureStore = usefeatureStore()
 const isFormValid = ref(false)
 const refForm = ref<VForm>()
 
 
+const Totalservices =ref([])
+
+ServiceStore.fetchService(
+    {
+      page_size: 1000,
+      page: 1,
+
+    },
+  ).then(response => {
+    // .data)
+    Totalservices.value = response.data.data
+
+
+    // totalPage.value = response.data.data.last_page
+    // totalservices.value = response.data.data.total
+  }).catch(error => {
+    console.log(error)
+  })
+
+
+const LanguagesList = ref([])
+const photo = ref('@images/avatars/avatar-14.png')
+const refInputEl = ref<HTMLElement>()
+
+featureStore.fetchfeatureById(Number(route.params.id)).then(response => {
+  // .data)
+  feature.value = response.data.data
+})
+
+const loading = ref(false)
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('Service', Service)
       loading.value = true
-      ServiceStore.addService(Service.value).then(res => {
+
+      featureStore.updatefeature(feature.value).then(res => {
         swal({
-          title: ' Added ',
+          title: ' Updated ',
           icon: 'success',
           customClass: {
             confirmButton: 'btn btn-primary',
           },
           buttonsStyling: false,
         })
-        nextTick(() => {
-          loading.value = false
-          refForm.value?.reset()
-          refForm.value?.resetValidation()
-          Service.value.language_id = 1
-        })
+        loading.value = false
       })
         .catch(error => {
           loading.value = false
@@ -119,7 +126,7 @@ const onSubmit = () => {
                 <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
                   <span>
                     <VTextField
-                      v-model="Service.name"
+                      v-model="feature.name"
                       label="Name"
                       :rules="[requiredValidator]"
 
@@ -128,36 +135,27 @@ const onSubmit = () => {
                     />
                   </span>
                 </h6>
+                <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+
+                  <VSelect
+                    v-model="feature.service_id"
+                    :items="Totalservices"
+                    :rules="[requiredValidator]"
+                    item-title="name"
+                    item-value="id"
+                    clearable
+                    clear-icon="tabler-x"
+                    label="Select Status"
+                    style="width: 20.9rem;"
+                  />
+                </span>
+              </h6>
 
                 <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
                   <span>
                     <VTextField
-                      v-model="Service.slug"
-                      label="slug"
-                      :rules="[requiredValidator]"
-
-                      density="compact"
-                      style="width: 15.9rem;"
-                    />
-                  </span>
-                </h6>
-
-                <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
-                  <span>
-                    <VTextField
-                      v-model="Service.btn"
-                      label="btn"
-                    
-
-                      density="compact"
-                      style="width: 15.9rem;"
-                    />
-                  </span>
-                </h6>
-                <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
-                  <span>
-                    <VTextField
-                      v-model="Service.icon"
+                      v-model="feature.icon"
                       label="icon"
                     
 
@@ -180,7 +178,7 @@ const onSubmit = () => {
                         rounded
                         :size="200"
                         class="me-6"
-                        :image="`https://b2b.prokoders.space/${Service.image}`"
+                        :image="`https://b2b.prokoders.space/${feature.image}`"
                       />
                     </VCardText>
                   </VCard>
@@ -210,7 +208,7 @@ const onSubmit = () => {
                     <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
                     <span>
                       <VTextField
-                        v-model="Service.alt"
+                        v-model="feature.alt"
 
                         label=" Image alt text "
 
@@ -226,7 +224,7 @@ const onSubmit = () => {
           <VCardText class="  ">
             <label> description</label>
             <Editor
-              v-model="Service.description"
+              v-model="feature.description"
 
               :init="{
                 toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
@@ -247,7 +245,7 @@ const onSubmit = () => {
             <label> summary</label>
 
             <Editor
-              v-model="Service.summary"
+              v-model="feature.summary"
 
               :init="{
                 toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',

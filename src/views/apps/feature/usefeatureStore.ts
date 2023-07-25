@@ -1,23 +1,23 @@
 import axios from '@axios'
 import { defineStore } from 'pinia'
-import type { ServiceData } from './types'
+import type { featureData } from './types'
 
-export const useServiceStore = defineStore('ServiceStore', {
+export const usefeatureStore = defineStore('featureStore', {
   actions: {
     // 👉 Fetch all Invoices
-    fetchService(params: any) {
-      return axios.get(`/service/all`, { params })
+    fetchfeature(params: any) {
+      return axios.get(`/feature/all`, { params })
     },
 
     // 👉 Fetch single invoice
-    fetchServiceById(id: number) {
-      return axios.get(`service/${id}`)
+    fetchfeatureById(id: number) {
+      return axios.get(`feature/${id}`)
     },
-    addService(Service: ServiceData) {
-      console.log(Service)
+    addfeature(feature: featureData) {
+      console.log(feature)
 
       return new Promise((resolve, reject) => {
-        axios.post(`service/create`, Service).then(response =>
+        axios.post(`feature/create`, feature).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
@@ -31,11 +31,11 @@ export const useServiceStore = defineStore('ServiceStore', {
           .catch(error => reject(error))
       })
     },
-    updateService(Service: ServiceData) {
+    updatefeature(feature: featureData) {
    
 
       return new Promise((resolve, reject) => {
-        axios.post(`/service/update/${Service.id}`, Service).then(response =>
+        axios.post(`/feature/update/${feature.id}`, feature).then(response =>
 
           resolve(response))
           .catch(error => reject(error))
@@ -43,9 +43,9 @@ export const useServiceStore = defineStore('ServiceStore', {
     },
 
     // DeleteUser
-    DeleteService( service:any) {
+    Deletefeature( feature:any) {
       return new Promise((resolve, reject) => {
-        axios.delete(`/service/delete/${service}`).then(response =>
+        axios.delete(`/feature/delete/${feature}`).then(response =>
 
           resolve(response))
           .catch(error => reject(error))

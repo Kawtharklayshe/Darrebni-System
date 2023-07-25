@@ -14,8 +14,12 @@ export interface ServiceData {
   name: string,
   summary: string,
   icon: string,
+  slug: string,
+  btn: string,
+  alt: string,
+  image: string,
   description: string,
-  
+
 }
 
 // export interface InvoiceParams {

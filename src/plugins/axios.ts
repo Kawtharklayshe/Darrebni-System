@@ -2,7 +2,6 @@ import axios from 'axios'
 
 const token = localStorage.getItem('accessToken')
 
-console.log('token', token)
 
 const axiosIns = axios.create({
   // You can add your headers here
