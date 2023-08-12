@@ -252,50 +252,25 @@ const onSubmit = () => {
 
           <VDivider />
           <VCardText>
-            <label> description</label>
+           
             <span>
-              <VTextArea
+              <VTextarea
                 v-model="section.description"
                 :rules="[requiredValidator]"
                 label="description "
               />
             </span>
-            <Editor
-              v-model="section.description"
-
-              :init="{
-                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                toolbar_sticky: true,
-
-                autosave_ask_before_unload: true,
-                autosave_interval: '30s',
-                autosave_prefix: '{path}{query}-{idd}-',
-                autosave_restore_when_empty: false,
-                autosave_retention: '2m',
-
-                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-              }"
-            />
+            
           </VCardText>
 
           <VCardText>
-            <label> detail</label>
-            <Editor
-              v-model="section.detail"
-
-              :init="{
-                toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                toolbar_sticky: true,
-
-                autosave_ask_before_unload: true,
-                autosave_interval: '30s',
-                autosave_prefix: '{path}{query}-{idd}-',
-                autosave_restore_when_empty: false,
-                autosave_retention: '2m',
-
-                plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-              }"
-            />
+          
+            <VTextarea
+                v-model="section.detail"
+                :rules="[requiredValidator]"
+                label="detail "
+              />
+       
           </VCardText>
 
           <VDivider />

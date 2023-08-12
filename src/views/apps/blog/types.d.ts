@@ -13,7 +13,14 @@ export interface blogData {
   cover?: string,
   alt?: string,
 image: string,
+seo:{
+  title: string,
+  author: string,
 
+  description: string,
+  keyword: string,
+  og_image: string,
+},
 
 blog_category_id: number|null,
   

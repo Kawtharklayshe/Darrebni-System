@@ -1,36 +1,41 @@
 <script setup lang="ts">
-import type { ServiceData } from '@/views/apps/service/types'
-import { useServiceStore } from '@/views/apps/service/useServiceStore'
+import { useadsstore } from '@/views/apps/ads/useadsstore'
 
 // 👉 Store
-const ServiceStore = useServiceStore()
+const adsstore = useadsstore()
 const swal = inject('$swal')
 
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalservices = ref(0)
-const services = ref<ServiceData[]>({})
-
-const LanguagesList = ref([])
+const totaladss = ref(0)
+const adss = ref<any[]>({})
 
 const isDialogVisible = ref(false)
 
+watch(isDialogVisible, value => {
+  if (!value)
+    return
+
+  setTimeout(() => {
+    isDialogVisible.value = false
+  }, 4000)
+})
+
 const FetchData = () => {
   isDialogVisible.value = true
-  ServiceStore.fetchService(
+  adsstore.fetchads(
     {
       page_size: rowPerPage.value,
       page: currentPage.value,
 
     },
   ).then(response => {
-    // .data)
-    services.value = response.data.data
+    // )
+    adss.value = response.data.data
     isDialogVisible.value = false
-
-    // totalPage.value = response.data.data.last_page
-    // totalservices.value = response.data.data.total
+    totalPage.value = response.data.last_page
+    totaladss.value = response.data.total
   }).catch(error => {
     console.log(error)
   })
@@ -47,7 +52,7 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      ServiceStore.DeleteService(id).then(response => {
+      adsstore.Deleteads(id).then(response => {
         swal({
           title: ' Deleted ',
           icon: 'success',
@@ -75,7 +80,7 @@ const deleteLang = (id: number) => {
   )
 }
 
-// 👉 Fetch services
+// 👉 Fetch adss
 watchEffect(() => {
   FetchData()
 })
@@ -88,10 +93,10 @@ watchEffect(() => {
 
 // 👉 Computing pagination data
 const paginationData = computed(() => {
-  const firstIndex = services.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
-  const lastIndex = services.value.length + ((currentPage.value - 1) * rowPerPage.value)
+  const firstIndex = adss.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
+  const lastIndex = adss.value.length + ((currentPage.value - 1) * rowPerPage.value)
 
-  return `Showing ${firstIndex} to ${lastIndex} of ${totalservices.value} entries`
+  return `Showing ${firstIndex} to ${lastIndex} of ${totaladss.value} entries`
 })
 </script>
 
@@ -114,7 +119,6 @@ const paginationData = computed(() => {
         </VCardText>
       </VCard>
     </VDialog>
-    <VDivider />
 
     <!-- SECTION Table -->
     <VTable class="text-no-wrap invoice-list-table">
@@ -122,18 +126,15 @@ const paginationData = computed(() => {
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            Icon
+            url
           </th>
 
           <th scope="col">
-            Name
+            Start Date
           </th>
 
-          <th
-            scope="col"
-            class="text-center"
-          >
-          slug
+          <th scope="col">
+            End Date
           </th>
 
           <th scope="col">
@@ -145,32 +146,28 @@ const paginationData = computed(() => {
       <!-- 👉 Table Body -->
       <tbody>
         <tr
-          v-for="item in services"
+          v-for="item in adss"
           :key="item.id"
           style="height: 3.75rem;"
         >
           <!-- 👉 Id -->
-          <td>
-            <!-- <RouterLink :to="{ name: 'apps-invoice-preview-id', params: { id: blog.id } }"> -->
-
-            {{ item.icon }}
-            <!-- </RouterLink> -->
+          <td class="text-">
+            {{ item.url }}
           </td>
 
-          <!-- 👉 TITLE -->
+          <!-- 👉 Trending -->
           <td class="text-c">
             <VChip
               color="primary"
               label
             >
-              {{ item.name }}
+              {{ item.start_date }}
             </VChip>
           </td>
-          <td class="text-center">
-            <span> {{ item.slug }}</span>
-            <!-- <span :class="item.slogan" /> -->
-          </td>
 
+          <td class="text-c">
+            {{ item.end_date }}
+          </td>
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
             <VBtn
@@ -178,7 +175,7 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-service-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-ads-edit-id', params: { id: item.id } }"
             >
               <VIcon
                 size="22"
@@ -203,7 +200,7 @@ const paginationData = computed(() => {
       </tbody>
 
       <!-- 👉 table footer  -->
-      <tfoot v-show="!services">
+      <tfoot v-show="!adss">
         <tr>
           <td
             colspan="8"

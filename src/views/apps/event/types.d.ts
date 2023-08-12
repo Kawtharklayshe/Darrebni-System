@@ -12,7 +12,14 @@ export interface eventData {
   summary:string,
   status:string,
 
-
+  seo:{
+    title: string,
+    author: string,
+  
+    description: string,
+    keyword: string,
+    og_image: string,
+  },
 
 
 image: string,

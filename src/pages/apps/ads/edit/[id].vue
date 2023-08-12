@@ -1,53 +1,55 @@
 <script lang="ts" setup>
-
 // Type: Invoice data
 
-import Editor from '@tinymce/tinymce-vue'
 import { VForm } from 'vuetify/components'
-import type { sectionData } from '@/views/apps/section/types'
-import { usesectionstore } from '@/views/apps/section/usesectionstore'
-import { requiredValidator } from '@validators'
+import Editor from '@tinymce/tinymce-vue'
+import type { adsData } from '@/views/apps/ads/types'
 
-import { useCourseStore } from '@/views/apps/course/useCoursestore'
+import { useadsstore } from '@/views/apps/ads/useadsstore'
+import { dateRangeValidator, requiredValidator } from '@validators'
 
 // 👉 Default Blank Data
-const section = ref<sectionData>({
-  title: '',
-  description: '',
-
-  detail: '',
-  type: '',
-
-  btn: '',
-
-  btn_url: '',
-
+const ads = ref<adsData>({
+  video: '',
+  url: '',
+  alt: '',
   image: 'img/deflate.jpg',
 
-  alt: '',
-
+  end_date: '',
+  start_date: '',
 })
 
+const refInputE4 = ref<HTMLElement>()
 const swal = inject('$swal')
-const courseStore = useCourseStore()
-const sectionStore = usesectionstore()
-const refInputEl = ref<HTMLElement>()
 
-const categoryList = ref([])
-const levelList = ref([])
-const authorList = ref([])
+const refInputE3 = ref<HTMLElement>()
+const refInputEl = ref<HTMLElement>()
+const adsStore = useadsstore()
 
 const statusList = ref([
-  { name: 'draft', id: 'draft' },
   { name: 'publish', id: 'publish' },
-  { name: 'stopped', id: 'stopped' },
+  { name: 'hide', id: 'hide' },
+  { name: 'draft', id: 'draft' },
 ])
+const uploadVideo = (i: any) => {
+  loading.value = true
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('video', file)
+  fd.append('folder', 'other')
+  adsStore.uploadVideo(fd).then((response: any) => {
+    loading.value = false
+    ads.value.video = response?.data.path_file
+  })
+}
 
 const isFormValid = ref(false)
 
 const refForm = ref<VForm>()
 const route = useRoute()
-const sectionstore = usesectionstore()
 
 const loading = ref(false)
 
@@ -60,52 +62,37 @@ const uploadNewImage = (i: any) => {
 
   fd.append('image', file)
   fd.append('folder', 'other')
-  sectionStore.uploadImage(fd).then((response: any) => {
+  adsStore.uploadImage(fd).then((response: any) => {
     loading.value = false
-    section.value.image = response?.data.path_file
+    ads.value.image = response?.data.path_file
   })
 }
 
-const uploadFile = (i: any) => {
+const uploadSeoImage = (i: any) => {
   loading.value = true
 
   const file = i.target.files[0]
 
   const fd = new FormData()
 
-  fd.append('file', file)
+  fd.append('image', file)
   fd.append('folder', 'other')
-  courseStore.uploadFile(fd).then((response: any) => {
-    section.value.file = response?.data
+  adsStore.uploadImage(fd).then((response: any) => {
     loading.value = false
+    ads.value.seo.og_image = response?.data.path_file
   })
 }
 
-sectionStore.fetchsectionById(Number(route.params.id)).then(response => {
+adsStore.fetchadsById(Number(route.params.id)).then(response => {
   // .data)
-  section.value = response.data.data
-})
-
-const typeList = ref([])
-
-sectionStore.fetchTypes(
-  {
-    page_size: 10000,
-    page: 1,
-
-  },
-).then(response => {
-  // )
-  typeList.value = response.data.data
-}).catch(error => {
-  console.log(error)
+  ads.value = response.data.data
 })
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
       loading.value = true
-      sectionStore.updatesection(section.value).then(res => {
+      adsStore.updateads(ads.value).then(res => {
         swal({
           title: ' Updated ',
           icon: 'success',
@@ -115,7 +102,7 @@ const onSubmit = () => {
           buttonsStyling: false,
         })
         loading.value = false
-        router.push('/apps/section/list')
+        router.push('/apps/ads/list')
       })
         .catch(error => {
           loading.value = false
@@ -147,7 +134,7 @@ const onSubmit = () => {
         cols="12"
         md="12"
       >
-        <VCard title="Update section">
+      <VCard title="Update ads">
           <!-- SECTION Header -->
 
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
@@ -155,8 +142,8 @@ const onSubmit = () => {
               <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
                   <VTextField
-                    v-model="section.title"
-                    label="title "
+                    v-model="ads.url"
+                    label="URL "
                     :rules="[requiredValidator]"
 
                     style="width: 20.9rem;"
@@ -165,52 +152,48 @@ const onSubmit = () => {
               </h6>
             </div>
 
-            <div class="d-flex mb-6  me-2 ">
+          </VCardText>
+          <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
+            <!-- 👉 Left Content -->
+            
+            <!-- 👉 Right Content -->
+
+            <!-- 👉 Invoice Id -->
+
+            <div class="d-flex  mb-6">
+              <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+                  <AppDateTimePicker
+                    v-model="ads.start_date"
+                    label="Start Date"
+                    :rules="[requiredValidator, () => dateRangeValidator(ads.start_date, ads.end_date)]"
+
+                    :config=" { enableTime: true, dateFormat: 'Y-m-d H:i', maxDate: maxDateAllowed }"
+                    style="width: 20rem;"
+                    ok-text="OK"
+                  />
+                </span>
+              </h6>
+            </div>
+            <div class="d-flex mb-6">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
                 <span>
-                  <VSelect
-                    v-model="section.type"
-                    :items="typeList"
+                  <AppDateTimePicker
+                    v-model="ads.end_date"
+                    :min="ads.start_date"
                     :rules="[requiredValidator]"
-                    item-title="name"
-                    item-value="id"
-                    label="Select Type"
-                    style="width: 20.9rem;"
+                    label="End Date"
+                    :config=" { enableTime: true, dateFormat: 'Y-m-d H:i', minDate: maxDateAllowed }"
+                    style="width: 20rem;"
                   />
                 </span>
-              </h6>
-            </div>
-            <div class="d-flex mb-6">
-              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
-                <span>
-
-                  <VTextField
-                    v-model="section.btn"
-
-                    label="btn "
-
-                    style="width: 20.9rem;"
-                  />
-                </span>
-              </h6>
-            </div>
-
-            <div class="d-flex mb-6">
-              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
-                <VTextField
-                  v-model="section.btn_url"
-
-                  label="Btn Url "
-
-                  style="width: 20.9rem;"
-                />
               </h6>
             </div>
           </VCardText>
-
+          
           <VCardText>
             <VRow>
-              <VCol cols="6">
+              <VCol cols="3">
                 <VCard title=" image ">
                   <VCardText>
                     <!-- 👉 Upload Photo -->
@@ -218,7 +201,7 @@ const onSubmit = () => {
                       rounded
                       :size="200"
                       class="me-6"
-                      :image="`https://b2b.prokoders.space/${section.image}`"
+                      :image="`https://b2b.prokoders.space/${ads.image}`"
                     />
                   </VCardText>
                 </VCard>
@@ -244,43 +227,59 @@ const onSubmit = () => {
                   >
                 </div>
                 <p class="text-body-1 mb-0 mt-5">
-                  <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
-                  <span>
-                    <VTextField
-                      v-model="section.alt"
+                    <!-- <h6 class="d-flex me-2 mt-5  align-center font-weight-medium justify-sm-end text-xl mb-3"> -->
+                    <span>
+                      <VTextField
+                        v-model="ads.alt"
+                       
+                        label=" alt text "
 
-                      label="Image alt text "
-
-                      style="width: 20.9rem;"
-                    />
-                  </span>
-                  <!-- </h6> -->
-                </p>
+                        style="width: 20.9rem;"
+                      />
+                    </span>
+                    <!-- </h6> -->
+                  </p>
               </VCol>
+              <VCol cols="6">
+                  <VCard title=" Video ">
+                    <VCardText>
+                      <!-- 👉 Upload Photo -->
+
+                      <video
+
+                        :src="`https://b2b.prokoders.space/${ads.video}`"
+                        :controls="true"
+                        class="me-6"
+                        width="200"
+                        height="200"
+                      />
+                    </VCardText>
+                  </VCard>
+                  <div class="d-flex flex-wrap gap-2 mt-10">
+                    <VBtn
+                      color="primary"
+                      @click="refInputE3?.click()"
+                    >
+                      <VIcon
+                        icon="tabler-cloud-upload"
+                        class="d-sm-none"
+                      />
+                      <span class="d-none d-sm-block">Upload new video</span>
+                    </VBtn>
+
+                    <input
+                      ref="refInputE3"
+                      type="file"
+                      name="file"
+                      accept=".mp4,.png,.jpg,GIF"
+                      hidden
+                      @input="uploadVideo"
+                    >
+                  </div>
+                </VCol>
             </VRow>
           </VCardText>
-
-          <VDivider />
-          <VCardText>
-           
-            
-            <VTextarea
-                v-model="section.description"
-                :rules="[requiredValidator]"
-                label="description "
-              />
-          </VCardText>
-
-          <VCardText>
-           
-            <VTextarea
-                v-model="section.detail"
-                :rules="[requiredValidator]"
-                label="detail "
-              />
-          </VCardText>
-
-          <VDivider />
+        
 
           <VCardText>
             <!-- 👉 Send Invoice -->

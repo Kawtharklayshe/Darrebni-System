@@ -13,7 +13,7 @@ const items = ['Programming', 'Design', 'Vue', 'Vuetify']
         multiple
       />
     </VCol>
-
+{{ selectedItem }}
     <VCol cols="12">
       <AppCombobox
         v-model="selectedItem"

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 
 // Type: Invoice data
+import Editor from '@tinymce/tinymce-vue'
 
 import { VForm } from 'vuetify/components'
 import type { ServiceData } from '@/views/apps/service/types'
@@ -23,6 +24,10 @@ image: '',
 
 })
 
+const refInputE2 = ref<HTMLElement>()
+
+
+
 const route = useRoute()
 const swal = inject('$swal')
 
@@ -32,14 +37,61 @@ const refForm = ref<VForm>()
 
 const LanguagesList = ref([])
 const photo = ref('@images/avatars/avatar-14.png')
+const refInputE4 = ref<HTMLElement>()
+const loading = ref(false)
+
 const refInputEl = ref<HTMLElement>()
+
+  const uploadNewIcon = (i: any) => {
+  loading.value = true
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  ServiceStore.uploadImage(fd).then((response: any) => {
+      loading.value = false
+      Service.value.icon = response?.data.path_file
+  })
+}
+
+const uploadSeoImage = (i: any) => {
+  loading.value = true
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  ServiceStore.uploadImage(fd).then((response: any) => {
+    loading.value = false
+    Service.value.seo.og_image = response?.data.path_file
+  })
+}
+const uploadFirstImage = (i: any) => {
+  loading.value = true
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  ServiceStore.uploadImage(fd).then((response: any) => {
+    loading.value = false
+    Service.value.image = response.data.path_file
+  })
+}
+
 
 ServiceStore.fetchServiceById(Number(route.params.id)).then(response => {
   // .data)
   Service.value = response.data.data
 })
 
-const loading = ref(false)
 
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
@@ -137,18 +189,7 @@ const onSubmit = () => {
                     />
                   </span>
                 </h6>
-                <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
-                  <span>
-                    <VTextField
-                      v-model="Service.icon"
-                      label="icon"
-                    
-
-                      density="compact"
-                      style="width: 15.9rem;"
-                    />
-                  </span>
-                </h6>
+               
               </div>
             </div>
             
@@ -170,7 +211,7 @@ const onSubmit = () => {
                   <div class="d-flex flex-wrap gap-2 mt-10">
                     <VBtn
                       color="primary"
-                      @click="refInputE1?.click()"
+                      @click="refInputEl?.click()"
                     >
                       <VIcon
                         icon="tabler-cloud-upload"
@@ -180,7 +221,7 @@ const onSubmit = () => {
                     </VBtn>
 
                     <input
-                      ref="refInputE1"
+                      ref="refInputEl"
                       type="file"
                       name="file"
                       accept=".jpeg,.png,.jpg,GIF"
@@ -203,7 +244,41 @@ const onSubmit = () => {
                     <!-- </h6> -->
                   </p>
                 </VCol>
+                <VCol cols="6">
+                <VCard title=" Icon ">
+                  <VCardText>
+                    <!-- 👉 Upload Photo -->
+                    <VAvatar
+                      rounded
+                      :size="200"
+                      class="me-6"
+                      :image="`https://b2b.prokoders.space/${Service.icon}`"
+                    />
+                  </VCardText>
+                </VCard>
+                <div class="d-flex flex-wrap gap-2 mt-10">
+                  <VBtn
+                    color="primary"
+                    @click="refInputE2?.click()"
+                  >
+                    <VIcon
+                      icon="tabler-cloud-upload"
+                      class="d-sm-none"
+                    />
+                    <span class="d-none d-sm-block">Upload Icon</span>
+                  </VBtn>
+
+                  <input
+                    ref="refInputE2"
+                    type="file"
+                    name="file"
+                    accept=".jpeg,.png,.jpg,GIF"
+                    hidden
+                    @input="uploadNewIcon"
+                  >
+                </div>
                
+              </VCol>
               </VRow>
           </VCardText>
           <VCardText class="  ">
@@ -246,6 +321,126 @@ const onSubmit = () => {
               }"
             />
           </VCardText>
+
+          <VCardText>
+            <div class="d-flex  mb-6">
+              <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+                  <VTextField
+                    v-model="Service.seo.title"
+                    label="Seo Title "
+
+                    style="width: 20.9rem;"
+                  />
+                </span>
+              </h6>
+            </div>
+            <div class="d-flex mb-6  me-2 ">
+              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+                  <VTextField
+                    v-model="Service.seo.author"
+
+                    label="Seo author "
+
+                    style="width: 20.9rem;"
+                  />
+                </span>
+              </h6>
+            </div>
+            <VCardText>
+              <label> SEO Keyword</label>
+              <!--
+                {{ Service.seo.keyword }}
+                {{ tags }}
+                Service.seo.keyword
+                <SmartTagz
+                ref="smarttag"
+                :tags="tags"
+                input-placeholder="Select Countries ..."
+                :default-tags="tags"
+                :read-only="false"
+                @click="handleTagsUpdated"
+                />
+              -->
+              <Editor
+                v-model="Service.seo.keyword"
+
+                :init="{
+                  toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                  toolbar_sticky: true,
+
+                  autosave_ask_before_unload: true,
+                  autosave_interval: '30s',
+                  autosave_prefix: '{path}{query}-{idd}-',
+                  autosave_restore_when_empty: false,
+                  autosave_retention: '2m',
+
+                  plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+                }"
+              />
+            </VCardText>
+            <VCardText>
+              <label> SEO Description</label>
+              <Editor
+                v-model="Service.seo.description"
+
+                :init="{
+                  toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
+                  toolbar_sticky: true,
+
+                  autosave_ask_before_unload: true,
+                  autosave_interval: '30s',
+                  autosave_prefix: '{path}{query}-{idd}-',
+                  autosave_restore_when_empty: false,
+                  autosave_retention: '2m',
+
+                  plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
+                }"
+              />
+            </VCardText>
+            <VRow>
+              <VCol cols="4">
+                <VCard title="Seo Image ">
+                  <VCardText>
+                    <!-- 👉 Upload Photo -->
+                    <VAvatar
+                      rounded
+                      :size="200"
+                      class="me-6"
+                      :image="`https://b2b.prokoders.space/${Service.seo.og_image}`"
+                    />
+                  </VCardText>
+                </VCard>
+                <div class="d-flex flex-wrap gap-2 mt-10">
+                  <VBtn
+                    color="primary"
+                    @click="refInputE4?.click()"
+                  >
+                    <VIcon
+                      icon="tabler-cloud-upload"
+                      class="d-sm-none"
+                    />
+                    <span class="d-none d-sm-block">Upload Seo photo</span>
+                  </VBtn>
+
+                  <input
+                    ref="refInputE4"
+                    type="file"
+                    name="file"
+                    accept=".jpeg,.png,.jpg,GIF"
+                    hidden
+                    @input="uploadSeoImage"
+                  >
+                </div>
+
+                <p class="text-body-1 mb-0">
+                  Allowed JPG, GIF or PNG. Max size of 800K
+                </p>
+              </VCol>
+            </VRow>
+          </VCardText>
+
           <VCardText>
             <!-- 👉 Send Invoice -->
             <VBtn

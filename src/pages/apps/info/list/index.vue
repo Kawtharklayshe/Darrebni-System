@@ -33,6 +33,7 @@ const FetchData = () => {
     },
   ).then(response => {
     // )
+    console.log(response.data)
     infos.value = response.data
     isDialogVisible.value = false
 

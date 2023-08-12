@@ -11,6 +11,13 @@ export interface featureData {
   alt: string,
   image: string,
   description: string,
-
+  seo:{
+    title: string,
+    author: string,
+  
+    description: string,
+    keyword: string,
+    og_image: string,
+  },
 }
 

@@ -306,7 +306,32 @@ export default [
   //   ],
   // },
 
-
+  {
+    title: 'Ads',
+    icon: { icon: 'tabler-settings' },
+    children: [
+      { title: 'Add', to: 'apps-ads-add' },
+      { title: 'List', to: 'apps-ads-list' },
+  
+    ],
+  },
+  {
+    title: 'Career',
+    icon: { icon: 'tabler-settings' },
+    children: [
+      { title: 'Add', to: 'apps-career-add' },
+      { title: 'List', to: 'apps-career-list' },
+  
+    ],
+  },
+  {
+    title: 'SEO',
+    icon: { icon: 'tabler-settings' },
+    children: [
+ 
+      { title: 'List', to: 'seo' },
+    ],
+  },
   {
     title: 'KeyWord',
     icon: { icon: 'tabler-settings' },

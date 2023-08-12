@@ -1,40 +1,43 @@
 <script setup lang="ts">
-import type { ServiceData } from '@/views/apps/service/types'
-import { useServiceStore } from '@/views/apps/service/useServiceStore'
+import { usecareerstore } from '@/views/apps/career/usecareerstore'
 
 // 👉 Store
-const ServiceStore = useServiceStore()
+const careerstore = usecareerstore()
+
 const swal = inject('$swal')
 
 const rowPerPage = ref(10)
+const course_id = ref('')
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalservices = ref(0)
-const services = ref<ServiceData[]>({})
+const totalcareers = ref(0)
+const careers = ref<any[]>({})
 
-const LanguagesList = ref([])
+const courseList = ref([])
 
-const isDialogVisible = ref(false)
 
-const FetchData = () => {
-  isDialogVisible.value = true
-  ServiceStore.fetchService(
+
+const FetchCourse = () => {
+  careerstore.fetchcareer(
     {
       page_size: rowPerPage.value,
       page: currentPage.value,
 
     },
   ).then(response => {
-    // .data)
-    services.value = response.data.data
-    isDialogVisible.value = false
-
-    // totalPage.value = response.data.data.last_page
-    // totalservices.value = response.data.data.total
+    console.log(response.data.data)
+    courseList.value = response.data.data
   }).catch(error => {
     console.log(error)
   })
 }
+
+// 👉 Fetch categoriess
+watchEffect(() => {
+  FetchCourse()
+})
+
+const isDialogVisible = ref(false)
 
 const deleteLang = (id: number) => {
   swal({
@@ -47,7 +50,7 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      ServiceStore.DeleteService(id).then(response => {
+      careerstore.Deletecareer(id).then(response => {
         swal({
           title: ' Deleted ',
           icon: 'success',
@@ -56,7 +59,7 @@ const deleteLang = (id: number) => {
           },
           buttonsStyling: false,
         })
-        FetchData()
+        FetchData(course_id.value)
       })
         .catch(error => {
           swal({
@@ -75,11 +78,6 @@ const deleteLang = (id: number) => {
   )
 }
 
-// 👉 Fetch services
-watchEffect(() => {
-  FetchData()
-})
-
 // 👉 watching current page
 watchEffect(() => {
   if (currentPage.value > totalPage.value)
@@ -88,10 +86,10 @@ watchEffect(() => {
 
 // 👉 Computing pagination data
 const paginationData = computed(() => {
-  const firstIndex = services.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
-  const lastIndex = services.value.length + ((currentPage.value - 1) * rowPerPage.value)
+  const firstIndex = careers.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
+  const lastIndex = careers.value.length + ((currentPage.value - 1) * rowPerPage.value)
 
-  return `Showing ${firstIndex} to ${lastIndex} of ${totalservices.value} entries`
+  return `Showing ${firstIndex} to ${lastIndex} of ${totalcareers.value} entries`
 })
 </script>
 
@@ -114,26 +112,17 @@ const paginationData = computed(() => {
         </VCardText>
       </VCard>
     </VDialog>
-    <VDivider />
-
+   
     <!-- SECTION Table -->
     <VTable class="text-no-wrap invoice-list-table">
       <!-- 👉 Table head -->
       <thead class="text-uppercase">
         <tr>
           <th scope="col">
-            Icon
+            slug
           </th>
-
           <th scope="col">
-            Name
-          </th>
-
-          <th
-            scope="col"
-            class="text-center"
-          >
-          slug
+            name
           </th>
 
           <th scope="col">
@@ -144,20 +133,22 @@ const paginationData = computed(() => {
 
       <!-- 👉 Table Body -->
       <tbody>
+      
         <tr
-          v-for="item in services"
+          v-for="item in courseList"
           :key="item.id"
           style="height: 3.75rem;"
         >
-          <!-- 👉 Id -->
-          <td>
-            <!-- <RouterLink :to="{ name: 'apps-invoice-preview-id', params: { id: blog.id } }"> -->
-
-            {{ item.icon }}
-            <!-- </RouterLink> -->
+          <!-- 👉 Trending -->
+          <td class="text-c">
+            <VChip
+              color="primary"
+              label
+            >
+              {{ item.sync_slug }}
+            </VChip>
           </td>
 
-          <!-- 👉 TITLE -->
           <td class="text-c">
             <VChip
               color="primary"
@@ -166,11 +157,12 @@ const paginationData = computed(() => {
               {{ item.name }}
             </VChip>
           </td>
-          <td class="text-center">
-            <span> {{ item.slug }}</span>
-            <!-- <span :class="item.slogan" /> -->
-          </td>
 
+          <!--
+            <td class="text-c">
+            {{ item.price }}
+            </td>
+          -->
           <!-- 👉 Actions -->
           <td style="width: 8rem;">
             <VBtn
@@ -178,7 +170,7 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-service-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-career-edit-id', params: { id: item.id } }"
             >
               <VIcon
                 size="22"
@@ -203,7 +195,7 @@ const paginationData = computed(() => {
       </tbody>
 
       <!-- 👉 table footer  -->
-      <tfoot v-show="!services">
+      <tfoot v-show="!careers">
         <tr>
           <td
             colspan="8"

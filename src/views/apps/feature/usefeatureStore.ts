@@ -9,6 +9,10 @@ export const usefeatureStore = defineStore('featureStore', {
       return axios.get(`/feature/all`, { params })
     },
 
+    fetchSeoPages(params: any) {
+      return axios.get(`/seo/pages`, { params })
+    },
+
     // 👉 Fetch single invoice
     fetchfeatureById(id: number) {
       return axios.get(`feature/${id}`)

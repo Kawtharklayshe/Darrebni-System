@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { ServiceData } from '@/views/apps/service/types'
-import { useServiceStore } from '@/views/apps/service/useServiceStore'
+import type { featureData } from '@/views/apps/feature/types'
+import { usefeatureStore } from '@/views/apps/feature/usefeatureStore'
 
 // 👉 Store
-const ServiceStore = useServiceStore()
+const featureStore = usefeatureStore()
 const swal = inject('$swal')
 
 const rowPerPage = ref(10)
 const currentPage = ref(1)
 const totalPage = ref(1)
-const totalservices = ref(0)
-const services = ref<ServiceData[]>({})
+const totalfeatures = ref(0)
+const features = ref<featureData[]>({})
 
 const LanguagesList = ref([])
 
@@ -18,7 +18,7 @@ const isDialogVisible = ref(false)
 
 const FetchData = () => {
   isDialogVisible.value = true
-  ServiceStore.fetchService(
+  featureStore.fetchSeoPages(
     {
       page_size: rowPerPage.value,
       page: currentPage.value,
@@ -26,11 +26,11 @@ const FetchData = () => {
     },
   ).then(response => {
     // .data)
-    services.value = response.data.data
+    features.value = response.data.data
     isDialogVisible.value = false
 
     // totalPage.value = response.data.data.last_page
-    // totalservices.value = response.data.data.total
+    // totalfeatures.value = response.data.data.total
   }).catch(error => {
     console.log(error)
   })
@@ -47,7 +47,7 @@ const deleteLang = (id: number) => {
     },
   }).then(result => {
     if (result.value) {
-      ServiceStore.DeleteService(id).then(response => {
+      featureStore.Deletefeature(id).then(response => {
         swal({
           title: ' Deleted ',
           icon: 'success',
@@ -75,7 +75,7 @@ const deleteLang = (id: number) => {
   )
 }
 
-// 👉 Fetch services
+// 👉 Fetch features
 watchEffect(() => {
   FetchData()
 })
@@ -88,10 +88,10 @@ watchEffect(() => {
 
 // 👉 Computing pagination data
 const paginationData = computed(() => {
-  const firstIndex = services.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
-  const lastIndex = services.value.length + ((currentPage.value - 1) * rowPerPage.value)
+  const firstIndex = features.value.length ? ((currentPage.value - 1) * rowPerPage.value) + 1 : 0
+  const lastIndex = features.value.length + ((currentPage.value - 1) * rowPerPage.value)
 
-  return `Showing ${firstIndex} to ${lastIndex} of ${totalservices.value} entries`
+  return `Showing ${firstIndex} to ${lastIndex} of ${totalfeatures.value} entries`
 })
 </script>
 
@@ -133,7 +133,7 @@ const paginationData = computed(() => {
             scope="col"
             class="text-center"
           >
-          slug
+            Summary
           </th>
 
           <th scope="col">
@@ -145,7 +145,7 @@ const paginationData = computed(() => {
       <!-- 👉 Table Body -->
       <tbody>
         <tr
-          v-for="item in services"
+          v-for="item in features"
           :key="item.id"
           style="height: 3.75rem;"
         >
@@ -153,7 +153,7 @@ const paginationData = computed(() => {
           <td>
             <!-- <RouterLink :to="{ name: 'apps-invoice-preview-id', params: { id: blog.id } }"> -->
 
-            {{ item.icon }}
+            {{ item.code }}
             <!-- </RouterLink> -->
           </td>
 
@@ -167,7 +167,7 @@ const paginationData = computed(() => {
             </VChip>
           </td>
           <td class="text-center">
-            <span> {{ item.slug }}</span>
+            <span> {{ item.summary }}</span>
             <!-- <span :class="item.slogan" /> -->
           </td>
 
@@ -178,7 +178,7 @@ const paginationData = computed(() => {
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-service-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-feature-edit-id', params: { id: item.id } }"
             >
               <VIcon
                 size="22"
@@ -203,7 +203,7 @@ const paginationData = computed(() => {
       </tbody>
 
       <!-- 👉 table footer  -->
-      <tfoot v-show="!services">
+      <tfoot v-show="!features">
         <tr>
           <td
             colspan="8"

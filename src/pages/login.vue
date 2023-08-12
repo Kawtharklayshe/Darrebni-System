@@ -34,8 +34,8 @@ const errors = ref<Record<string, string | undefined>>({
 })
 
 const refVForm = ref<VForm>()
-const email = ref('admin@admin.com')
-const password = ref('1234')
+const email = ref('')
+const password = ref('')
 const rememberMe = ref(false)
 
 const login = () => {
@@ -145,9 +145,7 @@ const onSubmit = () => {
             color="primary"
             variant="tonal"
           >
-            <p class="text-caption mb-2">
-              Admin Email: <strong>email@email.com</strong> / Pass: <strong>1234</strong>
-            </p>
+          
           </VAlert>
         </VCardText>
         <VCardText>

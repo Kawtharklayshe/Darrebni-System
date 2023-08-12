@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 // Type: Invoice data
 
 import Editor from '@tinymce/tinymce-vue'
@@ -15,9 +14,11 @@ const info = ref<any>({
   big_logo_dark: '',
   phone: '',
   phone2: '',
-
+  icon: '',
+  sign_in: '',
   email: '',
-
+  sync_slug: '',
+  sync_link: '',
   address: '',
 
   logo: 'img/deflate.jpg',
@@ -37,6 +38,7 @@ const route = useRoute()
 const refInputE2 = ref<HTMLElement>()
 const refInputEBD = ref<HTMLElement>()
 const refInputED = ref<HTMLElement>()
+const refInputEI = ref<HTMLElement>()
 
 const loading = ref(false)
 
@@ -52,6 +54,21 @@ const uploadFirstImage = (i: any) => {
   infoStore.uploadImage(fd).then((response: any) => {
     loading.value = false
     info.value.big_logo = response.data.path_file
+  })
+}
+
+const uploadIcon = (i: any) => {
+  loading.value = true
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  infoStore.uploadImage(fd).then((response: any) => {
+    loading.value = false
+    info.value.icon = response.data.path_file
   })
 }
 
@@ -194,6 +211,32 @@ const onSubmit = () => {
                 </span>
               </h6>
             </div>
+            <div class="d-flex  mb-6">
+              <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+                  <VTextField
+                    v-model="info.sync_slug"
+                    label="sync Slug "
+                    :rules="[requiredValidator]"
+
+                    style="width: 20.9rem;"
+                  />
+                </span>
+              </h6>
+            </div>
+            <div class="d-flex  mb-6">
+              <h6 class="d-flex me-2 align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <span>
+                  <VTextField
+                    v-model="info.sync_link"
+                    label="sync Link "
+                    :rules="[requiredValidator]"
+
+                    style="width: 20.9rem;"
+                  />
+                </span>
+              </h6>
+            </div>
 
             <div class="d-flex mb-6">
               <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
@@ -212,6 +255,18 @@ const onSubmit = () => {
                   v-model="info.email"
                   :rules="[emailValidator, requiredValidator]"
                   label="Email "
+
+                  style="width: 20.9rem;"
+                />
+              </h6>
+            </div>
+            
+            <div class="d-flex mb-6">
+              <h6 class="d-flex me-2  align-center font-weight-medium justify-sm-end text-xl mb-3">
+                <VTextField
+                  v-model="info.sign_in"
+                  :rules="[requiredValidator]"
+                  label="Sign In "
 
                   style="width: 20.9rem;"
                 />
@@ -330,25 +385,39 @@ const onSubmit = () => {
                     />
                   </VCardText>
                 </VCard>
+                <VCard
+                  title="  ICON "
+                  class="mt-10"
+                >
+                  <VCardText>
+                    <!-- 👉 Upload Photo -->
+                    <VAvatar
+                      rounded
+                      :size="200"
+                      class="me-6 mt-5"
+                      :image="`https://b2b.prokoders.space/${info.icon}`"
+                    />
+                  </VCardText>
+                </VCard>
                 <div class="d-flex flex-wrap gap-2 mt-10">
                   <VBtn
                     color="primary"
-                    @click="refInputED?.click()"
+                    @click="refInputEI?.click()"
                   >
                     <VIcon
                       icon="tabler-cloud-upload"
                       class="d-sm-none"
                     />
-                    <span class="d-none d-sm-block">Upload new Logo Dark</span>
+                    <span class="d-none d-sm-block">Upload Icon</span>
                   </VBtn>
 
                   <input
-                    ref="refInputED"
+                    ref="refInputEI"
                     type="file"
                     name="file"
                     accept=".jpeg,.png,.jpg,GIF"
                     hidden
-                    @input="uploadLogoDark"
+                    @input="uploadIcon"
                   >
                 </div>
                 <p class="text-body-1 mb-0 mt-5">
