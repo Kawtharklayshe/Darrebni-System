@@ -16,7 +16,14 @@ export const usetagstore = defineStore('usetagstore', {
     fetchtagById(id: number) {
       return axios.get(`tag/${id}`)
     },
-
+    uploadImage( payload) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('upload/image', payload, { headers: { 'Content-Type': 'multipart/form-data' } })
+          .then(response => resolve(response.data))
+          .catch(error => reject(error))
+      })
+    },
     addtag(tag: tagData) {
       return new Promise((resolve, reject) => {
         axios.post('tag/create', tag).then(response =>

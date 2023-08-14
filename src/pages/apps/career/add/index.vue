@@ -266,7 +266,7 @@ const onSubmit = () => {
                 <span>
                   <VTextField
                     v-model="career.salary_from"
-                    :rules="[requiredValidator]"
+                   
                     label="salary From "
                     type="number"
 
@@ -384,7 +384,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="career.career_level_id"
                   :items="careerLevelList"
-                  :rules="[requiredValidator]"
+                 
                   item-title="name"
                   item-value="id"
 
@@ -413,7 +413,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="career.currency_id"
                   :items="currencyList"
-                  :rules="[requiredValidator]"
+                 
                   item-title="name"
                   item-value="id"
 
@@ -442,7 +442,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="career.degree_level_id"
                   :items="DegreeList"
-                  :rules="[requiredValidator]"
+                
                   item-title="name"
                   item-value="id"
 
@@ -471,7 +471,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="career.skills_ids"
                   :items="skilllsList"
-                  :rules="[requiredValidator]"
+                  
                   item-title="name"
                   item-value="id"
                   multiple
@@ -500,7 +500,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="career.job_shift_id"
                   :items="jobShiftList"
-                  :rules="[requiredValidator]"
+                 
                   item-title="name"
                   item-value="id"
 
@@ -530,7 +530,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="career.job_experience_id"
                   :items="jobExperienceList"
-                  :rules="[requiredValidator]"
+                
                   item-title="name"
                   item-value="id"
 
@@ -559,7 +559,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="career.functional_area_id"
                   :items="FuncList"
-                  :rules="[requiredValidator]"
+                  
                   item-title="name"
                   item-value="id"
 
@@ -589,7 +589,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="career.jobTypes_ids"
                   :items="JobList"
-                  :rules="[requiredValidator]"
+                  
                   item-title="name"
                   item-value="id"
                   multiple
@@ -619,7 +619,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="career.tags_ids"
                   :items="TagList"
-                  :rules="[requiredValidator]"
+                  
                   item-title="name"
                   item-value="id"
                   multiple
@@ -649,7 +649,7 @@ const onSubmit = () => {
                 <VSelect
                   v-model="career.categories_ids"
                   :items="TagList"
-                  :rules="[requiredValidator]"
+                  
                   item-title="name"
                   item-value="id"
                   multiple
@@ -688,7 +688,7 @@ const onSubmit = () => {
                   <AppDateTimePicker
                     v-model="career.expire_date"
                     :min="career.start_date"
-                    :rules="[requiredValidator]"
+                    
                     label="Expire Date"
                     :config=" { enableTime: true, dateFormat: 'Y-m-d H:i', minDate: maxDateAllowed }"
                     style="width: 20rem;"
@@ -701,7 +701,7 @@ const onSubmit = () => {
             <VCol cols="12">
               <VTextarea
         label="description"
-    
+        :rules="[requiredValidator]"
         v-model="career.description"
      
       />
@@ -709,23 +709,11 @@ const onSubmit = () => {
           </VCardText>
           <VCardText class="d-flex flex-wrap  flex-column flex-sm-row">
             <VCol cols="12">
-              <label> content</label>
-              <Editor
-                v-model="career.content"
-
-                :init="{
-                  toolbar: ' undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat  | charmap emoticons | fullscreen  preview save print | insertfile image code media template link anchor  | ltr rtl',
-                  toolbar_sticky: true,
-
-                  autosave_ask_before_unload: true,
-                  autosave_interval: '30s',
-                  autosave_prefix: '{path}{query}-{idd}-',
-                  autosave_restore_when_empty: false,
-                  autosave_retention: '2m',
-
-                  plugins: 'media table   preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template  table charmap  anchor  advlist lists  help charmap quickbars emoticons',
-                }"
-              />
+              <VTextarea
+        label="content"
+        :rules="[requiredValidator]"
+        v-model="career.content"
+     />
             </VCol>
           </VCardText>
 
