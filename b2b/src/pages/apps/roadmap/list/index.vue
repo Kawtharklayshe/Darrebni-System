@@ -163,16 +163,17 @@ const paginationData = computed(() => {
           </td>
 
           <td class="text-c">
-            {{ item.description }}
+           
+             <div v-html="item.description " />
           </td>
           <!-- 👉 Actions -->
-          <!-- <td style="width: 8rem;">
+         <td style="width: 8rem;">
             <VBtn
               icon
               size="x-small"
               color="info"
               variant="text"
-              :to="{ name: 'apps-category-blog-edit-id', params: { id: item.id } }"
+              :to="{ name: 'apps-roadmap-edit-id', params: { id: item.id } }"
             >
               <VIcon
                 size="22"
@@ -180,7 +181,7 @@ const paginationData = computed(() => {
               />
             </VBtn>
 
-            <VBtn
+            <!-- <VBtn
               icon
               variant="text"
               color="error"
@@ -191,8 +192,8 @@ const paginationData = computed(() => {
                 :size="22"
                 icon="tabler-trash"
               />
-            </VBtn>
-          </td> -->
+            </VBtn> -->
+          </td>
         </tr>
       </tbody>
 

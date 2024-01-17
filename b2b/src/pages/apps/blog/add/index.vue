@@ -125,7 +125,7 @@ const router = useRouter()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('blog', blog)
+     
       loading.value = true
       blogStore.addblog(blog.value).then(res => {
         swal({

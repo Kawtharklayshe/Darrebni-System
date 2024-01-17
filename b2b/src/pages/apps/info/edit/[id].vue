@@ -110,7 +110,7 @@ const uploadNewImage = (i: any) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   infoStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response?.data.path_file)
+  
     info.value.logo = response?.data.path_file
   })
 }

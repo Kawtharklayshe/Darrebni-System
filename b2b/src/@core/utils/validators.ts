@@ -12,7 +12,7 @@ export const requiredValidator = (value: unknown) => {
 export const dateRangeValidator = (start: any, end: any) => {
   if (isEmpty(start) || isEmpty(end))
     return true
-  console.log('dtat', start)
+ 
 
   const startDate = new Date(start)
   const endDate = new Date(end)

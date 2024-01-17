@@ -118,7 +118,7 @@ const router = useRouter()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('lesson', lesson)
+    
       loading.value = true
       lessonStore.addlesson(lesson.value).then(res => {
         swal({

@@ -81,7 +81,7 @@ const loading = ref(false)
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('quiz', quiz)
+    
       loading.value = true
       quizStore.addquiz(quiz.value).then(res => {
         swal({

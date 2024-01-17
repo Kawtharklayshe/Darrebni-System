@@ -41,7 +41,7 @@ watchEffect(() => {
 const isDialogVisible = ref(false)
 
 const FetchData = id => {
-  console.log(id)
+
   isDialogVisible.value = true
   lessonstore.fetchlesson(
     {

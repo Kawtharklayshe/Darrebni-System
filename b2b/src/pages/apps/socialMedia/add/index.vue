@@ -33,7 +33,7 @@ const loading = ref(false)
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('socialMedia', socialMedia)
+  
       loading.value = true
       socialMediaStore.addsocialMedia(socialMedia.value).then(res => {
         swal({

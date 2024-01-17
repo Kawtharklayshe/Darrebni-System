@@ -58,7 +58,7 @@ const uploadFile = (i: any) => {
   fd.append('file', file)
   fd.append('folder', 'assignment')
   coursestore.uploadFile(fd).then((response: any) => {
-    console.log('res', response?.data)
+  
     assignment.value.file = response?.data
   })
 }

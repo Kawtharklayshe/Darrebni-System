@@ -89,7 +89,7 @@ const refForm = ref<VForm>()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('Service', Service)
+      
       loading.value = true
       ServiceStore.addService(Service.value).then(res => {
         swal({

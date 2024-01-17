@@ -263,7 +263,7 @@ const onSubmit = () => {
           <VCardText>
             <VTextarea
               v-model="section.description"
-              :rules="[requiredValidator]"
+             
               label="description "
             />
           </VCardText>
@@ -271,7 +271,7 @@ const onSubmit = () => {
           <VCardText>
             <VTextarea
               v-model="section.detail"
-              :rules="[requiredValidator]"
+             
               label="detail "
             />
           </VCardText>

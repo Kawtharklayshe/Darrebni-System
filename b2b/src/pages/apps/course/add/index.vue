@@ -231,7 +231,7 @@ const smarttag = ref(null)
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('course', course)
+   
       loading.value = true
       courseStore.addcourse(course.value).then(res => {
         swal({

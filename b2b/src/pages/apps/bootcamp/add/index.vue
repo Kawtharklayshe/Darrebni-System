@@ -66,7 +66,7 @@ const loading = ref(false)
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('bootcamp', bootcamp)
+     
       loading.value = true
       bootcampStore.addbootcamp(bootcamp.value).then(res => {
         swal({

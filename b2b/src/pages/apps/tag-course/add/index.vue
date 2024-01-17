@@ -72,7 +72,7 @@ const loading = ref(false)
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('tag', tag)
+
       loading.value = true
       tagCoursestore.addtag(tag.value).then(res => {
         swal({

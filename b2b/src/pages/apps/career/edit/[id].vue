@@ -86,7 +86,7 @@ const FetchCourse = () => {
   careerStore.fetchcareerData(
 
   ).then(response => {
-    console.log('fetchcareerData', response.data)
+    
     skilllsList.value = response.data.data.job_skill
     JobList.value = response.data.data.job_type
     TagList.value = response.data.data.tag

@@ -75,10 +75,7 @@ const handleUpload = i => {
   const inputElement = inputRef._rawValue[0]
 
   inputElement?.click()
-  console.log('Input Element:', inputElement)
-  console.log(i)
-  console.log(refInputE12.value)
-  console.log('Input Element:', refInputE12.value[i])
+
 }
 
 const FetchCategory = () => {
@@ -183,7 +180,7 @@ const router = useRouter()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('roadmap', roadmap)
+     
       loading.value = true
       roadmapStore.addroadmap(roadmap.value).then(res => {
         swal({

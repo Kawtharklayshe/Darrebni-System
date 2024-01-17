@@ -38,9 +38,16 @@ const roadmap = ref<roadmapData>({
 
 })
 
+
+const statusList = ref([
+  { name: 'publish', id: 'publish' },
+  { name: 'hide', id: 'hide' },
+  { name: 'draft', id: 'draft' },
+])
+
 const swal = inject('$swal')
 const roadmapStore = useRoadmapstoreModule()
-const refInputEl = ref<HTMLElement>()
+const refInputE3 = ref<HTMLElement>()
 const refInputE4 = ref<HTMLElement>()
 
 const categoryList = ref([])
@@ -101,6 +108,23 @@ const uploadFirstImage = (i: any) => {
   })
 }
 
+const uploadNewStageImage = (i: string, index: number) => {
+
+  loading.value = true
+
+  const file = i.target.files[0]
+
+  const fd = new FormData()
+
+  fd.append('image', file)
+  fd.append('folder', 'other')
+  roadmapStore.uploadImage(fd).then((response: any) => {
+    loading.value = false
+    roadmap.value.stages[index].image = response?.data.path_file
+  })
+}
+
+
 const uploadSeoImage = (i: any) => {
   loading.value = true
 
@@ -127,10 +151,7 @@ const handleUpload = i => {
   const inputElement = inputRef._rawValue[0]
 
   inputElement?.click()
-  console.log('Input Element:', inputElement)
-  console.log(i)
-  console.log(refInputE12.value)
-  console.log('Input Element:', refInputE12.value[i])
+  
 }
 
 watchEffect(() => {

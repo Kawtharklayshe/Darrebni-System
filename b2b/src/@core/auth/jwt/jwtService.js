@@ -47,7 +47,7 @@ export default class JwtService {
         const originalRequest = config
         if (response && response.status === 403) {
           // localVue.swal({
-            console.log("sssss")
+           
           //   text: 'Email or password is not correct',
           //   icon: 'error',
           //   buttonsStyling: false,
@@ -61,11 +61,11 @@ export default class JwtService {
 
         // if (status === 401) {
         if (response && response.status === 401) {
-          console.log("401")
+        
           window.location.href = "/login";
           if (!this.isAlreadyFetchingAccessToken) {
             this.isAlreadyFetchingAccessToken = true
-            console.log("sssss")
+           
             // localVue.swal({
             //   title: 'Session Expired',
             //   text: 'You have to login again',

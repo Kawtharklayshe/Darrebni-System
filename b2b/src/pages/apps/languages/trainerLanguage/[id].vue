@@ -40,7 +40,7 @@ const loading = ref(false)
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('bootcamp', tagCourse)
+     
       tagCourse.value.id = (Number(router.params.id))
       loading.value = true
       trainerstore.addTrainerLangs(tagCourse.value).then(res => {

@@ -25,7 +25,7 @@ const FetchCourse = () => {
 
     },
   ).then(response => {
-    console.log(response.data.data)
+   
     courseList.value = response.data.data
   }).catch(error => {
     console.log(error)

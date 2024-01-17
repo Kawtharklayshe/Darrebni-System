@@ -42,8 +42,7 @@ const loading = ref(false)
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('bootcamp', blogCourse)
-      console.log('router.params.id', router.params.id)
+     
       blogCourse.value.id = (Number(router.params.id))
       loading.value = true
       blogstore.addblogCourse(blogCourse.value).then(res => {

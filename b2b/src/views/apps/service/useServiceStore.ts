@@ -14,8 +14,7 @@ export const useServiceStore = defineStore('ServiceStore', {
       return axios.get(`service/${id}`)
     },
     addService(Service: ServiceData) {
-      console.log(Service)
-
+   
       return new Promise((resolve, reject) => {
         axios.post(`service/create`, Service).then(response =>
 

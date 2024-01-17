@@ -152,7 +152,7 @@ const paginationData = computed(() => {
 })
 
 const getConfirm = (id: number) => {
-  console.log('getConfirm')
+
   userListStore.DeleteUser(id)
 }
 

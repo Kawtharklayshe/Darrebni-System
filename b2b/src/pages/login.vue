@@ -42,7 +42,7 @@ const login = () => {
   useJwt.login({ email: email.value, password: password.value }).then(r => {
     const { access_token, name, id } = r.data?.data
 
-    console.log(r.data)
+    
     localStorage.setItem('userAbilities', JSON.stringify([
       {
         action: 'manage',

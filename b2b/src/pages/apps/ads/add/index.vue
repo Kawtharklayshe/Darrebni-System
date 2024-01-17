@@ -108,7 +108,7 @@ const router = useRouter()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('ads', ads)
+
       loading.value = true
       adsStore.addads(ads.value).then(res => {
         swal({

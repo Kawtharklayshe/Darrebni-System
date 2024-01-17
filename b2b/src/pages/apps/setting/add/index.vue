@@ -70,7 +70,7 @@ const uploadSeoImage = (i: any) => {
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('setting', setting)
+  
       loading.value = true
       settingStore.addsetting(setting.value).then(res => {
         swal({

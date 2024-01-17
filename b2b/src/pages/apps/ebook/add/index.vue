@@ -140,7 +140,7 @@ const router = useRouter()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('ebook', ebook)
+    
       loading.value = true
       ebookStore.addebook(ebook.value).then(res => {
         swal({

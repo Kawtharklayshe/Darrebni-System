@@ -43,7 +43,7 @@ const router = useRouter()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('author', author)
+     
       loading.value = true
       authorStore.addauthor(author.value).then(res => {
         swal({

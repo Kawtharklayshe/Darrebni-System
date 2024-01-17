@@ -51,7 +51,7 @@ const router = useRouter()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('slider', slider)
+  
       loading.value = true
       sliderStore.addslider(slider.value).then(res => {
         swal({

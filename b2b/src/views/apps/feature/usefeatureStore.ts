@@ -18,7 +18,7 @@ export const usefeatureStore = defineStore('featureStore', {
       return axios.get(`feature/${id}`)
     },
     addfeature(feature: featureData) {
-      console.log(feature)
+  
 
       return new Promise((resolve, reject) => {
         axios.post(`feature/create`, feature).then(response =>

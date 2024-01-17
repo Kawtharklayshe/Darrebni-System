@@ -47,8 +47,7 @@ const loading = ref(false)
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('bootcamp', tagCourse)
-      console.log('router.params.id', router.params.id)
+    
       tagCourse.value.id = (Number(router.params.id))
       loading.value = true
       trainerstore.addTrainerCourse(tagCourse.value).then(res => {

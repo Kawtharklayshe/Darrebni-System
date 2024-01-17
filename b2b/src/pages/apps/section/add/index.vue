@@ -85,7 +85,7 @@ sectionStore.fetchTypes(
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('section', section)
+     
       loading.value = true
       sectionStore.addsection(section.value).then(res => {
         swal({
@@ -254,7 +254,7 @@ const onSubmit = () => {
             <span>
               <VTextarea
                 v-model="section.description"
-                :rules="[requiredValidator]"
+                
                 label="description "
               />
             </span>
@@ -263,7 +263,7 @@ const onSubmit = () => {
           <VCardText>
             <VTextarea
               v-model="section.detail"
-              :rules="[requiredValidator]"
+              
               label="detail "
             />
           </VCardText>

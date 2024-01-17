@@ -114,7 +114,7 @@ const onSubmit = () => {
     description: description.value,
   }
 
-  console.log(rolePermissions)
+
   emit('update:rolePermissions', rolePermissions)
   emit('update:isDialogVisible', false)
   coursestore.addRole(rolePermissions).then(res => {

@@ -80,7 +80,7 @@ const router = useRouter()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('trainer', trainer)
+   
       loading.value = true
       trainerStore.addtrainer(trainer.value).then(res => {
         swal({

@@ -41,7 +41,7 @@ const changeAvatar = (i: Event) => {
   fd.append('image', file)
   fd.append('folder', 'other')
   courseStore.uploadImage(fd).then((response: any) => {
-    console.log('res', response.data.path_file)
+
     photo.value = response.data.path_file
   })
 }

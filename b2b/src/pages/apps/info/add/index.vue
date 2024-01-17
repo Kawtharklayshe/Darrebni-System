@@ -71,7 +71,7 @@ const router = useRouter()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('section', section)
+     
       loading.value = true
       sectionStore.addsection(section.value).then(res => {
         swal({

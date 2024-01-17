@@ -32,7 +32,7 @@ const loading = ref(false)
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('duration', duration)
+     
       loading.value = true
       durationStore.addduration(duration.value).then(res => {
         swal({

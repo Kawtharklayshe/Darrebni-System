@@ -96,7 +96,7 @@ const refForm = ref<VForm>()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('feature', feature)
+     
       loading.value = true
       featureStore.addfeature(feature.value).then(res => {
         swal({

@@ -102,7 +102,7 @@ const router = useRouter()
 const onSubmit = () => {
   refForm.value?.validate().then(({ valid }) => {
     if (valid) {
-      console.log('event', event)
+     
       loading.value = true
       eventStore.addevent(event.value).then(res => {
         swal({
