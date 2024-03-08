@@ -1,0 +1,10 @@
+<svg width="50" height="35" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>Layer 1</title>
+  <path transform="rotate(90 25.6984 18.0794)" stroke="#bf005f" id="svg_1" d="m16.53174,18.07943l3.83928,-13.53175l10.2381,0c1.27976,4.51058 2.97619,9.02117 4.25595,13.53175l-4.25595,13.53175l-10.2381,0l-3.83928,-13.53175z" fill="#bf005f"/>
+  <text style="cursor: move;" font-weight="normal" xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" stroke-width="0" id="svg_3" y="15.27411" x="2.9119" stroke="#000" fill="#000000"/>
+  <text transform="matrix(1.81306 0 0 2.13735 -31.6197 -3.60381)" stroke="#000" x="30.9333" font-style="normal" font-weight="bold" xml:space="preserve" text-anchor="start" font-family="sans-serif" font-size="17" id="svg_4" y="14.69491" stroke-width="0" fill="#ff007f">&gt;</text>
+  <text font-weight="bold" transform="matrix(1.88808 0 0 2.17886 -12.256 -18.7301)" stroke="#000" xml:space="preserve" text-anchor="start" font-family="sans-serif" font-size="17" id="svg_7" y="24.06035" x="11.20964" stroke-width="0" fill="#005fbf">&lt;</text>
+ </g>
+</svg>

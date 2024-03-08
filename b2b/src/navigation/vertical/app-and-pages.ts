@@ -360,14 +360,7 @@ export default [
       { title: 'List', to: 'apps-keyword-list' },
     ],
   },
-  {
-    title: 'User',
-    icon: { icon: 'tabler-users' },
-    children: [
-      { title: 'List', to: 'apps-user-list' },
-      { title: 'View', to: { name: 'apps-user-view-id', params: { id: 21 } } },
-    ],
-  },
+  
   {
     title: 'Languages',
     icon: { icon: 'tabler-settings' },
